@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Routes, Route, Link } from "react-router-dom";
 import QuestionSelector from "./components/QuestionSelector/QuestionSelector";
 import ChatPage from "./components/ChatPage/ChatPage";
