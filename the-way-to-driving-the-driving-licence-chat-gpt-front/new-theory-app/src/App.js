@@ -1,27 +1,46 @@
-
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import QuestionSelector from "./components/QuestionSelector/QuestionSelector";
 import ChatPage from "./components/ChatPage/ChatPage";
-import "./App.css"; // אם תרצה, תוכל להוסיף עיצוב גלובלי.
+import LoginRegisterPage from "../src/components/LoginRegisterPage/LoginRegisterPage";
+import "./App.css";
 
 export default function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const id = localStorage.getItem("userId");
+    const name = localStorage.getItem("userName");
+    if (id) {
+      setUser({ id, name });
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setUser(null);
+  };
+
+  if (!user) {
+    return <LoginRegisterPage onLogin={setUser} />;
+  }
+
   return (
     <div style={{ maxWidth: 800, margin: "0 auto", padding: "16px" }}>
       <nav style={{ marginBottom: 24 }}>
-        {/* ניווט גלובלי בין מסך הבחירה ובין מסך הצʼאט */}
         <Link to="/" style={{ marginRight: 16 }}>
           בחירת שאלה
         </Link>
-        <Link to="/chat">צ’אט עם GPT</Link>
+        <Link to="/chat" style={{ marginRight: 16 }} element={<ChatPage user={user} />}>
+          צ’אט עם GPT
+        </Link>
+        <button onClick={handleLogout}>התנתקות</button>
       </nav>
 
       <Routes>
-        {/* ב־"/" נציג את מסך הבחירה של השאלה */}
-        <Route path="/" element={<QuestionSelector />} />
-        {/* ב־"/chat" נגיע למסך הצ'אט */}
-        <Route path="/chat" element={<ChatPage />} />
-        {/* כל נתיב אחר → נחזיר למסך הבחירה */}
-        <Route path="*" element={<QuestionSelector />} />
+        <Route path="/" element={<QuestionSelector user={user} />} />
+        <Route path="/chat" element={<ChatPage user={user} />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
   );
