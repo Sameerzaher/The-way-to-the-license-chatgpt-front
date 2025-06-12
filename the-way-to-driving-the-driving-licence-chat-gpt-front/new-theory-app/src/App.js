@@ -11,8 +11,9 @@ export default function App() {
   useEffect(() => {
     const id = localStorage.getItem("userId");
     const name = localStorage.getItem("userName");
+    const course = localStorage.getItem("userCourse");
     if (id) {
-      setUser({ id, name });
+      setUser({ id, name, course });
     }
   }, []);
 
@@ -21,27 +22,64 @@ export default function App() {
     setUser(null);
   };
 
+  // Helper function to get course display name in Hebrew
+  const getCourseDisplayName = (course) => {
+    switch (course) {
+      case 'psychology':
+        return 'פסיכולוגיה';
+      case 'theory':
+      default:
+        return 'תיאוריה';
+    }
+  };
+
   if (!user) {
     return <LoginRegisterPage onLogin={setUser} />;
   }
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: "16px" }}>
-      <nav style={{ marginBottom: 24 }}>
-        <Link to="/" style={{ marginRight: 16 }}>
-          בחירת שאלה
-        </Link>
-        <Link to="/chat" style={{ marginRight: 16 }} element={<ChatPage user={user} />}>
-          צ’אט עם GPT
-        </Link>
-        <button onClick={handleLogout}>התנתקות</button>
-      </nav>
+    <div className="app-container">
+      <div className="app-content-wrapper">
+        <nav className="app-navbar">
+          {user?.name && (
+            <div className="user-greeting">
+              שלום, {user.name}
+              {user.course && (
+                <span className="user-course">
+                  ({getCourseDisplayName(user.course)})
+                </span>
+              )}
+            </div>
+          )}
+          
+          <div className="nav-links">
+            <Link to="/" className="nav-link">
+              בחירת שאלה
+            </Link>
+            <Link to="/chat" className="nav-link">
+              צ'אט עם GPT
+            </Link>
+            <button onClick={handleLogout} className="logout-button">
+              התנתקות
+            </button>
+          </div>
+        </nav>
 
-      <Routes>
-        <Route path="/" element={<QuestionSelector user={user} />} />
-        <Route path="/chat" element={<ChatPage user={user} />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+        <main className="app-main-content">
+          <Routes>
+            <Route path="/" element={<QuestionSelector user={user} />} />
+            <Route
+              path="/chat"
+              element={
+                <div className="chat-outer-container">
+                  <ChatPage user={user} />
+                </div>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </main>
+      </div>
     </div>
   );
 }

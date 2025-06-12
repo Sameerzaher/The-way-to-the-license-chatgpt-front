@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TheoryQuiz from "../TheoryQuiz/TheoryQuiz";
 import "./QuestionSelector.css";
 
 export default function QuestionSelector() {
-  // אם המשתמש כתב במספר השאלה לשאול
   const [inputId, setInputId] = useState("");
-  // השאלה שנבחרה להצגה (ברגע שנלחץ 'הצג שאלה')
   const [chosenId, setChosenId] = useState(null);
-  // אפשר גם לשמור feedback (למשל "לא נמצא מזהה כזה")
   const [feedback, setFeedback] = useState("");
-  // נשתמש באותו state של שפה כמו ב־TheoryQuiz
   const [lang, setLang] = useState("he");
 
-  // כשיש פנייה לטופס, נאתר את ה־ID
+  // 🧠 נוסיף את התחום מה־localStorage
+  const [field, setField] = useState("theory");
+
+  useEffect(() => {
+    const selectedField = localStorage.getItem("learningField") || "theory";
+    setField(selectedField);
+  }, []);
+
   const handleShow = (e) => {
     e.preventDefault();
     if (inputId.trim() === "") {
@@ -23,61 +26,76 @@ export default function QuestionSelector() {
     setFeedback("");
   };
 
-  // כפתור חזרה למסך הקודם (מאפס את chosenId)
   const handleBack = () => {
     setChosenId(null);
     setInputId("");
     setFeedback("");
   };
 
-  // אם כבר נבחר ID, נציג את TheoryQuiz
   if (chosenId) {
     return (
       <div>
         <button className="back-button" onClick={handleBack}>
-          ← {lang === "ar" ? "חזרה" : "חזרה"}
+          {lang === "ar" ? "חזרה" : "חזרה"}
         </button>
-        <TheoryQuiz forcedId={chosenId} lang={lang} onAnswered={() => {}} />
+        <TheoryQuiz
+          forcedId={chosenId}
+          lang={lang}
+          field={field} // 🧠 שליחה של התחום לשימוש עתידי
+          onAnswered={() => {}}
+        />
       </div>
     );
   }
 
-  // מסך הבחירה כשעדיין לא נבחר ID
   return (
-    <div className="selector-container">
-      <h2 className="selector-title">
-        {lang === "ar" ? "בחר מספר שאלה להצגה" : "בחר מספר שאלה להצגה"}
-      </h2>
+    <div className="selector-page-wrapper">
+      <div className="selector-container" data-lang={lang}>
+        <div className="field-indicator">
+          {field === "psychology" ? "פסיכולוגיה" : "תיאוריה"}
+        </div>
+        
+        <h2 className="selector-title">
+          {field === "psychology"
+            ? "בחר שאלה מתוך מאגר פסיכולוגיה"
+            : "בחר שאלה מתוך מאגר תיאוריה"}
+        </h2>
 
-      <form className="selector-form" onSubmit={handleShow}>
-        <label htmlFor="question-id" className="selector-label">
-          {lang === "ar" ? "מזהה שאלה:" : "מזהה שאלה:"}
-        </label>
-        <input
-          id="question-id"
-          type="text"
-          className="selector-input"
-          placeholder={lang === "ar" ? "לדוגמה: 0001" : "לדוגמה: 0001"}
-          value={inputId}
-          onChange={(e) => setInputId(e.target.value)}
-        />
-        <button type="submit" className="selector-button">
-          {lang === "ar" ? "הצג שאלה" : "הצג שאלה"}
-        </button>
+        <form className="selector-form" onSubmit={handleShow}>
+          <label htmlFor="question-id" className="selector-label">
+            {lang === "ar" ? "מזהה שאלה:" : "מזהה שאלה:"}
+          </label>
+          
+          <div className="input-wrapper">
+            <input
+              id="question-id"
+              type="text"
+              className="selector-input"
+              placeholder={lang === "ar" ? "לדוגמה: 0001" : "לדוגמה: 0001"}
+              value={inputId}
+              onChange={(e) => setInputId(e.target.value)}
+            />
+          </div>
 
-        {/* כפתור להחלפת שפה */}
-        <button
-          type="button"
-          className="selector-lang-toggle"
-          onClick={() => setLang((l) => (l === "he" ? "ar" : "he"))}
-        >
-          {lang === "ar" ? "עברית" : "Arabic"}
-        </button>
-      </form>
+          <div className="button-group">
+            <button type="submit" className="selector-button">
+              {lang === "ar" ? "הצג שאלה" : "הצג שאלה"}
+            </button>
 
-      {feedback && (
-        <div className="selector-feedback">{feedback}</div>
-      )}
+            <button
+              type="button"
+              className="selector-lang-toggle"
+              onClick={() => setLang((l) => (l === "he" ? "ar" : "he"))}
+            >
+              {lang === "ar" ? "עברית" : "Arabic"}
+            </button>
+          </div>
+        </form>
+
+        {feedback && (
+          <div className="selector-feedback">{feedback}</div>
+        )}
+      </div>
     </div>
   );
 }

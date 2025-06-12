@@ -77,7 +77,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="chat-container">
+    <div className="chat-outer-container">
       <div className="centered-chat">
         <h2>צʼאט עם ChatGPT לגבי השאלות</h2>
 

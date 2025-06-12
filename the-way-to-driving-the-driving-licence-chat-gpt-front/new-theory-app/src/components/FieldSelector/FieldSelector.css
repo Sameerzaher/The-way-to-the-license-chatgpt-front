@@ -1,0 +1,30 @@
+.field-selector {
+    text-align: center;
+    padding: 2rem;
+    direction: rtl;
+  }
+  
+  .field-selector h2 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .buttons button {
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .buttons button:hover {
+    background-color: #0056b3;
+  }
+  

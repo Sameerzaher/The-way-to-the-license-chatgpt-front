@@ -1,38 +1,350 @@
-.App {
-  text-align: center;
+/* Modern App Layout Design */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  color: #2c3e50;
+  direction: rtl;
+}
+
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0;
+}
+
+.app-content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation Bar */
+.app-navbar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.app-navbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* User Greeting */
+.user-greeting {
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 12px 20px;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  animation: fadeInRight 0.6s ease-out;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* User Course Display */
+.user-course {
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 4px 12px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(5px);
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.user-course:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Navigation Links */
+.nav-links {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 12px 20px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.nav-link:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.nav-link:hover::before {
+  left: 100%;
+}
+
+.nav-link:active {
+  transform: translateY(0);
+}
+
+/* Logout Button */
+.logout-button {
+  background: linear-gradient(135deg, #ff7675 0%, #e17055 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 118, 117, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.logout-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.logout-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 118, 117, 0.5);
+}
+
+.logout-button:hover::before {
+  left: 100%;
+}
+
+.logout-button:active {
+  transform: translateY(0);
+}
+
+/* Main Content Area */
+.app-main-content {
+  padding: 40px 30px;
+  min-height: calc(100vh - 100px);
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* Chat Outer Container */
+.chat-outer-container {
+  min-height: 80vh;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background: transparent;
+  padding: 0;
 }
 
-.App-link {
-  color: #61dafb;
+/* Page Title */
+.page-title {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #2c3e50;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInUp 0.6s ease-out;
 }
 
-@keyframes App-logo-spin {
+/* Animations */
+@keyframes fadeInRight {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateX(-30px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateX(0);
   }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .app-content-wrapper {
+    margin: 0;
+    border-radius: 0;
+  }
+  
+  .app-navbar {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .nav-links {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .nav-link {
+    width: 100%;
+    text-align: center;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .user-greeting {
+    font-size: 1rem;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: center;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .user-course {
+    font-size: 0.8rem;
+    padding: 3px 10px;
+  }
+  
+  .logout-button {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .app-main-content {
+    padding: 20px 15px;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-navbar {
+    padding: 10px 15px;
+  }
+  
+  .nav-link,
+  .logout-button {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .user-greeting {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+  
+  .user-course {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .app-main-content {
+    padding: 15px 10px;
+  }
+}
+
+/* Loading Animation */
+.app-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.app-loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

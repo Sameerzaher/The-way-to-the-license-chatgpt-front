@@ -1,180 +1,348 @@
 /* src/components/TheoryQuiz.css */
 
-/* ברירת-מחדל עבור כל הטקסטים ברכיב */
+/* Modern TheoryQuiz Component Design */
+
 .quiz-container {
-  max-width: 500px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 16px;
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
-  color: #333;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #2c3e50;
+  min-height: 70vh;
+  direction: rtl;
 }
 
-/* כפתור החלפת שפה */
+/* Language Toggle Button */
 .quiz-lang-toggle {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 12px;
+  justify-content: flex-start;
+  margin-bottom: 20px;
 }
 
 .quiz-lang-toggle button {
-  background-color: #ffffff;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  padding: 6px 12px;
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
   font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(116, 185, 255, 0.3);
 }
 
 .quiz-lang-toggle button:hover {
-  background-color: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(116, 185, 255, 0.4);
 }
 
-/* Loader (עגול מסתובב) */
+/* Modern Loader */
 .quiz-loader {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100px; /* גובה מספיק כדי שהעיגול יופיע במרכז */
+  min-height: 200px;
+  gap: 20px;
 }
 
 .loader-spinner {
-  border: 4px solid #3498db; /* כחול */
-  border-top: 4px solid transparent;
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e3f2fd;
+  border-top: 4px solid #2196f3;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.loader-spinner::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 3px solid #fff;
+  border-top: 3px solid #2196f3;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: spin 0.7s linear infinite reverse;
 }
 
-/* הודעות שגיאה או הודעת “אין שאלות” */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Feedback Messages */
 .quiz-feedback {
   text-align: center;
-  padding: 12px;
-  border-radius: 4px;
-  margin-bottom: 12px;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
   font-size: 16px;
+  font-weight: 600;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-/* שגיאה (אדום) */
 .quiz-feedback.error {
-  background-color: #fdecea;
-  color: #d93025;
-  border: 1px solid #f5c6cb;
+  background: linear-gradient(135deg, #ff7675 0%, #e17055 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(255, 118, 117, 0.3);
 }
 
-/* מצב ניטרלי (לרגע הקצר) */
 .quiz-feedback.neutral {
-  color: #555;
+  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(162, 155, 254, 0.3);
 }
 
-/* כרטיס השאלה */
+.quiz-feedback.text {
+  background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+  color: white;
+  margin-top: 20px;
+  box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);
+  animation: slideUp 0.5s ease-out;
+}
+
+/* Quiz Card */
 .quiz-card {
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideUp 0.6s ease-out;
 }
 
-/* כותרת השאלה ברקע כחול */
+/* Question Metadata */
+.quiz-question-id {
+  background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+  color: white;
+  padding: 12px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.quiz-subject-row,
+.quiz-subsubject-row {
+  padding: 15px 25px;
+  background: rgba(116, 185, 255, 0.1);
+  border-bottom: 1px solid rgba(116, 185, 255, 0.2);
+  font-size: 14px;
+  color: #2d3436;
+}
+
+.quiz-subject-row strong,
+.quiz-subsubject-row strong {
+  color: #74b9ff;
+  margin-left: 10px;
+}
+
+/* Image Container */
+.quiz-image-container {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.quiz-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.quiz-image:hover {
+  transform: scale(1.02);
+}
+
+/* Question Header */
 .quiz-card-header {
-  background-color: #3498db;
-  color: #ffffff;
-  padding: 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 30px;
+  text-align: center;
 }
 
 .quiz-card-header h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
-/* גוף הכרטיס */
+/* Quiz Body */
 .quiz-card-body {
-  padding: 16px;
+  padding: 30px;
 }
 
-/* רשימת התשובות */
+/* Answer Options */
 .quiz-options {
-  margin-bottom: 16px;
+  margin-bottom: 30px;
+  display: grid;
+  gap: 15px;
 }
 
 .quiz-option {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  padding: 20px;
+  background: rgba(116, 185, 255, 0.05);
+  border: 2px solid rgba(116, 185, 255, 0.1);
+  border-radius: 15px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.quiz-option::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.quiz-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(116, 185, 255, 0.2);
+  border-color: #74b9ff;
+}
+
+.quiz-option:hover::before {
+  opacity: 0.1;
 }
 
 .quiz-option input[type="radio"] {
-  width: 18px;
-  height: 18px;
-  margin-right: 8px;
-  accent-color: #3498db;
+  width: 20px;
+  height: 20px;
+  margin-left: 15px;
+  accent-color: #74b9ff;
   cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+.quiz-option input[type="radio"]:checked + .quiz-option-text {
+  color: #0984e3;
+  font-weight: 600;
 }
 
 .quiz-option-text {
   font-size: 16px;
+  flex: 1;
+  position: relative;
+  z-index: 2;
+  line-height: 1.5;
 }
 
-/* כפתור שליחת תשובה */
+.quiz-option-text strong {
+  color: #2d3436;
+  margin-left: 8px;
+  font-size: 18px;
+}
+
+/* Submit Button */
 .quiz-submit-button {
-  display: block;
   width: 100%;
-  background-color: #3498db;
-  color: #ffffff;
+  background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+  color: white;
   border: none;
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-  font-weight: bold;
+  border-radius: 15px;
+  padding: 18px;
+  font-size: 18px;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .quiz-submit-button:hover:not(.disabled) {
-  background-color: #2c80b4;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(0, 184, 148, 0.4);
 }
 
-/* מצב מבוטל */
+.quiz-submit-button:active:not(.disabled) {
+  transform: translateY(-1px);
+}
+
 .quiz-submit-button.disabled {
-  background-color: #bbb;
+  background: linear-gradient(135deg, #b2bec3 0%, #636e72 100%);
   cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 4px 15px rgba(178, 190, 195, 0.3);
 }
 
-/* feedback טקסט נוסף בתוך הכרטיס */
-.quiz-feedback.text {
-  margin-top: 16px;
-  font-weight: bold;
-  font-size: 16px;
-  text-align: center;
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* ==========================
-   סגנונות צילום התמונה
-   ========================== */
-
-/* מיכל לתמונה – מפנה ליישור שמאלי */
-.quiz-image-container {
-  text-align: left;       /* מיישר את התמונה לשמאל */
-  margin-bottom: 12px;    /* ריווח מתחת לתמונה */
-  /* במידה ורוצים ריווח מהקצה העליון, ניתן להוסיף: 
-     margin-top: 12px; */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* עיצוב התמונה עצמה */
-.quiz-image {
-  display: inline-block;   /* כדי שהתמונה תופיע בכל רוחב על פי האורך האמיתי שלה */
-  max-width: 100%;         /* התמונה אינה תחרוג מרוחב הכרטיס */
-  height: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .quiz-container {
+    padding: 15px;
+  }
+  
+  .quiz-card-header {
+    padding: 20px;
+  }
+  
+  .quiz-card-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .quiz-card-body {
+    padding: 20px;
+  }
+  
+  .quiz-option {
+    padding: 15px;
+  }
+  
+  .quiz-option-text {
+    font-size: 15px;
+  }
+  
+  .quiz-submit-button {
+    padding: 15px;
+    font-size: 16px;
+  }
+  
+  .quiz-image-container {
+    padding: 15px;
+  }
 }
