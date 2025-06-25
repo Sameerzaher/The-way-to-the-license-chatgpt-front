@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TheoryQuiz from "../TheoryQuiz/TheoryQuiz";
 import "./PsychologyQuestionSelector.css"; // אם תרצה עיצוב מותאם
 

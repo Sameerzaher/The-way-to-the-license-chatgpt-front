@@ -16,8 +16,9 @@ body {
 
 .app-container {
   min-height: 100vh;
+  display: flex;
+  flex-direction: row-reverse;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 0;
 }
 
 .app-content-wrapper {
@@ -178,8 +179,10 @@ body {
 
 /* Main Content Area */
 .app-main-content {
+  flex: 1;
+  margin-right: 280px;
   padding: 40px 30px;
-  min-height: calc(100vh - 100px);
+  min-height: 100vh;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 

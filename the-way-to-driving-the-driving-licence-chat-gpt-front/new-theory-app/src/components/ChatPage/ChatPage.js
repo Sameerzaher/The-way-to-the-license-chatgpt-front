@@ -3,12 +3,21 @@ import "./ChatPage.css";
 
 const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:3000";
 
-export default function ChatPage() {
+export default function ChatPage({ user, course, lang }) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [sending, setSending] = useState(false);
   const [userId, setUserId] = useState("");
   const chatWindowRef = useRef(null);
+
+  const labels = {
+    chatTitle: lang === 'ar' ? 'دردشة مع ChatGPT حول الأسئلة' : 'צʼאט עם ChatGPT לגבי השאלות',
+    empty: lang === 'ar' ? 'لا توجد رسائل بعد.' : 'אין הודעות עדיין.',
+    placeholder: lang === 'ar' ? 'اكتب سؤالك أو ملاحظتك هنا...' : 'כתוב פה את השאלה או ההערה שלך...',
+    send: lang === 'ar' ? 'إرسال' : 'שלח',
+    sending: lang === 'ar' ? 'جارٍ الإرسال…' : 'שולח…',
+    error: lang === 'ar' ? 'حدث خطأ أثناء إرسال الرسالة. حاول مرة أخرى.' : 'שגיאה בשליחת ההודעה. נסה שוב.',
+  };
 
   useEffect(() => {
     const storedId = localStorage.getItem("userId");
@@ -61,7 +70,7 @@ export default function ChatPage() {
       console.error("Error fetching chat:", err);
       const sysMsg = {
         role: "system",
-        content: "שגיאה בשליחת ההודעה. נסה שוב.",
+        content: labels.error,
       };
       setMessages((prev) => [...prev, sysMsg]);
     } finally {
@@ -79,11 +88,11 @@ export default function ChatPage() {
   return (
     <div className="chat-outer-container">
       <div className="centered-chat">
-        <h2>צʼאט עם ChatGPT לגבי השאלות</h2>
+        <h2>{labels.chatTitle}</h2>
 
         <div className="chat-window" ref={chatWindowRef}>
           {messages.length === 0 && (
-            <div className="chat-empty">אין הודעות עדיין.</div>
+            <div className="chat-empty">{labels.empty}</div>
           )}
 
           {messages.map((msg, idx) => (
@@ -96,7 +105,7 @@ export default function ChatPage() {
                   ? "chat-message bot-message"
                   : "chat-message system-message"
               }
-              dir={msg.role !== "system" ? "rtl" : "ltr"}
+              dir={msg.role !== "system" ? (lang === 'ar' ? 'rtl' : 'rtl') : 'ltr'}
             >
               <span
                 style={{
@@ -111,7 +120,7 @@ export default function ChatPage() {
               {msg.image && (
                 <img
                   src={msg.image}
-                  alt="שאלה עם תמונה"
+                  alt={labels.chatTitle}
                   style={{
                     maxWidth: "100%",
                     marginTop: 10,
@@ -130,7 +139,7 @@ export default function ChatPage() {
         <div className="chat-input-container">
           <textarea
             className="chat-input"
-            placeholder="כתוב פה את השאלה או ההערה שלך..."
+            placeholder={labels.placeholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -141,7 +150,7 @@ export default function ChatPage() {
             onClick={handleSend}
             disabled={sending || !input.trim()}
           >
-            {sending ? "שולח…" : "שלח"}
+            {sending ? labels.sending : labels.send}
           </button>
         </div>
       </div>

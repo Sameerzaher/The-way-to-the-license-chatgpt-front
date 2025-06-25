@@ -16,6 +16,10 @@ export default function TheoryQuiz({
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
+  const [attempts, setAttempts] = useState(1);
+  const [startTime, setStartTime] = useState(Date.now());
+  const [userNote, setUserNote] = useState("");
+  const [hintUsed, setHintUsed] = useState(false);
 
   // אותיות אפשריות לפי שפה
   const lettersHe = ["א", "ב", "ג", "ד"];
@@ -28,12 +32,12 @@ export default function TheoryQuiz({
     questionNumber: lang === "ar" ? "رقم السؤال:" : "מספר השאלה:",
     subject: lang === "ar" ? "الموضوع:" : "נושא:",
     subSubject: lang === "ar" ? "الموضوع الفرعي:" : "תת־נושא:",
-    buttonSubmit: lang === "ar" ? "إرسال תשובה" : "שלח תשובה",
+    buttonSubmit: lang === "ar" ? "إرسال إجابة" : "שלח תשובה",
     buttonSending: lang === "ar" ? "جارٍ الإرسال…" : "שולח…",
-    loading: lang === "ar" ? "جاري הטעינה…" : "טוען…",
-    noQuestions: lang === "ar" ? "אין שאלות זמינות בערבית" : "אין שאלות זמינות בעברית",
-    fetchError: lang === "ar" ? "שגיאה בשליפת השאלה בערבית" : "שגיאה בשליפת השאלה בעברית",
-    answerError: lang === "ar" ? "שגיאה בשליחת התשובה בערבית" : "שגיאה בשליחת התשובה בעברית",
+    loading: lang === "ar" ? "جاري التحميل…" : "טוען…",
+    noQuestions: lang === "ar" ? "لا توجد أسئلة جاهزة في العربية" : "אין שאלות זמינות בעברית",
+    fetchError: lang === "ar" ? "خطأ في جلب السؤال من العربية" : "שגיאה בשליפת השאלה בעברית",
+    answerError: lang === "ar" ? "خطأ في إرسال الإجابة من العربية" : "שגיאה בשליחת התשובה בעברית",
   };
 
   // ---------------- fetchQuestion ----------------
@@ -86,7 +90,12 @@ export default function TheoryQuiz({
     if (!selected || !question) return;
     setSending(true);
 
+    // Calculate response time
+    const answeredAt = new Date().toISOString();
+    const responseTime = Date.now() - startTime;
+
     try {
+      // First, check if the answer is correct (as before)
       const res = await fetch(`${API_BASE}/answers/check`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -111,6 +120,49 @@ export default function TheoryQuiz({
         ?.toLowerCase()
         .includes(lang === "ar" ? "صحيح" : "נכונה");
       onAnswered(isCorrect);
+
+      // Send the full answer object to the server
+      const answerObj = {
+        questionId: question.id,
+        answer: selected,
+        isCorrect,
+        answeredAt,
+        responseTime,
+        attempts,
+        userNote,
+        hintUsed
+      };
+      await fetch(`${API_BASE}/answers`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: 'include',
+        body: JSON.stringify(answerObj)
+      });
+
+      // --- Send progress update ---
+      const token = localStorage.getItem("token");
+      await fetch(`${API_BASE}/progress/answer-question`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token ? `Bearer ${token}` : undefined
+        },
+        body: JSON.stringify({
+          questionId: question.id,
+          isCorrect,
+          answeredAt
+        })
+      });
+
+      // Fetch latest progress and dispatch it
+      const progressRes = await fetch(`${API_BASE}/progress/categories`, {
+        headers: {
+          "Authorization": token ? `Bearer ${token}` : undefined,
+          "Content-Type": "application/json"
+        }
+      });
+      const progressData = await progressRes.json();
+      window.dispatchEvent(new CustomEvent('progress-updated', { detail: progressData }));
     } catch (err) {
       console.error("Error sending answer:", err);
       setFeedback(labels.answerError);
@@ -122,6 +174,10 @@ export default function TheoryQuiz({
   // בכל שינוי של forcedId או lang נטען שאלה חדשה
   useEffect(() => {
     fetchQuestion();
+    setAttempts(1);
+    setStartTime(Date.now());
+    setUserNote("");
+    setHintUsed(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [forcedId, lang]);
 
@@ -129,11 +185,7 @@ export default function TheoryQuiz({
   return (
     <div dir={dir} className="quiz-container">
       {/* כפתור החלפת שפה */}
-      <div className="quiz-lang-toggle">
-        <button onClick={() => setLang((l) => (l === "he" ? "ar" : "he"))}>
-          {lang === "ar" ? "עברית" : "Arabic"}
-        </button>
-      </div>
+     
 
       {/* Loader */}
       {loading && (
@@ -210,17 +262,33 @@ export default function TheoryQuiz({
                 </label>
               ))}
             </div>
-
+            <div style={{ margin: '10px 0', display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <label style={{ fontSize: 14 }}>
+                הערה לעצמי:
+                <input
+                  type="text"
+                  value={userNote}
+                  onChange={e => setUserNote(e.target.value)}
+                  style={{ width: '100%', marginTop: 4, borderRadius: 6, border: '1px solid #ccc', padding: 6 }}
+                  placeholder="הערה (לא חובה)"
+                />
+              </label>
+              <label style={{ fontSize: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <input
+                  type="checkbox"
+                  checked={hintUsed}
+                  onChange={e => setHintUsed(e.target.checked)}
+                />
+                השתמשתי ברמז
+              </label>
+            </div>
             <button
               onClick={sendAnswer}
               disabled={!selected || sending}
-              className={`quiz-submit-button ${
-                selected && !sending ? "" : "disabled"
-              }`}
+              className={`quiz-submit-button ${selected && !sending ? "" : "disabled"}`}
             >
               {sending ? labels.buttonSending : labels.buttonSubmit}
             </button>
-
             {/* פידבק אחרי שליחה */}
             {feedback && question && (
               <p className="quiz-feedback text">{feedback}</p>

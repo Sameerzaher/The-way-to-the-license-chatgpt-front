@@ -51,6 +51,11 @@ export default function LoginRegisterPage({ onLogin }) {
       const user = data.user;
       if (!user || !user.id) throw new Error("משתמש לא תקין מהשרת");
 
+      // --- Save token to localStorage ---
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
+
       console.log("🐛 DEBUG - User object received from server:", JSON.stringify(user, null, 2));
       console.log("🐛 DEBUG - Course from server:", user.course);
       console.log("🐛 DEBUG - Course from local state:", course);

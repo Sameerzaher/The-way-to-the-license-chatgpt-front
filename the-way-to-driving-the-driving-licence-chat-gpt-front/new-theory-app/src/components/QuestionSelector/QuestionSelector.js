@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import TheoryQuiz from "../TheoryQuiz/TheoryQuiz";
 import "./QuestionSelector.css";
 
-export default function QuestionSelector() {
+export default function QuestionSelector({ user, course, lang, onChangeLang }) {
   const [inputId, setInputId] = useState("");
   const [chosenId, setChosenId] = useState(null);
   const [feedback, setFeedback] = useState("");
-  const [lang, setLang] = useState("he");
 
-  // 🧠 נוסיף את התחום מה־localStorage
+  // �� נוסיף את התחום מה־localStorage
   const [field, setField] = useState("theory");
 
   useEffect(() => {
@@ -32,16 +31,30 @@ export default function QuestionSelector() {
     setFeedback("");
   };
 
+  // Labels for both languages
+  const labels = {
+    theory: lang === 'ar' ? 'نظرية' : 'תיאוריה',
+    psychology: lang === 'ar' ? 'علم النفس' : 'פסיכולוגיה',
+    selectFrom: lang === 'ar' ? 'اختر سؤالاً من بنك' : 'בחר שאלה מתוך מאגר',
+    questionId: lang === 'ar' ? 'معرف السؤال:' : 'מזהה שאלה:',
+    example: lang === 'ar' ? 'مثال: 0001' : 'לדוגמה: 0001',
+    show: lang === 'ar' ? 'عرض السؤال' : 'הצג שאלה',
+    back: lang === 'ar' ? 'عودة' : 'חזרה',
+    field: course === 'psychology' ? (lang === 'ar' ? 'علم النفس' : 'פסיכולוגיה') : (lang === 'ar' ? 'نظرية' : 'תיאוריה'),
+    hebrew: 'עברית',
+    arabic: 'Arabic',
+  };
+
   if (chosenId) {
     return (
       <div>
         <button className="back-button" onClick={handleBack}>
-          {lang === "ar" ? "חזרה" : "חזרה"}
+          {labels.back}
         </button>
         <TheoryQuiz
           forcedId={chosenId}
           lang={lang}
-          field={field} // 🧠 שליחה של התחום לשימוש עתידי
+          field={course}
           onAnswered={() => {}}
         />
       </div>
@@ -52,18 +65,16 @@ export default function QuestionSelector() {
     <div className="selector-page-wrapper">
       <div className="selector-container" data-lang={lang}>
         <div className="field-indicator">
-          {field === "psychology" ? "פסיכולוגיה" : "תיאוריה"}
+          {labels.field}
         </div>
         
         <h2 className="selector-title">
-          {field === "psychology"
-            ? "בחר שאלה מתוך מאגר פסיכולוגיה"
-            : "בחר שאלה מתוך מאגר תיאוריה"}
+          {labels.selectFrom} {labels.field}
         </h2>
 
         <form className="selector-form" onSubmit={handleShow}>
           <label htmlFor="question-id" className="selector-label">
-            {lang === "ar" ? "מזהה שאלה:" : "מזהה שאלה:"}
+            {labels.questionId}
           </label>
           
           <div className="input-wrapper">
@@ -71,7 +82,7 @@ export default function QuestionSelector() {
               id="question-id"
               type="text"
               className="selector-input"
-              placeholder={lang === "ar" ? "לדוגמה: 0001" : "לדוגמה: 0001"}
+              placeholder={labels.example}
               value={inputId}
               onChange={(e) => setInputId(e.target.value)}
             />
@@ -79,16 +90,10 @@ export default function QuestionSelector() {
 
           <div className="button-group">
             <button type="submit" className="selector-button">
-              {lang === "ar" ? "הצג שאלה" : "הצג שאלה"}
+              {labels.show}
             </button>
 
-            <button
-              type="button"
-              className="selector-lang-toggle"
-              onClick={() => setLang((l) => (l === "he" ? "ar" : "he"))}
-            >
-              {lang === "ar" ? "עברית" : "Arabic"}
-            </button>
+          
           </div>
         </form>
 
