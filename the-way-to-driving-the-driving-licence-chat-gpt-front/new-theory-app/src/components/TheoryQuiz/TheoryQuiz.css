@@ -144,6 +144,19 @@
   margin-left: 10px;
 }
 
+.quiz-license-types-row {
+  padding: 15px 25px;
+  background: rgba(255, 193, 7, 0.1);
+  border-bottom: 1px solid rgba(255, 193, 7, 0.2);
+  font-size: 14px;
+  color: #2d3436;
+}
+
+.quiz-license-types-row strong {
+  color: #ffc107;
+  margin-left: 10px;
+}
+
 /* Image Container */
 .quiz-image-container {
   padding: 20px;

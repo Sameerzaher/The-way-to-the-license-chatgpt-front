@@ -32,6 +32,7 @@ export default function TheoryQuiz({
     questionNumber: lang === "ar" ? "رقم السؤال:" : "מספר השאלה:",
     subject: lang === "ar" ? "الموضوع:" : "נושא:",
     subSubject: lang === "ar" ? "الموضوع الفرعي:" : "תת־נושא:",
+    licenseTypes: lang === "ar" ? "أنواع الرخص:" : "סוגי רישיונות:",
     buttonSubmit: lang === "ar" ? "إرسال إجابة" : "שלח תשובה",
     buttonSending: lang === "ar" ? "جارٍ الإرسال…" : "שולח…",
     loading: lang === "ar" ? "جاري التحميل…" : "טוען…",
@@ -39,6 +40,10 @@ export default function TheoryQuiz({
     fetchError: lang === "ar" ? "خطأ في جلب السؤال من العربية" : "שגיאה בשליפת השאלה בעברית",
     answerError: lang === "ar" ? "خطأ في إرسال الإجابة من العربية" : "שגיאה בשליחת התשובה בעברית",
   };
+
+  // סוגי רישיונות אפשריים
+  const licenseOptions = ["C1", "C", "D", "A", "1", "B"];
+  const [selectedLicense, setSelectedLicense] = useState("");
 
   // ---------------- fetchQuestion ----------------
   const fetchQuestion = async () => {
@@ -49,9 +54,15 @@ export default function TheoryQuiz({
 
     // אם סופק forcedId → GET /questions/:id?lang=…
     // אחרת → GET /questions/random?count=1&lang=…
-    const url = forcedId
-      ? `${API_BASE}/questions/${forcedId}?lang=${lang}`
-      : `${API_BASE}/questions/random?count=1&lang=${lang}`;
+    let url;
+    if (forcedId) {
+      url = `${API_BASE}/questions/${forcedId}?lang=${lang}`;
+    } else {
+      url = `${API_BASE}/questions/random?count=1&lang=${lang}`;
+      if (selectedLicense) {
+        url += `&licenseType=${selectedLicense}`;
+      }
+    }
 
     console.log("DEBUG: Fetching from URL →", url);
 
@@ -171,7 +182,7 @@ export default function TheoryQuiz({
     }
   };
 
-  // בכל שינוי של forcedId או lang נטען שאלה חדשה
+  // בכל שינוי של forcedId, lang, או selectedLicense נטען שאלה חדשה
   useEffect(() => {
     fetchQuestion();
     setAttempts(1);
@@ -179,12 +190,14 @@ export default function TheoryQuiz({
     setUserNote("");
     setHintUsed(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [forcedId, lang]);
+  }, [forcedId, lang, selectedLicense]);
 
   // ------------------ ה־UI ------------------------
+  console.log("QUESTION DATA:", question);
   return (
     <div dir={dir} className="quiz-container">
-      {/* כפתור החלפת שפה */}
+    
+
      
 
       {/* Loader */}
@@ -214,7 +227,7 @@ export default function TheoryQuiz({
 
           {/* נושא */}
           <div className="quiz-subject-row">
-            <strong>{labels.subject}</strong> {question.subject}
+            <strong>{labels.subject}</strong> {question.topic || question.subject}
           </div>
 
           {/* תת־נושא (אם קיים) */}
@@ -223,6 +236,13 @@ export default function TheoryQuiz({
               <strong>{labels.subSubject}</strong> {question.subSubject}
             </div>
           )}
+
+          {/* סוגי רישיונות */}
+          <div className="quiz-license-types-row">
+            <strong>{labels.licenseTypes}</strong> {Array.isArray(question.licenseTypes) && question.licenseTypes.length > 0
+              ? question.licenseTypes.join(", ")
+              : (lang === "ar" ? "لا يوجد" : "אין")}
+          </div>
 
           {/* תמונה (אם קיים) */}
           {question.image && (
