@@ -1,0 +1,59 @@
+.specific-ids-section {
+  margin: 12px 0;
+  direction: rtl;
+  text-align: right;
+}
+
+.selected-ids-display {
+  margin-top: 10px;
+  direction: rtl;
+  text-align: right;
+}
+
+.selected-ids-label {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.selected-ids-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  direction: rtl;
+}
+
+.selected-id-tag {
+  background: #f5f6fa;
+  border-radius: 20px;
+  padding: 4px 14px 4px 8px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  box-shadow: 0 2px 8px #e0e0e0;
+  direction: rtl;
+  flex-direction: row-reverse;
+}
+
+.remove-id-btn {
+  background: none;
+  border: none;
+  color: #ff4d88;
+  font-size: 18px;
+  margin-left: 8px;
+  margin-right: 0;
+  cursor: pointer;
+  padding: 0 2px;
+  transition: color 0.2s;
+}
+.remove-id-btn:hover {
+  color: #d72660;
+}
+
+.action-button.btn-pink {
+  margin-right: 0;
+  margin-left: 0;
+  display: block;
+  margin-inline-start: 0;
+  margin-inline-end: auto;
+} 

@@ -5,4 +5,4 @@
       q.licenseTypes.some(type => type.toLowerCase() === licenseType.toLowerCase())
     );
     console.log('סינון לפי licenseType:', licenseType, 'נשארו:', pool.length);
-  } 
+  }
