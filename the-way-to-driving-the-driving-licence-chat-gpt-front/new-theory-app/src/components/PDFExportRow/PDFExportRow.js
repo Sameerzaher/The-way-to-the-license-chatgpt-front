@@ -14,13 +14,15 @@ export default function PDFExportRow({
       let url = `${apiUrl}/questions?lang=${lang}`;
       if (selectedSubject) url += `&subject=${encodeURIComponent(selectedSubject)}`;
       if (selectedSubSubject) url += `&subSubject=${encodeURIComponent(selectedSubSubject)}`;
+      console.log('[PDFExport] Fetching questions from:', url);
       const res = await fetch(url);
       if (!res.ok) throw new Error("שגיאה בשליפת שאלות לייצוא");
       const data = await res.json();
+      console.log('[PDFExport] Received data:', data);
       if (!Array.isArray(data) || data.length === 0) {
         throw new Error(lang === "ar" ? "לא נמצאו שאלות לסוג רישיון זה" : "לא נמצאו שאלות לסוג רישיון זה");
       }
-      
+      console.log('[PDFExport] Creating HTML for PDF...');
       // יצירת דף HTML עם השאלות
       const htmlContent = `
         <!DOCTYPE html>
@@ -48,6 +50,7 @@ export default function PDFExportRow({
             }
             .print-button:hover { background: #0056b3; }
             .question { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+            .question-meta { margin-bottom: 6px; }
             .question-text { font-weight: bold; margin-bottom: 10px; }
             .answers { margin-right: 20px; }
             .answer { margin-bottom: 5px; }
@@ -65,6 +68,10 @@ export default function PDFExportRow({
           </h1>
         ${data.map((q, idx) => `
           <div class="question">
+            <div class="question-meta">
+              <span style="background:#e3f0ff;color:#1e5fa3;padding:2px 8px;border-radius:6px;margin-left:8px;"><strong>נושא:</strong> ${q.topic || q.subject || ''}</span>
+              <span style="background:#f3eaff;color:#7c3aed;padding:2px 8px;border-radius:6px;margin-left:8px;"><strong>תת־נושא:</strong> ${q.subSubject || '—'}</span>
+            </div>
             <div class="question-text">${idx + 1}. ${q.question}</div>
             <div class="answers">
               ${Array.isArray(q.answers) ? q.answers.map((ans, i) => 
@@ -77,13 +84,13 @@ export default function PDFExportRow({
         </body>
         </html>
       `;
-      
+      console.log('[PDFExport] Opening PDF window...');
       // פתיחת הדף בחלון חדש
       const newWindow = window.open('', '_blank');
       newWindow.document.write(htmlContent);
       newWindow.document.close();
-      
     } catch (err) {
+      console.error('[PDFExport] Error:', err);
       setFeedback(err.message || "שגיאה לא ידועה");
     }
   };
