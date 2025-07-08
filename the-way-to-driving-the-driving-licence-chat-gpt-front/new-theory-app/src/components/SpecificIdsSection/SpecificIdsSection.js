@@ -119,6 +119,70 @@ export default function SpecificIdsSection({
           >
             {loadingSpecificIds ? (lang === 'ar' ? 'جاري التحميل...' : 'טוען...') : labels.fetchByIds}
           </button>
+          {/* PDF Export Button */}
+          <button
+            type="button"
+            className="action-button btn-success"
+            style={{ marginTop: 12, marginRight: 8 }}
+            onClick={async () => {
+              try {
+                const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+                // שלוף את כל השאלות לפי מזהים
+                const questions = [];
+                for (const id of selectedIds) {
+                  const url = `${apiUrl}/questions/${id}?lang=${lang}`;
+                  const res = await fetch(url);
+                  if (res.ok) {
+                    const question = await res.json();
+                    questions.push(question);
+                  }
+                }
+                if (questions.length === 0) throw new Error('לא נמצאו שאלות למזהים שנבחרו');
+                // צור HTML ל-PDF
+                const htmlContent = `
+                  <!DOCTYPE html>
+                  <html dir="rtl" lang="${lang}">
+                  <head>
+                    <meta charset="UTF-8">
+                    <title>ייצוא שאלות לפי מזהים</title>
+                    <style>
+                      body { font-family: 'Noto Sans Hebrew', 'Noto Sans Arabic', Arial, sans-serif; margin: 20px; direction: rtl; }
+                      h1 { text-align: center; color: #333; }
+                      .print-button { position: fixed; top: 20px; left: 20px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+                      .print-button:hover { background: #0056b3; }
+                      .question { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+                      .question-text { font-weight: bold; margin-bottom: 10px; }
+                      .answers { margin-right: 20px; }
+                      .answer { margin-bottom: 5px; }
+                      @media print { body { margin: 0; } .print-button { display: none; } }
+                    </style>
+                  </head>
+                  <body>
+                    <button class="print-button" onclick="window.print()">הדפס</button>
+                    <h1>ייצוא שאלות לפי מזהים</h1>
+                    ${questions.map((q, idx) => `
+                      <div class="question">
+                        <div class="question-text">${idx + 1}. ${q.question}</div>
+                        <div class="answers">
+                          ${Array.isArray(q.answers) ? q.answers.map((ans, i) => `<div class="answer">${String.fromCharCode(65 + i)}. ${ans}</div>`).join('') : ''}
+                        </div>
+                        ${q.image ? `<div class="question-image"><img src="${q.image}" style="max-width:180px;max-height:120px;display:block;margin:0 auto 10px;"/></div>` : ""}
+                      </div>
+                    `).join('')}
+                  </body>
+                  </html>
+                `;
+                const newWindow = window.open('', '_blank');
+                newWindow.document.write(htmlContent);
+                newWindow.document.close();
+              } catch (err) {
+                setFeedback(err.message || 'שגיאה לא ידועה');
+              }
+            }}
+            disabled={selectedIds.length === 0}
+          >
+            <span role="img" aria-label="pdf">📄</span> ייצא שאלות נבחרות ל־PDF
+          </button>
         </div>
       )}
     </div>

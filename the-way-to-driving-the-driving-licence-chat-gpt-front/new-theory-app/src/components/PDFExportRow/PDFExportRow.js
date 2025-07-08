@@ -95,13 +95,14 @@ export default function PDFExportRow({
         className="action-button btn-success"
         onClick={exportQuestionsToPDF}
         style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 16, fontWeight: 700 }}
-        disabled={!selectedSubject && !selectedSubSubject}
+        // אפשר תמיד לייצא
+        disabled={false}
       >
         <span role="img" aria-label="pdf">📄</span>
         ייצא שאלות מסוננות ל־PDF
       </button>
       <span className="pdf-hint" style={{ fontSize: 13, color: '#636e72' }}>
-        ייצא את כל השאלות של הנושא/תת-נושא שבחרת לקובץ PDF.
+        ייצא את כל השאלות של הנושא/תת-נושא שבחרת, או את כל השאלות אם לא נבחר סינון.
       </span>
     </div>
   );

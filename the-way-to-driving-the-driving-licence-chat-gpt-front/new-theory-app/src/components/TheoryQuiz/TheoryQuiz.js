@@ -194,6 +194,9 @@ export default function TheoryQuiz({
 
   // ------------------ ה־UI ------------------------
   console.log("QUESTION DATA:", question);
+  console.log("SUBJECT:", question?.topic || question?.subject);
+  console.log("SUB SUBJECT:", question?.subSubject);
+  console.log("LICENSE TYPES:", question?.licenseTypes);
   return (
     <div dir={dir} className="quiz-container">
     
@@ -225,23 +228,11 @@ export default function TheoryQuiz({
             {labels.questionNumber} {question.id}
           </div>
 
-          {/* נושא */}
-          <div className="quiz-subject-row">
-            <strong>{labels.subject}</strong> {question.topic || question.subject}
-          </div>
-
-          {/* תת־נושא (אם קיים) */}
-          {question.subSubject && (
-            <div className="quiz-subsubject-row">
-              <strong>{labels.subSubject}</strong> {question.subSubject}
-            </div>
-          )}
-
-          {/* סוגי רישיונות */}
-          <div className="quiz-license-types-row">
-            <strong>{labels.licenseTypes}</strong> {Array.isArray(question.licenseTypes) && question.licenseTypes.length > 0
-              ? question.licenseTypes.join(", ")
-              : (lang === "ar" ? "لا يوجد" : "אין")}
+          {/* נושא, תת-נושא, סוגי רישיונות */}
+          <div className="quiz-meta-row">
+            <span className="quiz-meta-subject"><strong>{labels.subject}</strong> {question.topic || question.subject}</span>
+            <span className="quiz-meta-subsubject"><strong>{labels.subSubject}</strong> {question.subSubject || "—"}</span>
+            <span className="quiz-meta-licenses"><strong>{labels.licenseTypes}</strong> {Array.isArray(question.licenseTypes) && question.licenseTypes.length > 0 ? question.licenseTypes.join(", ") : (lang === "ar" ? "لا يوجد" : "אין")}</span>
           </div>
 
           {/* תמונה (אם קיים) */}

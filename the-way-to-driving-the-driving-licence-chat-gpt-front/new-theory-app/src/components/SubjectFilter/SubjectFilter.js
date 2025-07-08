@@ -48,9 +48,10 @@ export default function SubjectFilter({
     // eslint-disable-next-line
   }, [lang]);
 
-  // שליפת תתי-נושאים מתוך השאלות (כמו קודם)
+  // שליפת תתי-נושאים מהשרת (מערך תתי-נושאים ישירות)
   useEffect(() => {
-    console.log("SubjectFilter: Fetching sub-subjects for subject:", selectedSubject, "lang:", lang);
+    console.log("All subjects:", subjects);
+    console.log("selectedSubject (raw):", selectedSubject, "typeof:", typeof selectedSubject);
     const fetchSubSubjects = async () => {
       if (!selectedSubject) {
         console.log("SubjectFilter: No subject selected, clearing sub-subjects");
@@ -59,16 +60,15 @@ export default function SubjectFilter({
       }
       try {
         const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-        const url = `${apiUrl}/questions?lang=${lang}&subject=${encodeURIComponent(selectedSubject)}`;
-        console.log("SubjectFilter: Fetching sub-subjects from URL:", url);
+        // TRIM the subject before sending!
+        const url = `${apiUrl}/questions/sub-subjects?lang=${lang}&subject=${encodeURIComponent(selectedSubject.trim())}`;
+        console.log("URL sent to backend:", url);
         const res = await fetch(url);
         console.log("SubjectFilter: Sub-subjects response status:", res.status);
         const data = await res.json();
-        console.log("SubjectFilter: Received sub-subjects data:", data);
+        console.log("Response from backend:", data);
         if (Array.isArray(data)) {
-          const allSubSubjects = Array.from(new Set(data.map(q => q.subSubject).filter(Boolean)));
-          console.log("SubjectFilter: Extracted sub-subjects:", allSubSubjects);
-          setSubSubjects(allSubSubjects);
+          setSubSubjects(data);
         } else {
           console.log("SubjectFilter: Sub-subjects data is not array, setting empty array");
           setSubSubjects([]);
@@ -84,16 +84,19 @@ export default function SubjectFilter({
 
   console.log("SubjectFilter: Rendering with subjects:", subjects, "subSubjects:", subSubjects);
 
+  // הדפסת debug לפני ה-return
+  console.log("subSubjects array (final before render):", subSubjects);
+
   return (
     <div className="control-row">
       <label className="control-label">נושא:</label>
       <select
         className="control-select"
         value={selectedSubject}
-        onChange={e => { 
+        onChange={e => {
           console.log("SubjectFilter: Subject changed to:", e.target.value);
-          setSelectedSubject(e.target.value); 
-          setSelectedSubSubject(""); 
+          setSelectedSubject(e.target.value);
+          setSelectedSubSubject(""); // איפוס תת-נושא בכל שינוי נושא
         }}
       >
         <option value="">כל הנושאים</option>
@@ -109,9 +112,11 @@ export default function SubjectFilter({
           console.log("SubjectFilter: Sub-subject changed to:", e.target.value);
           setSelectedSubSubject(e.target.value);
         }}
-        disabled={!selectedSubject || subSubjects.length === 0}
       >
         <option value="">כל תתי-הנושאים</option>
+        {subSubjects.length === 0 && (
+          <option value="" disabled>אין תתי-נושאים זמינים</option>
+        )}
         {subSubjects.map(sub => (
           <option key={sub} value={sub}>{sub}</option>
         ))}
