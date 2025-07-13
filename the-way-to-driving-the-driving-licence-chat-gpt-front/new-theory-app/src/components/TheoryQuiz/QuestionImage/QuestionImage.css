@@ -1,0 +1,17 @@
+.quiz-image-container {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.quiz-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.quiz-image:hover {
+  transform: scale(1.02);
+} 

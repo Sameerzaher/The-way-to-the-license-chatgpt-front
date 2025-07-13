@@ -26,19 +26,29 @@
   color: #3498db;
 }
 
+.error-message {
+  color: #e74c3c;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 8px;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-radius: 5px;
+}
+
 .sidebar-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 25px;
 }
 
 .sidebar-section {
-  background-color: rgba(255, 255, 255, 0.07);
-  border-radius: 10px;
-  padding: 18px 15px 15px 15px;
-  margin-bottom: 18px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
 }
 
 .sidebar-section h3 {
@@ -46,31 +56,22 @@
   font-size: 1.2rem;
   color: #3498db;
   text-align: right;
+  font-weight: 600;
 }
 
 .sub-subjects {
-  margin: 15px 0 18px 0;
-  padding: 10px 0;
-  background-color: transparent;
-  border-radius: 8px;
+  margin: 12px 0 15px 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 8px;
+}
+
+.topic-item {
+  margin-bottom: 8px;
 }
 
 .sub-subject {
-  padding: 8px 6px;
-  background-color: rgba(255,255,255,0.07);
-  border-radius: 7px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  transition: background 0.2s;
-}
-
-.sub-subject:hover {
-  background-color: rgba(255,255,255,0.13);
+  margin-bottom: 8px;
 }
 
 .sub-subject-header {
@@ -80,90 +81,94 @@
 }
 
 .sub-subject-title {
-  font-size: 0.92rem;
-  color: rgba(255,255,255,0.92);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+  text-align: right;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  direction: rtl;
+}
+
+.topic-name {
+  color: #1e5fa3;
+  font-weight: 700;
+  font-size: 0.95rem;
+  min-width: 70px;
+  text-align: right;
+}
+
+.questions-count {
+  color: #636e72;
+  font-weight: 500;
+  font-size: 0.85rem;
+  min-width: 80px;
+  text-align: right;
 }
 
 .progress-bar-container {
-  width: 100%;
-  height: 7px;
-  background-color: rgba(255, 255, 255, 0.13);
+  width: 60px;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.15);
   border-radius: 3px;
-  position: relative;
-  overflow: visible;
-  margin-top: 2px;
-  margin-bottom: 0;
+  overflow: hidden;
+  margin: 0 4px;
 }
 
 .progress-bar {
   height: 100%;
   border-radius: 3px;
   transition: width 0.3s ease-in-out;
-  position: relative;
 }
 
-.progress-bar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0.1) 100%
-  );
-  animation: shimmer 2s infinite;
+.progress-percent {
+  color: #b2bec3;
+  font-weight: 500;
+  font-size: 0.85rem;
+  min-width: 28px;
+  text-align: left;
 }
 
-.progress-text {
-  position: absolute;
-  left: 0;
-  top: -22px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.95);
-  background: rgba(0, 0, 0, 0.2);
-  padding: 2px 6px;
-  border-radius: 4px;
-  backdrop-filter: blur(4px);
-  white-space: nowrap;
-}
-
-.progress-text span {
-  opacity: 0.85;
-  font-weight: 400;
-  margin-left: 4px;
+.no-topics-message {
+  color: #95a5a6;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  text-align: center;
+  font-style: italic;
 }
 
 .sidebar-link {
   color: white;
   text-decoration: none;
-  padding: 12px 15px;
+  padding: 10px 12px;
   border-radius: 5px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   text-align: right;
   display: block;
-  margin-bottom: 8px;
-  font-size: 1rem;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .sidebar-link:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  transform: translateX(-5px);
+  transform: translateX(-3px);
 }
 
 .sidebar-link.active {
   background-color: #3498db;
   color: white;
+  font-weight: 600;
 }
 
 .sidebar-footer {
-  padding-top: 20px;
+  padding-top: 15px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   margin-top: auto;
 }

@@ -60,22 +60,14 @@ export default function LoginRegisterPage({ onLogin }) {
       console.log("🐛 DEBUG - Course from server:", user.course);
       console.log("🐛 DEBUG - Course from local state:", course);
 
-      localStorage.setItem("userId", user.id);
-      localStorage.setItem("userName", user.name || "");
-      localStorage.setItem("userCourse", user.course || course || "theory");
-      
-      console.log("🐛 DEBUG - Saved to localStorage:");
-      console.log("  userId:", localStorage.getItem("userId"));
-      console.log("  userName:", localStorage.getItem("userName"));
-      console.log("  userCourse:", localStorage.getItem("userCourse"));
-      
-      // Create complete user object with course for App.js
+      // שמור את כל אובייקט המשתמש תחת 'user' ב-localStorage
       const completeUser = {
         id: user.id,
         name: user.name || "",
         course: user.course || course || "theory"
       };
-      
+      localStorage.setItem("user", JSON.stringify(completeUser));
+      console.log("🐛 DEBUG - Saved to localStorage as 'user':", localStorage.getItem("user"));
       onLogin(completeUser); // מעבר לצ'אט
     } catch (err) {
       console.error("שגיאה בהרשמה:", err);

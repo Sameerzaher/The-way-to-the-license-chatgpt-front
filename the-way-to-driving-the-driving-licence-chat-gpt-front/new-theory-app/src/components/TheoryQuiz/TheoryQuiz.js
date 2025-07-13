@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./TheoryQuiz.css";
+import MetaRow from "./MetaRow/MetaRow";
+import QuestionImage from "./QuestionImage/QuestionImage";
+import QuestionHeader from "./QuestionHeader/QuestionHeader";
+import { fetchTopicProgress } from "../../services/userService";
 
 // וודאו שב־.env יש REACT_APP_API_URL=http://localhost:3000
 const API_BASE = process.env.REACT_APP_API_URL;
+
+// פונקציה שמנקה תווים מיוחדים מהערך
+function cleanLicenseType(type) {
+  // מסיר תווים שאינם אותיות/מספרים
+  return typeof type === 'string' ? type.replace(/[^\w]/g, '') : type;
+}
 
 export default function TheoryQuiz({
   forcedId = null,          // מזהה שאלה ספציפי (לדוגמה "0002"), אם נשלח
@@ -101,6 +111,35 @@ export default function TheoryQuiz({
     if (!selected || !question) return;
     setSending(true);
 
+    // ניקוי licenseTypes לפני שליחה
+    const cleanedLicenseTypes = Array.isArray(question.licenseTypes)
+      ? question.licenseTypes.map(cleanLicenseType)
+      : [];
+
+    // שליפת userId מ־localStorage
+    let userId = null;
+    let user = null;
+    try {
+      user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.id) userId = user.id;
+    } catch (e) {
+      userId = null;
+    }
+    // נסה לשלוף userId מה-token אם עדיין אין
+    if (!userId) {
+      const token = localStorage.getItem('token');
+      // כאן אפשר להוסיף לוגיקה לפענוח JWT אם צריך
+      // לדוג' אם ה-token הוא JWT, אפשר לפענח אותו ולהוציא ממנו userId
+      // כרגע רק לוג הודעה
+      console.warn('User ID not found in localStorage. Please login again.');
+    }
+    // אם עדיין אין userId, הצג הודעה למשתמש ואל תשלח תשובה
+    if (!userId) {
+      setFeedback('לא ניתן לשלוח תשובה - יש להתחבר מחדש');
+      setSending(false);
+      return;
+    }
+
     // Calculate response time
     const answeredAt = new Date().toISOString();
     const responseTime = Date.now() - startTime;
@@ -132,8 +171,9 @@ export default function TheoryQuiz({
         .includes(lang === "ar" ? "صحيح" : "נכונה");
       onAnswered(isCorrect);
 
-      // Send the full answer object to the server
+      // Send the full answer object to the server (כולל userId)
       const answerObj = {
+        userId, // מזהה המשתמש
         questionId: question.id,
         answer: selected,
         isCorrect,
@@ -141,8 +181,10 @@ export default function TheoryQuiz({
         responseTime,
         attempts,
         userNote,
-        hintUsed
+        hintUsed,
+        licenseTypes: cleanedLicenseTypes // שלח את הערך הנקי
       };
+      console.log('POST /answers payload:', answerObj); // הדפסה לבדיקה
       await fetch(`${API_BASE}/answers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -150,22 +192,10 @@ export default function TheoryQuiz({
         body: JSON.stringify(answerObj)
       });
 
-      // --- Send progress update ---
-      const token = localStorage.getItem("token");
-      await fetch(`${API_BASE}/progress/answer-question`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": token ? `Bearer ${token}` : undefined
-        },
-        body: JSON.stringify({
-          questionId: question.id,
-          isCorrect,
-          answeredAt
-        })
-      });
+      // --- לא שולחים יותר ל־/progress/answer-question ---
 
       // Fetch latest progress and dispatch it
+      const token = localStorage.getItem("token");
       const progressRes = await fetch(`${API_BASE}/progress/categories`, {
         headers: {
           "Authorization": token ? `Bearer ${token}` : undefined,
@@ -174,6 +204,12 @@ export default function TheoryQuiz({
       });
       const progressData = await progressRes.json();
       window.dispatchEvent(new CustomEvent('progress-updated', { detail: progressData }));
+
+      // גם נעדכן את התקדמות הנושאים
+      if (userId) {
+        const topicProgressData = await fetchTopicProgress(userId, lang);
+        window.dispatchEvent(new CustomEvent('topic-progress-updated', { detail: topicProgressData }));
+      }
     } catch (err) {
       console.error("Error sending answer:", err);
       setFeedback(labels.answerError);
@@ -229,31 +265,19 @@ export default function TheoryQuiz({
           </div>
 
           {/* נושא, תת-נושא, סוגי רישיונות */}
-          <div className="quiz-meta-row">
-            <span className="quiz-meta-subject"><strong>{labels.subject}</strong> {question.topic || question.subject}</span>
-            <span className="quiz-meta-subsubject"><strong>{labels.subSubject}</strong> {question.subSubject || "—"}</span>
-            <span className="quiz-meta-licenses"><strong>{labels.licenseTypes}</strong> {Array.isArray(question.licenseTypes) && question.licenseTypes.length > 0 ? question.licenseTypes.join(", ") : (lang === "ar" ? "لا يوجد" : "אין")}</span>
-          </div>
+          <MetaRow
+            subject={question.topic || question.subject}
+            subSubject={question.subSubject}
+            licenseTypes={question.licenseTypes}
+            labels={labels}
+            lang={lang}
+          />
 
           {/* תמונה (אם קיים) */}
-          {question.image && (
-            <div className="quiz-image-container">
-              <img
-                src={question.image}
-                alt={
-                  lang === "ar"
-                    ? `صورة السؤال ${question.id}`
-                    : `תמונה לשאלה ${question.id}`
-                }
-                className="quiz-image"
-              />
-            </div>
-          )}
+          <QuestionImage image={question.image} id={question.id} lang={lang} />
 
           {/* כותרת השאלה */}
-          <div className="quiz-card-header">
-            <h2>{question.question}</h2>
-          </div>
+          <QuestionHeader questionText={question.question} />
 
           {/* תשובות וכפתור שליחה */}
           <div className="quiz-card-body">
