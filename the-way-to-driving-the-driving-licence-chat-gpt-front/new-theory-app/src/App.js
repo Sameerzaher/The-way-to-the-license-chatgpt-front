@@ -9,20 +9,61 @@ import "./App.css";
 export default function App() {
   const [user, setUser] = useState(null);
   const [lang, setLang] = useState("he"); // language state
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const id = localStorage.getItem("userId");
-    const name = localStorage.getItem("userName");
-    const course = localStorage.getItem("userCourse");
-    if (id) {
-      setUser({ id, name, course });
+    // בדיקה מקיפה יותר של המשתמש ב-localStorage
+    try {
+      const storedUser = localStorage.getItem("user");
+      const token = localStorage.getItem("token");
+      
+      if (storedUser && token) {
+        const userData = JSON.parse(storedUser);
+        if (userData && userData.id) {
+          setUser(userData);
+          console.log("User restored from localStorage:", userData);
+        } else {
+          console.log("Invalid user data in localStorage");
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+        }
+      } else {
+        // Fallback לנתונים הישנים
+        const id = localStorage.getItem("userId");
+        const name = localStorage.getItem("userName");
+        const course = localStorage.getItem("userCourse");
+        if (id && name) {
+          const userData = { id, name, course };
+          setUser(userData);
+          // שמירה בפורמט החדש
+          localStorage.setItem("user", JSON.stringify(userData));
+          console.log("User restored from old format:", userData);
+        }
+      }
+    } catch (error) {
+      console.error("Error restoring user from localStorage:", error);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userCourse");
     setUser(null);
   };
+
+  // הצג loading בזמן בדיקת המשתמש
+  if (isLoading) {
+    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      טוען...
+    </div>;
+  }
 
   if (!user) {
     return <LoginRegisterPage onLogin={setUser} />;
