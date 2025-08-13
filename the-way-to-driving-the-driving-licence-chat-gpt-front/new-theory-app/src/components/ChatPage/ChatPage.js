@@ -20,7 +20,8 @@ export default function ChatPage({ user, course, lang }) {
   };
 
   useEffect(() => {
-    const storedId = localStorage.getItem("userId");
+    // const storedId = localStorage.getItem("userId");
+    const storedId = JSON.parse(localStorage.getItem("user")).id;
     if (storedId) {
       setUserId(storedId);
       console.log("✅ userId loaded:", storedId);
