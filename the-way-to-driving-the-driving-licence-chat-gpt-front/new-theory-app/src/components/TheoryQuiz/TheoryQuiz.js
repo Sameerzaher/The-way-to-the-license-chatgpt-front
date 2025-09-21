@@ -6,7 +6,7 @@ import QuestionHeader from "./QuestionHeader/QuestionHeader";
 import { fetchTopicProgress } from "../../services/userService";
 
 // וודאו שב־.env יש REACT_APP_API_URL=http://localhost:3000
-const API_BASE = process.env.REACT_APP_API_URL;
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:3000";
 
 // פונקציה שמנקה תווים מיוחדים מהערך
 function cleanLicenseType(type) {
@@ -20,7 +20,7 @@ export default function TheoryQuiz({
   onAnswered = () => {},    // callback מאפיפן האם נכונה
 }) {
   // ------------------- State -------------------
-  const [lang, setLang] = useState(initialLang);
+  const [lang] = useState(initialLang); // setLang removed as not used
   const [question, setQuestion] = useState(null);
   const [selected, setSelected] = useState("");
   const [feedback, setFeedback] = useState("");
@@ -52,8 +52,8 @@ export default function TheoryQuiz({
   };
 
   // סוגי רישיונות אפשריים
-  const licenseOptions = ["C1", "C", "D", "A", "1", "B"];
-  const [selectedLicense, setSelectedLicense] = useState("");
+  // const licenseOptions = ["C1", "C", "D", "A", "1", "B"]; // Removed as not used
+  const [selectedLicense] = useState(""); // setSelectedLicense removed as not used
 
   // ---------------- fetchQuestion ----------------
   const fetchQuestion = async () => {
@@ -127,7 +127,7 @@ export default function TheoryQuiz({
     }
     // נסה לשלוף userId מה-token אם עדיין אין
     if (!userId) {
-      const token = localStorage.getItem('token');
+      // const token = localStorage.getItem('token'); // Removed as not used
       // כאן אפשר להוסיף לוגיקה לפענוח JWT אם צריך
       // לדוג' אם ה-token הוא JWT, אפשר לפענח אותו ולהוציא ממנו userId
       // כרגע רק לוג הודעה
@@ -229,10 +229,10 @@ export default function TheoryQuiz({
   }, [forcedId, lang, selectedLicense]);
 
   // ------------------ ה־UI ------------------------
-  console.log("QUESTION DATA:", question);
-  console.log("SUBJECT:", question?.topic || question?.subject);
-  console.log("SUB SUBJECT:", question?.subSubject);
-  console.log("LICENSE TYPES:", question?.licenseTypes);
+  // console.log("QUESTION DATA:", question);
+  // console.log("SUBJECT:", question?.topic || question?.subject);
+  // console.log("SUB SUBJECT:", question?.subSubject);
+  // console.log("LICENSE TYPES:", question?.licenseTypes);
   return (
     <div dir={dir} className="quiz-container">
     

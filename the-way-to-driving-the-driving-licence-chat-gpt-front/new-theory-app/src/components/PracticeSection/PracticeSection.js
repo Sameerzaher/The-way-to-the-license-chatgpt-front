@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./PracticeSection.css";
 
 export default function PracticeSection({
@@ -10,8 +10,19 @@ export default function PracticeSection({
   selectedSubject,
   selectedSubSubject,
   onStartPractice,
-  setFeedback
-}) {
+  setFeedback,
+  urlCategory,
+  urlFilter,
+  autoStart,
+  user
+  }) {
+  // התחלה אוטומטית כאשר מגיעים עם פרמטרים מ-URL
+  useEffect(() => {
+    if (autoStart && urlCategory && urlFilter) {
+      startPractice();
+    }
+  }, [autoStart, urlCategory, urlFilter]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Start practice mode
   const startPractice = async () => {
     setLoadingPractice(true);
@@ -19,9 +30,27 @@ export default function PracticeSection({
     try {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
       let url = `${apiUrl}/questions?lang=${lang}`;
+      
+      // הוספת פרמטרים מ-URL
+      const subject = urlCategory || selectedSubject;
+      const filter = urlFilter;
+      
       if (selectedLicense) url += `&licenseType=${encodeURIComponent(selectedLicense)}`;
-      if (selectedSubject) url += `&subject=${encodeURIComponent(selectedSubject)}`;
+      if (subject) url += `&subject=${encodeURIComponent(subject)}`;
       if (selectedSubSubject) url += `&subSubject=${encodeURIComponent(selectedSubSubject)}`;
+      
+      // הוספת פילטר לשאלות שנותרו, שהושלמו או שגויות
+      if (filter === 'remaining') {
+        url += `&filter=remaining`;
+        if (user && user.id) url += `&userId=${user.id}`;
+      } else if (filter === 'completed') {
+        url += `&filter=completed`;
+        if (user && user.id) url += `&userId=${user.id}`;
+      } else if (filter === 'wrong') {
+        url += `&filter=wrong`;
+        if (user && user.id) url += `&userId=${user.id}`;
+      }
+      
       const res = await fetch(url);
       if (!res.ok) throw new Error(`שגיאה בשליפת שאלות תאוריה: ${res.status} ${res.statusText}`);
       const data = await res.json();
@@ -35,7 +64,14 @@ export default function PracticeSection({
           results: []
         });
       } else {
-        throw new Error(lang === "ar" ? "לא נמצאו שאלות תאוריה במאגר" : "לא נמצאו שאלות תאוריה במאגר");
+        const message = filter === 'remaining' 
+          ? 'לא נמצאו שאלות שנותרו לפתור בנושא זה'
+          : filter === 'completed'
+          ? 'לא נמצאו שאלות שהושלמו בנושא זה'
+          : filter === 'wrong'
+          ? 'לא נמצאו שאלות שגויות בנושא זה'
+          : 'לא נמצאו שאלות תאוריה במאגר';
+        throw new Error(message);
       }
     } catch (err) {
       setFeedback(`שגיאה: ${err.message}`);

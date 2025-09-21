@@ -15,10 +15,24 @@ export default function PracticeModeView({
   gptFeedback,
   gptLoading,
   lang,
-  labels
+  labels,
+  practiceResults
 }) {
   const normalize = str => (str || "").trim();
-  const isCorrect = normalize(selectedAnswer) === normalize(currentQuestion?.correctAnswer);
+  const hasCorrectAnswer = currentQuestion?.correctAnswer && currentQuestion.correctAnswer.trim();
+  
+  // בדיקה אם התשובה תוקנה על ידי AI
+  const lastResult = practiceResults[practiceResults.length - 1];
+  const isCorrectByAI = lastResult && lastResult.aiCorrected;
+  
+  // לוגיקה: אם יש תשובה נכונה מוגדרת, נשתמש בה. אחרת, נשתמש ב-AI
+  let isCorrect;
+  if (hasCorrectAnswer) {
+    isCorrect = normalize(selectedAnswer) === normalize(currentQuestion.correctAnswer);
+  } else {
+    // אם אין תשובה נכונה מוגדרת, נשתמש ב-AI (או false אם עדיין לא הגיב)
+    isCorrect = isCorrectByAI || false;
+  }
 
   return (
     <div className="practice-container">
@@ -82,14 +96,17 @@ export default function PracticeModeView({
           <>
             <div className={`practice-feedback ${isCorrect ? 'correct' : 'incorrect'}`}>
               {isCorrect
-                ? (lang === 'ar' ? 'إجابة صحيحة!' : 'תשובה נכונה!')
-                : (currentQuestion.correctAnswer
+                ? (isCorrectByAI 
+                    ? (lang === 'ar' ? 'إجابة صحيحة! (تم التأكيد بواسطة AI)' : 'תשובה נכונה! (אושר על ידי AI)')
+                    : (lang === 'ar' ? 'إجابة صحيحة!' : 'תשובה נכונה!')
+                  )
+                : (hasCorrectAnswer
                     ? (lang === 'ar'
                         ? `إجابة خاطئة. الإجابة الصحيحة هي: ${currentQuestion.correctAnswer}`
                         : `תשובה שגויה. התשובה הנכונה היא: ${currentQuestion.correctAnswer}`)
                     : (lang === 'ar'
-                        ? 'إجابة خاطئة. لا נמצאה תשובה נכונה لسؤال هذا.'
-                        : 'תשובה שגויה. לא נמצאה תשובה נכונה לשאלה זו.')
+                        ? 'لا يوجد إجابة صحيحة محددة لهذا السؤال. راجع الشرح أدناه.'
+                        : 'אין תשובה נכונה מוגדרת לשאלה זו. ראה הסבר למטה.')
                   )
               }
             </div>

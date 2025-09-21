@@ -15,7 +15,7 @@
   padding: 40px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.2);
   direction: rtl;
@@ -211,4 +211,72 @@
   padding: 10px;
   background: #fff;
   color: #333;
+}
+
+/* Date Fields Styling */
+.dates-container {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dates-container .input-group {
+  flex: 1;
+  min-width: 150px;
+}
+
+.date-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: right;
+}
+
+.dates-container input[type="date"] {
+  width: 100%;
+  padding: 15px 20px;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: #fff;
+  box-sizing: border-box;
+  direction: rtl;
+  text-align: right;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.dates-container input[type="date"]:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  transform: translateY(-2px);
+}
+
+.dates-container input[type="date"]:disabled {
+  background: #f8f9fa;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Responsive design for date fields */
+@media (max-width: 480px) {
+  .dates-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .dates-container .input-group {
+    min-width: unset;
+  }
+  
+  .dates-container input[type="date"] {
+    padding: 12px 15px;
+    font-size: 15px;
+  }
 } 

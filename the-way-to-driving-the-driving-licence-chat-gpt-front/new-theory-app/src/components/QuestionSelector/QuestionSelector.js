@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import TheoryQuiz from "../TheoryQuiz/TheoryQuiz";
 import "./QuestionSelector.css";
 
@@ -15,6 +16,7 @@ import MultipleQuestionsView from "../MultipleQuestionsView/MultipleQuestionsVie
 import SingleQuestionView from "../SingleQuestionView/SingleQuestionView";
 
 export default function QuestionSelector({ user, course, lang, onChangeLang }) {
+  const location = useLocation();
   const [inputId, setInputId] = useState("");
   const [chosenId, setChosenId] = useState(null);
   const [feedback, setFeedback] = useState("");
@@ -24,6 +26,11 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
   const [field, setField] = useState("theory");
   const [selectedLicense, setSelectedLicense] = useState("");
   const licenseOptions = ["C1", "C", "D", "A", "1", "B"];
+  
+  // State לטיפול בפרמטרים מ-URL
+  const [urlCategory, setUrlCategory] = useState("");
+  const [urlFilter, setUrlFilter] = useState("");
+  const [autoStart, setAutoStart] = useState(false);
   
   // State לחיפוש כמה שאלות
   const [multipleQuestions, setMultipleQuestions] = useState([]);
@@ -47,6 +54,7 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
   const [practiceResults, setPracticeResults] = useState([]);
   const [loadingPractice, setLoadingPractice] = useState(false);
   const [practiceCompleted, setPracticeCompleted] = useState(false);
+  
 
   // State לפידבק מה־GPT
   const [gptFeedback, setGptFeedback] = useState("");
@@ -63,6 +71,26 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
     const selectedField = localStorage.getItem("learningField") || "theory";
     setField(selectedField);
   }, []);
+
+  // טיפול בפרמטרים מ-URL
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const category = searchParams.get('category');
+    const filter = searchParams.get('filter');
+    
+    if (category) {
+      setUrlCategory(category);
+      setSelectedSubject(category);
+    }
+    
+    if (filter) {
+      setUrlFilter(filter);
+      // אם יש פילטר, נתחיל אוטומטית את התרגול
+      if (filter === 'remaining' || filter === 'completed' || filter === 'wrong') {
+        setAutoStart(true);
+      }
+    }
+  }, [location.search]);
 
   // Callback functions to handle results from child components
   const handleRandomQuestion = (question) => {
@@ -125,6 +153,9 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
     setPracticeScore(0);
     setPracticeResults([]);
     setPracticeCompleted(false);
+    setAutoStart(false);
+    setUrlCategory("");
+    setUrlFilter("");
   };
 
 
@@ -147,22 +178,66 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
     }
     
     const currentQuestion = practiceQuestions[currentQuestionIndex];
-    const isCorrect = normalize(selectedAnswer) === normalize(currentQuestion.correctAnswer);
     
-    // Update score
-    if (isCorrect) {
+    // בדיקה אם יש תשובה נכונה מוגדרת
+    let isCorrect = false;
+    let hasCorrectAnswer = false;
+    
+    if (currentQuestion.correctAnswer && currentQuestion.correctAnswer.trim()) {
+      isCorrect = normalize(selectedAnswer) === normalize(currentQuestion.correctAnswer);
+      hasCorrectAnswer = true;
+    } else {
+      // אם אין תשובה נכונה מוגדרת, נשתמש ב-AI לבדיקה
+      isCorrect = false; // נגדיר כ-false עד שנקבל פידבק מה-AI
+      hasCorrectAnswer = false;
+    }
+    
+    // Update score - רק אם יש תשובה נכונה מוגדרת
+    if (isCorrect && hasCorrectAnswer) {
       setPracticeScore(prev => prev + 1);
     }
     
-    // Save result
+    // Save result locally
     const result = {
       questionId: currentQuestion.id,
       question: currentQuestion.question,
       selectedAnswer,
-      correctAnswer: currentQuestion.correctAnswer,
-      isCorrect
+      correctAnswer: currentQuestion.correctAnswer || 'לא מוגדר',
+      isCorrect,
+      hasCorrectAnswer
     };
     setPracticeResults(prev => [...prev, result]);
+    
+    // Save answer to server to update progress
+    try {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+      const answerObj = {
+        userId: user.id,
+        questionId: currentQuestion.id,
+        answer: selectedAnswer,
+        isCorrect,
+        answeredAt: new Date().toISOString(),
+        responseTime: 0, // We don't track response time in practice mode
+        attempts: 1,
+        userNote: "",
+        hintUsed: false,
+        licenseTypes: currentQuestion.licenseTypes || []
+      };
+      
+      await fetch(`${apiUrl}/answers`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(answerObj)
+      });
+      
+      console.log('Answer saved to server for progress tracking');
+      
+      // Update progress immediately after each answer
+      window.dispatchEvent(new CustomEvent('progressUpdated'));
+    } catch (error) {
+      console.error('Error saving answer to server:', error);
+      // Don't show error to user, just log it
+    }
     
     setShowAnswer(true);
   };
@@ -175,6 +250,11 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
       setShowAnswer(false);
     } else {
       setPracticeCompleted(true);
+      
+      // Update progress in sidebar after completing practice
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('progressUpdated'));
+      }, 1000);
     }
   };
 
@@ -200,10 +280,18 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
       setGptFeedback("");
       setGptLoading(true);
       // ניסוח אוטומטי
-      const isCorrect = normalize(selectedAnswer) === normalize(currentQuestion?.correctAnswer);
-      const prompt = isCorrect
-        ? `הסבר למה התשובה נכונה לשאלה: "${currentQuestion.question}". התשובה: "${selectedAnswer}".`
-        : `הסבר למה התשובה שגויה לשאלה: "${currentQuestion.question}". התשובה שבחרתי: "${selectedAnswer}". התשובה הנכונה: "${currentQuestion.correctAnswer}".`;
+      const hasCorrectAnswer = currentQuestion?.correctAnswer && currentQuestion.correctAnswer.trim();
+      const isCorrect = hasCorrectAnswer ? normalize(selectedAnswer) === normalize(currentQuestion.correctAnswer) : false;
+      
+      let prompt;
+      if (hasCorrectAnswer) {
+        prompt = isCorrect
+          ? `הסבר למה התשובה נכונה לשאלה: "${currentQuestion.question}". התשובה: "${selectedAnswer}".`
+          : `הסבר למה התשובה שגויה לשאלה: "${currentQuestion.question}". התשובה שבחרתי: "${selectedAnswer}". התשובה הנכונה: "${currentQuestion.correctAnswer}".`;
+      } else {
+        // אם אין תשובה נכונה מוגדרת, נבקש מה-AI לבדוק את התשובה
+        prompt = `בדוק אם התשובה נכונה לשאלה: "${currentQuestion.question}". התשובה שבחרתי: "${selectedAnswer}". אפשרויות התשובה: ${currentQuestion.answers?.join(', ') || 'לא מוגדרות'}. הסבר אם התשובה נכונה או שגויה ולמה.`;
+      }
       fetch((process.env.REACT_APP_API_URL || 'http://localhost:3000') + "/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -211,13 +299,52 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
       })
         .then(res => res.json())
         .then(data => {
-          setGptFeedback(data.response || "לא התקבל הסבר מה־AI.");
+          const feedback = data.response || "לא התקבל הסבר מה־AI.";
+          setGptFeedback(feedback);
+          
+          // אם אין תשובה נכונה מוגדרת, ננסה לפרש את התגובה של ה-AI
+          if (!hasCorrectAnswer) {
+            const aiResponse = feedback.toLowerCase();
+            console.log('AI Response for analysis:', aiResponse);
+            
+            // חיפוש מילות מפתח חיוביות
+            const positiveKeywords = ['נכונה', 'נכון', 'תשובה נכונה', 'תשובה נכון', 'צודק', 'נכון לחלוטין', 'תשובה נכונה לחלוטין'];
+            const negativeKeywords = ['שגויה', 'שגוי', 'לא נכונה', 'לא נכון', 'לא צודק', 'תשובה שגויה', 'תשובה לא נכונה'];
+            
+            const hasPositiveKeywords = positiveKeywords.some(keyword => aiResponse.includes(keyword));
+            const hasNegativeKeywords = negativeKeywords.some(keyword => aiResponse.includes(keyword));
+            
+            console.log('hasPositiveKeywords:', hasPositiveKeywords);
+            console.log('hasNegativeKeywords:', hasNegativeKeywords);
+            
+            // אם יש מילות מפתח חיוביות ולא שליליות
+            if (hasPositiveKeywords && !hasNegativeKeywords) {
+              console.log('AI determined answer is correct');
+              // עדכון הציון אם ה-AI אומר שהתשובה נכונה
+              setPracticeScore(prev => prev + 1);
+              // עדכון התוצאה המקומית
+              setPracticeResults(prev => {
+                const updatedResults = [...prev];
+                const lastResult = updatedResults[updatedResults.length - 1];
+                if (lastResult) {
+                  lastResult.isCorrect = true;
+                  lastResult.aiCorrected = true;
+                }
+                return updatedResults;
+              });
+            } else if (hasNegativeKeywords) {
+              console.log('AI determined answer is incorrect');
+            } else {
+              console.log('AI response is ambiguous');
+            }
+          }
         })
         .catch(() => setGptFeedback("שגיאה בקבלת הסבר מה־AI."))
         .finally(() => setGptLoading(false));
     }
     // eslint-disable-next-line
   }, [showAnswer, currentQuestionIndex]);
+
 
   // Labels for both languages
   const labels = {
@@ -313,6 +440,7 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
         gptLoading={gptLoading}
         lang={lang}
         labels={labels}
+        practiceResults={practiceResults}
       />
     );
   }
@@ -341,6 +469,30 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
           {labels.selectFrom} {labels.field}
         </h2>
 
+        {/* הודעה מיוחדת כאשר מגיעים עם פרמטרים מ-URL */}
+        {urlCategory && urlFilter && (
+          <div className="url-filter-notice">
+            <div className="notice-content">
+              <h3>
+                {urlFilter === 'remaining' 
+                  ? `שאלות שנותרו בנושא: ${urlCategory}`
+                  : urlFilter === 'completed'
+                  ? `שאלות שהושלמו בנושא: ${urlCategory}`
+                  : `שאלות שגויות בנושא: ${urlCategory}`
+                }
+              </h3>
+              <p>
+                {urlFilter === 'remaining' 
+                  ? 'לחץ על "התחל תרגול תאוריה" כדי להתחיל לפתור את השאלות שנותרו'
+                  : urlFilter === 'completed'
+                  ? 'לחץ על "התחל תרגול תאוריה" כדי לסקור את השאלות שכבר פתרת'
+                  : 'לחץ על "התחל תרגול תאוריה" כדי לסקור את השאלות שטעית בהן'
+                }
+              </p>
+            </div>
+          </div>
+        )}
+
         <LicenseTypeFilter
           selectedLicense={selectedLicense}
           setSelectedLicense={setSelectedLicense}
@@ -365,6 +517,10 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
           selectedSubSubject={selectedSubSubject}
           onStartPractice={handleStartPractice}
           setFeedback={setFeedback}
+          urlCategory={urlCategory}
+          urlFilter={urlFilter}
+          autoStart={autoStart}
+          user={user}
         />
 
         <MultipleQuestionsSection

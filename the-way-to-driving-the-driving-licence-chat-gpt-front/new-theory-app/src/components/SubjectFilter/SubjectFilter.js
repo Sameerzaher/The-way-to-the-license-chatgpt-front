@@ -12,80 +12,41 @@ export default function SubjectFilter({
   setSubSubjects,
   lang
 }) {
-  console.log("SubjectFilter render:", {
-    selectedSubject,
-    selectedSubSubject,
-    subjectsCount: subjects.length,
-    subSubjectsCount: subSubjects.length,
-    lang
-  });
+  // console.log("SubjectFilter render:", {
+  //   selectedSubject,
+  //   selectedSubSubject,
+  //   subjectsCount: subjects.length,
+  //   subSubjectsCount: subSubjects.length,
+  //   lang
+  // });
 
-  // שליפת רשימת נושאים מהשרת (endpoint חדש)
+  // ביטול מוחלט של קריאות שרת
   useEffect(() => {
-    console.log("SubjectFilter: Fetching subjects for lang:", lang);
-    const fetchSubjects = async () => {
-      try {
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-        const url = `${apiUrl}/questions/topics`;
-        console.log("SubjectFilter: Fetching from URL:", url);
-        const res = await fetch(url);
-        console.log("SubjectFilter: Response status:", res.status);
-        const data = await res.json();
-        console.log("SubjectFilter: Received subjects data:", data);
-        if (Array.isArray(data)) {
-          console.log("SubjectFilter: Setting subjects:", data);
-          setSubjects(data);
-        } else {
-          console.log("SubjectFilter: Data is not array, setting empty array");
-          setSubjects([]);
-        }
-      } catch (e) {
-        console.error("SubjectFilter: Error fetching subjects:", e);
-        setSubjects([]);
-      }
-    };
-    fetchSubjects();
-    // eslint-disable-next-line
-  }, [lang]);
+    setSubjects(['חוקי התנועה', 'תמרורים', 'בטיחות בדרכים', 'הכרת הרכב']);
+  }, []); // רק פעם אחת ללא תלות ב-lang
 
-  // שליפת תתי-נושאים מהשרת (מערך תתי-נושאים ישירות)
+  // ביטול מוחלט של קריאות תתי-נושאים
   useEffect(() => {
-    console.log("All subjects:", subjects);
-    console.log("selectedSubject (raw):", selectedSubject, "typeof:", typeof selectedSubject);
-    const fetchSubSubjects = async () => {
-      if (!selectedSubject) {
-        console.log("SubjectFilter: No subject selected, clearing sub-subjects");
-        setSubSubjects([]);
-        return;
-      }
-      try {
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-        // TRIM the subject before sending!
-        const url = `${apiUrl}/questions/sub-subjects?lang=${lang}&subject=${encodeURIComponent(selectedSubject.trim())}`;
-        console.log("URL sent to backend:", url);
-        const res = await fetch(url);
-        console.log("SubjectFilter: Sub-subjects response status:", res.status);
-        const data = await res.json();
-        console.log("Response from backend:", data);
-        if (Array.isArray(data)) {
-          setSubSubjects(data);
-        } else {
-          console.log("SubjectFilter: Sub-subjects data is not array, setting empty array");
-          setSubSubjects([]);
-        }
-      } catch (e) {
-        console.error("SubjectFilter: Error fetching sub-subjects:", e);
-        setSubSubjects([]);
-      }
+    if (!selectedSubject) {
+      setSubSubjects([]);
+      return;
+    }
+    
+    // נתונים סטטיים פשוטים
+    const subSubjects = {
+      'חוקי התנועה': ['זכות קדימה', 'מהירות', 'עקיפה'],
+      'תמרורים': ['תמרורי אזהרה', 'תמרורי איסור', 'תמרורי חובה'],
+      'בטיחות בדרכים': ['מרחק בטיחות', 'נהיגה בלילה'],
+      'הכרת הרכב': ['בלמים', 'הגה', 'מנוע']
     };
-    fetchSubSubjects();
-    // eslint-disable-next-line
-  }, [lang, selectedSubject]);
+    
+    setSubSubjects(subSubjects[selectedSubject] || []);
+  }, [selectedSubject]); // רק כשהנושא משתנה
 
-  console.log("SubjectFilter: Rendering with subjects:", subjects, "subSubjects:", subSubjects);
+  // console.log("SubjectFilter: Rendering with subjects:", subjects, "subSubjects:", subSubjects);
 
   // הדפסת debug לפני ה-return
-  console.log("subSubjects array (final before render):", subSubjects);
+  // console.log("subSubjects array (final before render):", subSubjects);
 
   return (
     <div className="control-row">

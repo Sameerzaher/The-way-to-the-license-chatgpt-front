@@ -1,3 +1,317 @@
 .practice-container {
-  padding: 16px;
-} 
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+}
+
+.practice-header {
+  text-align: center;
+  margin-bottom: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  min-width: 400px;
+}
+
+.practice-header h2 {
+  color: #2c3e50;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 15px 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.practice-progress {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #3498db;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.practice-score {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #27ae60;
+  background: linear-gradient(135deg, #27ae60, #229954);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 15px;
+  display: inline-block;
+}
+
+.practice-question {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  max-width: 600px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.question-image {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.question-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.practice-answers {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.practice-answer {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  text-align: right;
+  direction: rtl;
+}
+
+.practice-answer:hover {
+  border-color: #3498db;
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.practice-answer.selected {
+  border-color: #3498db;
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.05));
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.practice-answer.correct {
+  border-color: #27ae60;
+  background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(39, 174, 96, 0.05));
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.practice-answer.incorrect {
+  border-color: #e74c3c;
+  background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(231, 76, 60, 0.05));
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.practice-answer:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.answer-letter {
+  background: #3498db;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.practice-answer.correct .answer-letter {
+  background: #27ae60;
+}
+
+.practice-answer.incorrect .answer-letter {
+  background: #e74c3c;
+}
+
+.answer-text {
+  flex: 1;
+  font-weight: 500;
+  color: #2c3e50;
+  line-height: 1.4;
+}
+
+.practice-actions {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.practice-button {
+  padding: 15px 30px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  min-width: 150px;
+}
+
+.practice-button.submit {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.practice-button.submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+}
+
+.practice-button.submit:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.practice-button.next {
+  background: linear-gradient(135deg, #27ae60, #229954);
+  color: white;
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.practice-button.next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(39, 174, 96, 0.4);
+}
+
+.practice-feedback {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 16px;
+}
+
+.practice-feedback.correct {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.practice-feedback.incorrect {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.gpt-auto-feedback {
+  background: #e3f2fd;
+  color: #1565c0;
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: right;
+  border: 1px solid #bbdefb;
+}
+
+.gpt-auto-feedback b {
+  color: #0d47a1;
+}
+
+.gpt-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .practice-container {
+    padding: 10px;
+  }
+  
+  .practice-header {
+    min-width: auto;
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .practice-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .practice-question {
+    padding: 20px;
+  }
+  
+  .practice-answer {
+    padding: 12px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .answer-letter {
+    width: 25px;
+    height: 25px;
+    font-size: 0.8rem;
+  }
+  
+  .practice-button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    min-width: 120px;
+  }
+}
