@@ -98,15 +98,23 @@ const AILearningSystem = ({ user, lang = 'he' }) => {
     if (user && user.id) {
       // נתונים סטטיים במקום קריאות AI
       setAiData({
-        weaknesses: [
-          { category: 'מכניקה', accuracy: 65, completion: 40, priority: 'high' },
-          { category: 'חוקי חנייה', accuracy: 70, completion: 60, priority: 'medium' }
-        ],
+        weaknessAnalysis: {
+          weaknesses: [
+            { category: 'מכניקה', accuracy: 65, completion: 40, priority: 'high' },
+            { category: 'חוקי חנייה', accuracy: 70, completion: 60, priority: 'medium' }
+          ]
+        },
         recommendations: [
           { category: 'מכניקה', questions: [], reasoning: 'צריך שיפור בתחום זה' }
         ],
         learningPath: [
-          { stage: 'foundations', category: 'מכניקה', estimatedTime: 30, progress: 0 }
+          { stage: 'foundations', category: 'מכניקה', estimatedTime: 30, stages: [
+            { name: 'יסודות', description: 'לימוד עקרונות בסיסיים', questions: [] },
+            { name: 'תרגול', description: 'תרגול מעשי', questions: [] }
+          ] }
+        ],
+        progress: [
+          { progress: 25 }
         ],
         overallAnalysis: {
           learningLevel: 'intermediate',
@@ -421,7 +429,7 @@ const AILearningSystem = ({ user, lang = 'he' }) => {
             {/* Weaknesses */}
             <div className="weaknesses-section">
               <h2 className="section-title">{currentLabels.weaknesses}</h2>
-              {aiData.weaknessAnalysis.weaknesses.length > 0 ? (
+              {aiData.weaknessAnalysis && aiData.weaknessAnalysis.weaknesses && aiData.weaknessAnalysis.weaknesses.length > 0 ? (
                 <div className="weaknesses-grid">
                   {aiData.weaknessAnalysis.weaknesses.map((weakness, index) => (
                     <div 
@@ -537,16 +545,16 @@ const AILearningSystem = ({ user, lang = 'he' }) => {
                   <div className="path-header">
                     <div className="path-category">{path.category}</div>
                     <div className="path-progress">
-                      {aiData.progress[index]?.progress || 0}%
+                      {aiData.progress && aiData.progress[index] ? aiData.progress[index].progress || 0 : 0}%
                     </div>
                   </div>
                   <div className="path-stages">
-                    {path.stages.map((stage, stageIndex) => (
+                    {path.stages && path.stages.map((stage, stageIndex) => (
                       <div key={stageIndex} className="path-stage">
                         <div className="stage-name">{stage.name}</div>
                         <div className="stage-description">{stage.description}</div>
                         <div className="stage-questions">
-                          {stage.questions.length} שאלות
+                          {stage.questions ? stage.questions.length : 0} שאלות
                         </div>
                       </div>
                     ))}

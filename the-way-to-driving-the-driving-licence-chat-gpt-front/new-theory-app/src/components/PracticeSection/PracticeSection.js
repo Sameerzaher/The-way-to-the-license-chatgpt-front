@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import "./PracticeSection.css";
 
 export default function PracticeSection({
@@ -16,15 +16,8 @@ export default function PracticeSection({
   autoStart,
   user
   }) {
-  // התחלה אוטומטית כאשר מגיעים עם פרמטרים מ-URL
-  useEffect(() => {
-    if (autoStart && urlCategory && urlFilter) {
-      startPractice();
-    }
-  }, [autoStart, urlCategory, urlFilter]); // eslint-disable-line react-hooks/exhaustive-deps
-
   // Start practice mode
-  const startPractice = async () => {
+  const startPractice = useCallback(async () => {
     setLoadingPractice(true);
     setFeedback("");
     try {
@@ -77,7 +70,14 @@ export default function PracticeSection({
       setFeedback(`שגיאה: ${err.message}`);
       setLoadingPractice(false);
     }
-  };
+  }, [setLoadingPractice, setFeedback, lang, urlCategory, selectedSubject, selectedLicense, selectedSubSubject, urlFilter, user, onStartPractice]);
+
+  // התחלה אוטומטית כאשר מגיעים עם פרמטרים מ-URL
+  useEffect(() => {
+    if (autoStart && urlCategory && urlFilter) {
+      startPractice();
+    }
+  }, [autoStart, urlCategory, urlFilter, startPractice]);
 
   return (
     <div className="control-group">

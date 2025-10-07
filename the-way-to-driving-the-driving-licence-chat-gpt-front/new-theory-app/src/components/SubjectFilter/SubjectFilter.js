@@ -20,28 +20,36 @@ export default function SubjectFilter({
   //   lang
   // });
 
-  // ביטול מוחלט של קריאות שרת
+  // ביטול מוחלט של קריאות שרת - רק אם הרשימה ריקה
   useEffect(() => {
-    setSubjects(['חוקי התנועה', 'תמרורים', 'בטיחות בדרכים', 'הכרת הרכב']);
-  }, []); // רק פעם אחת ללא תלות ב-lang
+    if (subjects.length === 0) {
+      setSubjects(['חוקי התנועה', 'תמרורים', 'בטיחות בדרכים', 'הכרת הרכב']);
+    }
+  }, [subjects.length, setSubjects]); // רק אם אין נושאים
 
   // ביטול מוחלט של קריאות תתי-נושאים
   useEffect(() => {
     if (!selectedSubject) {
-      setSubSubjects([]);
+      if (subSubjects.length > 0) {
+        setSubSubjects([]);
+      }
       return;
     }
     
     // נתונים סטטיים פשוטים
-    const subSubjects = {
+    const subSubjectsData = {
       'חוקי התנועה': ['זכות קדימה', 'מהירות', 'עקיפה'],
       'תמרורים': ['תמרורי אזהרה', 'תמרורי איסור', 'תמרורי חובה'],
       'בטיחות בדרכים': ['מרחק בטיחות', 'נהיגה בלילה'],
       'הכרת הרכב': ['בלמים', 'הגה', 'מנוע']
     };
     
-    setSubSubjects(subSubjects[selectedSubject] || []);
-  }, [selectedSubject]); // רק כשהנושא משתנה
+    const newSubSubjects = subSubjectsData[selectedSubject] || [];
+    // Only update if different from current
+    if (JSON.stringify(subSubjects) !== JSON.stringify(newSubSubjects)) {
+      setSubSubjects(newSubSubjects);
+    }
+  }, [selectedSubject, subSubjects, setSubSubjects]); // רק כשהנושא משתנה
 
   // console.log("SubjectFilter: Rendering with subjects:", subjects, "subSubjects:", subSubjects);
 

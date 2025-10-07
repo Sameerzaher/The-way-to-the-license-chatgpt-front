@@ -68,10 +68,22 @@ export async function fetchUserProgress() {
   return data;
 }
 
+// Debounce mechanism for fetchTopicProgress
+const fetchCache = new Map();
+const CACHE_DURATION = 5000; // 5 seconds
+
 export async function fetchTopicProgress(userId, lang) {
   if (!userId) {
     console.log('No user ID available for topic progress');
     return {};
+  }
+
+  // Check cache to prevent rapid duplicate requests
+  const cacheKey = `${userId}-${lang}`;
+  const cached = fetchCache.get(cacheKey);
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    console.log('fetchTopicProgress: Using cached data');
+    return cached.data;
   }
 
   try {
@@ -88,7 +100,10 @@ export async function fetchTopicProgress(userId, lang) {
       }
     }
     
-    return data;
+    // Cache the result
+    const result = data;
+    fetchCache.set(cacheKey, { data: result, timestamp: Date.now() });
+    return result;
   } catch (err) {
     console.error('Failed to fetch topic progress:', err);
     return {};

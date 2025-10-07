@@ -199,7 +199,19 @@ const StudyPlans = ({ user, lang = 'he' }) => {
         { id: 'relaxed', name: 'תוכנית רגועה', duration: '8 שבועות', questionsPerDay: 15 }
       ]);
       
-      setUserPlan({ planId: 'standard', name: 'תוכנית רגילה', startDate: new Date() });
+      setUserPlan({ 
+        planId: 'standard', 
+        planName: 'תוכנית רגילה', 
+        startDate: new Date(),
+        totalDays: 28,
+        dailyGoal: 25,
+        progress: {
+          completedDays: 15,
+          completedQuestions: 180,
+          streak: 3,
+          lastActivity: new Date().toISOString()
+        }
+      });
       
       setDailyTask({
         questionsToSolve: 25,
@@ -212,9 +224,26 @@ const StudyPlans = ({ user, lang = 'he' }) => {
       setStats({
         totalDays: 28,
         completedDays: 15,
+        remainingDays: 13,
+        completionPercentage: 53.6,
+        totalQuestions: 840,
+        completedQuestions: 180,
+        remainingQuestions: 660,
         averageAccuracy: 76,
-        totalQuestions: 375,
-        completedQuestions: 180
+        currentStreak: 3,
+        longestStreak: 7,
+        weeklyProgress: [
+          { week: 1, completed: 210, goal: 210, percentage: 100 },
+          { week: 2, completed: 120, goal: 210, percentage: 57.1 },
+          { week: 3, completed: 0, goal: 210, percentage: 0 },
+          { week: 4, completed: 0, goal: 210, percentage: 0 }
+        ],
+        subjectProgress: {
+          'חוקי התנועה': { completed: 45, total: 200, percentage: 22.5 },
+          'תמרורים': { completed: 38, total: 180, percentage: 21.1 },
+          'בטיחות': { completed: 32, total: 160, percentage: 20.0 },
+          'הכרת הרכב': { completed: 35, total: 140, percentage: 25.0 }
+        }
       });
       
       setIsLoading(false);
@@ -390,7 +419,7 @@ const StudyPlans = ({ user, lang = 'he' }) => {
       
       console.log('📅 Fetching daily task...');
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-      const currentDay = userPlan ? userPlan.progress.completedDays + 1 : 1;
+      const currentDay = userPlan && userPlan.progress ? userPlan.progress.completedDays + 1 : 1;
       const response = await fetch(`${apiUrl}/study-plans/users/${user.id}/daily-task?day=${currentDay}`);
       
       if (response.ok) {
@@ -419,7 +448,7 @@ const StudyPlans = ({ user, lang = 'he' }) => {
     } catch (err) {
       console.error('Error fetching daily task:', err);
       // Dynamic fallback data based on current plan
-      const currentDay = userPlan ? userPlan.progress.completedDays + 1 : 1;
+      const currentDay = userPlan && userPlan.progress ? userPlan.progress.completedDays + 1 : 1;
       const fallbackTask = {
         day: currentDay,
         subjects: userPlan ? getSubjectsForPlan(userPlan.planId) : ['חוקי תנועה', 'תמרורים'],
@@ -862,13 +891,13 @@ const StudyPlans = ({ user, lang = 'he' }) => {
                 <div className="progress-bar">
                   <div 
                     className="progress-fill"
-                    style={{ width: `${(userPlan.progress.completedDays / userPlan.totalDays) * 100}%` }}
+                    style={{ width: `${userPlan.progress ? (userPlan.progress.completedDays / userPlan.totalDays) * 100 : 0}%` }}
                   ></div>
                 </div>
                 <div className="progress-text">
-                  {userPlan.progress.completedDays} / {userPlan.totalDays} {currentLabels.days}
+                  {userPlan.progress ? userPlan.progress.completedDays : 0} / {userPlan.totalDays} {currentLabels.days}
                   <span className="progress-percentage">
-                    ({Math.round((userPlan.progress.completedDays / userPlan.totalDays) * 100)}%)
+                    ({userPlan.progress ? Math.round((userPlan.progress.completedDays / userPlan.totalDays) * 100) : 0}%)
                   </span>
                 </div>
               </div>
@@ -878,28 +907,28 @@ const StudyPlans = ({ user, lang = 'he' }) => {
               <div className="stat-card">
                 <div className="stat-icon">📅</div>
                 <div className="stat-content">
-                  <div className="stat-value">{userPlan.progress.completedDays + 1}</div>
+                  <div className="stat-value">{userPlan.progress ? userPlan.progress.completedDays + 1 : 1}</div>
                   <div className="stat-label">{currentLabels.currentDay}</div>
                 </div>
               </div>
               <div className="stat-card">
                 <div className="stat-icon">✅</div>
                 <div className="stat-content">
-                  <div className="stat-value">{userPlan.progress.completedDays}</div>
+                  <div className="stat-value">{userPlan.progress ? userPlan.progress.completedDays : 0}</div>
                   <div className="stat-label">{currentLabels.completedDays}</div>
                 </div>
               </div>
               <div className="stat-card">
                 <div className="stat-icon">⏳</div>
                 <div className="stat-content">
-                  <div className="stat-value">{userPlan.totalDays - userPlan.progress.completedDays}</div>
+                  <div className="stat-value">{userPlan.progress ? userPlan.totalDays - userPlan.progress.completedDays : userPlan.totalDays}</div>
                   <div className="stat-label">{currentLabels.remainingDays}</div>
                 </div>
               </div>
               <div className="stat-card">
                 <div className="stat-icon">🔥</div>
                 <div className="stat-content">
-                  <div className="stat-value">{userPlan.progress.streak}</div>
+                  <div className="stat-value">{userPlan.progress ? userPlan.progress.streak : 0}</div>
                   <div className="stat-label">{currentLabels.streak}</div>
                 </div>
               </div>
@@ -996,7 +1025,7 @@ const StudyPlans = ({ user, lang = 'he' }) => {
             <div className="weekly-progress">
               <h3>{currentLabels.weeklyProgress}</h3>
               <div className="weekly-chart">
-                {stats.weeklyProgress.map((week, index) => (
+                {stats && stats.weeklyProgress && stats.weeklyProgress.map((week, index) => (
                   <div key={index} className="week-bar">
                     <div className="week-label">שבוע {index + 1}</div>
                     <div className="week-progress">
@@ -1014,7 +1043,7 @@ const StudyPlans = ({ user, lang = 'he' }) => {
             <div className="subject-progress">
               <h3>{currentLabels.subjectProgress}</h3>
               <div className="subject-stats">
-                {Object.entries(stats.subjectProgress).map(([subject, progress]) => (
+                {stats && stats.subjectProgress && Object.entries(stats.subjectProgress).map(([subject, progress]) => (
                   <div key={subject} className="subject-stat">
                     <div className="subject-name">{subject}</div>
                     <div className="subject-progress-bar">

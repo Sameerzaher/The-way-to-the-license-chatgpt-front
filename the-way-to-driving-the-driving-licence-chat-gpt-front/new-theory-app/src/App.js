@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import QuestionSelector from "./components/QuestionSelector/QuestionSelector";
 import ChatPage from "./components/ChatPage/ChatPage";
 import LoginRegisterPage from "./components/LoginRegisterPage/LoginRegisterPage";
@@ -16,7 +16,7 @@ export default function App() {
 
 
   // פונקציה לעדכון פרטי משתמש מהשרת
-  const fetchUserDetails = async (userId, token) => {
+  const fetchUserDetails = useCallback(async (userId, token) => {
     try {
       const endpoints = [
         `${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/user/details/${userId}`,
@@ -36,9 +36,11 @@ export default function App() {
           if (response.ok) {
             const userDetails = await response.json();
             if (userDetails.courseDates || userDetails.email) {
-              const updatedUser = { ...user, ...userDetails };
-              setUser(updatedUser);
-              localStorage.setItem("user", JSON.stringify(updatedUser));
+              setUser(prevUser => {
+                const updatedUser = { ...prevUser, ...userDetails };
+                localStorage.setItem("user", JSON.stringify(updatedUser));
+                return updatedUser;
+              });
               return;
             }
           }
@@ -49,7 +51,7 @@ export default function App() {
     } catch (error) {
       console.error("Error fetching user details:", error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     // בדיקת לולאת ריפרש
@@ -111,7 +113,7 @@ export default function App() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [fetchUserDetails]);
 
   const handleLogout = () => {
     localStorage.removeItem("user");

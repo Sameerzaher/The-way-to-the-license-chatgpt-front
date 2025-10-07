@@ -9,6 +9,10 @@ import {
   // calculateAverageProgress // Removed as not used
 } from '../../services/userService';
 
+// Debounce mechanism to prevent rapid API calls
+let lastFetchTime = 0;
+const DEBOUNCE_DELAY = 2000; // 2 seconds
+
 const CategoryPage = ({ user, lang }) => {
   const { category } = useParams();
   const navigate = useNavigate();
@@ -45,89 +49,99 @@ const CategoryPage = ({ user, lang }) => {
     "שליטה רגשית": lang === 'ar' ? 'التحكم العاطفي' : 'שליטה רגשית'
   };
 
-  // פונקציה לספירת שאלות שגויות - נשתמש בנתונים מה-progress
-  const calculateWrongQuestionsCount = async (userProgress, category) => {
-    try {
-      console.log('🔍 DEBUG - Calculating wrong questions for category:', category);
-      
-      if (!user || !user.id) {
-        return 0;
-      }
-      
-      // שלוף שאלות שגויות מהשרת עם סינון לפי נושא
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-      const response = await fetch(`${apiUrl}/progress/${user.id}/wrong?subject=${encodeURIComponent(category)}&lang=${lang}`);
-      
-      if (response.ok) {
-        const wrongQuestions = await response.json();
-        console.log('🔍 DEBUG - Wrong questions from server:', wrongQuestions.length);
-        return wrongQuestions.length;
-      } else {
-        console.log('🔍 DEBUG - Fallback to local calculation');
-        // Fallback to local calculation if server request fails
-        const allQuestions = userProgress?.completedQuestions || userProgress?.questions || [];
-        let wrongCount = 0;
-        
-        for (const question of allQuestions) {
-          if (question.isCorrect === false) {
-            wrongCount++;
-          }
-        }
-        
-        return wrongCount;
-      }
-      
-    } catch (error) {
-      console.error('Error calculating wrong questions count:', error);
-      return 0;
-    }
-  };
-
-  // פונקציה לספירת שאלות נכונות - נשתמש בנתונים מה-progress
-  const calculateCorrectQuestionsCount = async (userProgress, category) => {
-    try {
-      console.log('🔍 DEBUG - Calculating correct questions for category:', category);
-      
-      if (!user || !user.id) {
-        return 0;
-      }
-      
-      // שלוף שאלות נכונות מהשרת עם סינון לפי נושא
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-      const response = await fetch(`${apiUrl}/progress/${user.id}/completed?subject=${encodeURIComponent(category)}&lang=${lang}`);
-      
-      if (response.ok) {
-        const correctQuestions = await response.json();
-        console.log('🔍 DEBUG - Correct questions from server:', correctQuestions.length);
-        return correctQuestions.length;
-      } else {
-        console.log('🔍 DEBUG - Fallback to local calculation for correct questions');
-        // Fallback to local calculation if server request fails
-        const allQuestions = userProgress?.completedQuestions || userProgress?.questions || [];
-        let correctCount = 0;
-        
-        for (const question of allQuestions) {
-          if (question.isCorrect === true) {
-            correctCount++;
-          }
-        }
-        
-        return correctCount;
-      }
-      
-    } catch (error) {
-      console.error('Error calculating correct questions count:', error);
-      return 0;
-    }
-  };
 
   useEffect(() => {
+    // פונקציה לספירת שאלות שגויות - נשתמש בנתונים מה-progress
+    const calculateWrongQuestionsCount = async (userProgress, category) => {
+      try {
+        console.log('🔍 DEBUG - Calculating wrong questions for category:', category);
+        
+        if (!user || !user.id) {
+          return 0;
+        }
+        
+        // שלוף שאלות שגויות מהשרת עם סינון לפי נושא
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+        const response = await fetch(`${apiUrl}/progress/${user.id}/wrong?subject=${encodeURIComponent(category)}&lang=${lang}`);
+        
+        if (response.ok) {
+          const wrongQuestions = await response.json();
+          console.log('🔍 DEBUG - Wrong questions from server:', wrongQuestions.length);
+          return wrongQuestions.length;
+        } else {
+          console.log('🔍 DEBUG - Fallback to local calculation for wrong questions');
+          // Fallback to local calculation if server request fails
+          const allQuestions = userProgress?.completedQuestions || userProgress?.questions || [];
+          let wrongCount = 0;
+          
+          for (const question of allQuestions) {
+            if (question.isCorrect === false) {
+              wrongCount++;
+            }
+          }
+          
+          return wrongCount;
+        }
+        
+      } catch (error) {
+        console.error('Error calculating wrong questions count:', error);
+        return 0;
+      }
+    };
+
+    // פונקציה לספירת שאלות נכונות - נשתמש בנתונים מה-progress
+    const calculateCorrectQuestionsCount = async (userProgress, category) => {
+      try {
+        console.log('🔍 DEBUG - Calculating correct questions for category:', category);
+        
+        if (!user || !user.id) {
+          return 0;
+        }
+        
+        // שלוף שאלות נכונות מהשרת עם סינון לפי נושא
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+        const response = await fetch(`${apiUrl}/progress/${user.id}/completed?subject=${encodeURIComponent(category)}&lang=${lang}`);
+        
+        if (response.ok) {
+          const correctQuestions = await response.json();
+          console.log('🔍 DEBUG - Correct questions from server:', correctQuestions.length);
+          return correctQuestions.length;
+        } else {
+          console.log('🔍 DEBUG - Fallback to local calculation for correct questions');
+          // Fallback to local calculation if server request fails
+          const allQuestions = userProgress?.completedQuestions || userProgress?.questions || [];
+          let correctCount = 0;
+          
+          for (const question of allQuestions) {
+            if (question.isCorrect === true) {
+              correctCount++;
+            }
+          }
+          
+          return correctCount;
+        }
+        
+      } catch (error) {
+        console.error('Error calculating correct questions count:', error);
+        return 0;
+      }
+    };
+
     const fetchCategoryData = async () => {
       if (!user || !user.id || !category) {
         setError('נתונים חסרים');
         setIsLoading(false);
         return;
       }
+
+      // Debounce mechanism - prevent rapid successive calls
+      const now = Date.now();
+      if (now - lastFetchTime < DEBOUNCE_DELAY) {
+        console.log('CategoryPage: Debouncing API call, too soon since last call');
+        setIsLoading(false);
+        return;
+      }
+      lastFetchTime = now;
 
       setIsLoading(true);
       setError(null);
@@ -175,7 +189,7 @@ const CategoryPage = ({ user, lang }) => {
     };
 
     fetchCategoryData();
-  }, [user?.id, category]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user?.id, category, lang]);
 
   const handleStartQuestions = () => {
     // ניתוב לשאלות עם פילטר לשאלות שנותרו לפתור

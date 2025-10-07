@@ -20,7 +20,7 @@ export default function TheoryQuiz({
   onAnswered = () => {},    // callback מאפיפן האם נכונה
 }) {
   // ------------------- State -------------------
-  const [lang] = useState(initialLang); // setLang removed as not used
+  const lang = initialLang; // Use prop directly instead of state
   const [question, setQuestion] = useState(null);
   const [selected, setSelected] = useState("");
   const [feedback, setFeedback] = useState("");
@@ -51,9 +51,7 @@ export default function TheoryQuiz({
     answerError: lang === "ar" ? "خطأ في إرسال الإجابة من العربية" : "שגיאה בשליחת התשובה בעברית",
   };
 
-  // סוגי רישיונות אפשריים
-  // const licenseOptions = ["C1", "C", "D", "A", "1", "B"]; // Removed as not used
-  const [selectedLicense] = useState(""); // setSelectedLicense removed as not used
+  // סוגי רישיונות אפשריים - removed unused variables
 
   // ---------------- fetchQuestion ----------------
   const fetchQuestion = async () => {
@@ -69,9 +67,6 @@ export default function TheoryQuiz({
       url = `${API_BASE}/questions/${forcedId}?lang=${lang}`;
     } else {
       url = `${API_BASE}/questions/random?count=1&lang=${lang}`;
-      if (selectedLicense) {
-        url += `&licenseType=${selectedLicense}`;
-      }
     }
 
     console.log("DEBUG: Fetching from URL →", url);
@@ -218,7 +213,7 @@ export default function TheoryQuiz({
     }
   };
 
-  // בכל שינוי של forcedId, lang, או selectedLicense נטען שאלה חדשה
+  // בכל שינוי של forcedId או lang נטען שאלה חדשה
   useEffect(() => {
     fetchQuestion();
     setAttempts(1);
@@ -226,7 +221,7 @@ export default function TheoryQuiz({
     setUserNote("");
     setHintUsed(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [forcedId, lang, selectedLicense]);
+  }, [forcedId, lang]);
 
   // ------------------ ה־UI ------------------------
   // console.log("QUESTION DATA:", question);

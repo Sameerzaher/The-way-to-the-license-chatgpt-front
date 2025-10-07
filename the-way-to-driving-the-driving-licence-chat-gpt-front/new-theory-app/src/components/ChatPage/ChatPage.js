@@ -34,7 +34,7 @@ export default function ChatPage({ user, course, lang }) {
     if (chatWindowRef.current) {
       chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }
-  }, [messages, input]);
+  }, [messages]); // Only scroll when messages change, not on every input keystroke
 
   const handleSend = async () => {
     const trimmed = input.trim();

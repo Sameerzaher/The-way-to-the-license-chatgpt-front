@@ -22,7 +22,7 @@ export default function PracticeModeView({
   const hasCorrectAnswer = currentQuestion?.correctAnswer && currentQuestion.correctAnswer.trim();
   
   // בדיקה אם התשובה תוקנה על ידי AI
-  const lastResult = practiceResults[practiceResults.length - 1];
+  const lastResult = practiceResults && practiceResults.length > 0 ? practiceResults[practiceResults.length - 1] : null;
   const isCorrectByAI = lastResult && lastResult.aiCorrected;
   
   // לוגיקה: אם יש תשובה נכונה מוגדרת, נשתמש בה. אחרת, נשתמש ב-AI

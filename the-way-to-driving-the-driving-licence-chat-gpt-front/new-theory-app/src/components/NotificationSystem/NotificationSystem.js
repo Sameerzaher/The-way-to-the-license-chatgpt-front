@@ -67,6 +67,13 @@ const NotificationSystem = ({ user, lang = 'he' }) => {
     if (user && user.id) {
       // נתונים סטטיים במקום קריאות שרת
       setNotifications({
+        message: 'זמן ללמוד! המשך את המסע שלך לקראת הרישיון',
+        type: 'dailyReminder',
+        stats: {
+          todayCompleted: 0,
+          dailyGoal: 20,
+          streak: 0
+        },
         current: {
           message: 'זמן ללמוד! המשך את המסע שלך לקראת הרישיון',
           type: 'dailyReminder',
@@ -223,20 +230,22 @@ const NotificationSystem = ({ user, lang = 'he' }) => {
               <div className="notification-message">
                 {notifications.message}
               </div>
-              <div className="notification-stats">
-                <div className="stat-item">
-                  <span className="stat-label">היום:</span>
-                  <span className="stat-value">{notifications.stats.todayCompleted}</span>
+              {notifications.stats && (
+                <div className="notification-stats">
+                  <div className="stat-item">
+                    <span className="stat-label">היום:</span>
+                    <span className="stat-value">{notifications.stats.todayCompleted || 0}</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">מטרה יומית:</span>
+                    <span className="stat-value">{notifications.stats.dailyGoal || 20}</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">רצף:</span>
+                    <span className="stat-value">{notifications.stats.streak || 0} ימים</span>
+                  </div>
                 </div>
-                <div className="stat-item">
-                  <span className="stat-label">מטרה יומית:</span>
-                  <span className="stat-value">{notifications.stats.dailyGoal}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">רצף:</span>
-                  <span className="stat-value">{notifications.stats.streak} ימים</span>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         )}
@@ -261,8 +270,7 @@ const NotificationSystem = ({ user, lang = 'he' }) => {
               </button>
             </div>
           )}
-          </div>
-        )}
+        </div>
 
         {/* Settings */}
         <div className="notification-settings">
@@ -369,8 +377,7 @@ const NotificationSystem = ({ user, lang = 'he' }) => {
               </div>
             </div>
           )}
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
