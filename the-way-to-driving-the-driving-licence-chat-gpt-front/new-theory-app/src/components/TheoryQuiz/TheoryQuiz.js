@@ -4,6 +4,10 @@ import MetaRow from "./MetaRow/MetaRow";
 import QuestionImage from "./QuestionImage/QuestionImage";
 import QuestionHeader from "./QuestionHeader/QuestionHeader";
 import { fetchTopicProgress } from "../../services/userService";
+import { useLoading } from "../../contexts/LoadingContext";
+import { validateQuestion, validateApiResponse } from "../../utils/validation";
+import { apiGet, withLoading } from "../../utils/apiHelpers";
+import { useProgressUpdater } from "../../hooks/useProgressUpdater";
 
 // וודאו שב־.env יש REACT_APP_API_URL=http://localhost:3000
 const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:3000";
@@ -26,6 +30,10 @@ export default function TheoryQuiz({
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
+  
+  // Global loading context
+  const { setLoading: setGlobalLoading } = useLoading();
+  const { handleQuestionAnswered } = useProgressUpdater();
   const [attempts, setAttempts] = useState(1);
   const [startTime, setStartTime] = useState(Date.now());
   const [userNote, setUserNote] = useState("");
@@ -69,19 +77,12 @@ export default function TheoryQuiz({
       url = `${API_BASE}/questions/random?count=1&lang=${lang}`;
     }
 
-    console.log("DEBUG: Fetching from URL →", url);
-
     try {
-      const res = await fetch(url);
-
-      if (!res.ok) {
-        // קריאה שנכשלה (404 / 500 וכו' → קרא את הטקסט מהשרת וזרוק שגיאה)
-        const text = await res.text();
-        console.error("DEBUG: Server returned status", res.status, text);
-        throw new Error(`Server returned ${res.status}`);
-      }
-
-      const data = await res.json();
+      const data = await withLoading(
+        setGlobalLoading,
+        () => apiGet(url, ['id', 'question', 'answers']),
+        'fetchQuestion'
+      );
 
       // אם קיבלנו מערך ריק, אין שאלות זמינות
       if (Array.isArray(data) && data.length === 0) {
@@ -89,13 +90,19 @@ export default function TheoryQuiz({
         setFeedback(labels.noQuestions);
       } else {
         // אם יוזמן ID ספציפי, נקבל אובייקט יחיד, אך אם rand, נקבל מערך
-        const obj = forcedId ? data : data[0];
-        setQuestion(obj);
+        const questionObj = forcedId ? data : data[0];
+        
+        // בדיקת תקינות השאלה
+        if (validateQuestion(questionObj)) {
+          setQuestion(questionObj);
+        } else {
+          throw new Error('Invalid question data received');
+        }
       }
     } catch (err) {
       console.error("Error fetching question:", err);
       setQuestion(null);
-      setFeedback(labels.fetchError);
+      setFeedback(err.message || labels.fetchError);
     } finally {
       setLoading(false);
     }
@@ -165,6 +172,17 @@ export default function TheoryQuiz({
         ?.toLowerCase()
         .includes(lang === "ar" ? "صحيح" : "נכונה");
       onAnswered(isCorrect);
+
+      // 🔄 עדכון התקדמות בזמן אמת
+      if (isCorrect) {
+        handleQuestionAnswered({
+          questionId: question.id,
+          isCorrect: true,
+          category: question.subject || question.topic || 'כללי',
+          responseTime: responseTime,
+          attempts: attempts
+        });
+      }
 
       // Send the full answer object to the server (כולל userId)
       const answerObj = {

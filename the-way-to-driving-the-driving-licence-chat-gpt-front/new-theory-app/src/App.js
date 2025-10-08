@@ -6,6 +6,16 @@ import LoginRegisterPage from "./components/LoginRegisterPage/LoginRegisterPage"
 import Sidebar from "./components/Sidebar/Sidebar";
 import CategoryPage from "./components/CategoryPage/CategoryPage";
 import AdvancedDashboard from "./components/AdvancedDashboard/AdvancedDashboard";
+import Achievements from "./components/Achievements/Achievements";
+import MockExam from "./components/MockExam/MockExam";
+import ExamResults from "./components/ExamResults/ExamResults";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import { LoadingProvider } from "./contexts/LoadingContext";
+import { ProgressProvider } from "./contexts/ProgressContext";
+import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
+import OfflineIndicator from "./components/OfflineIndicator/OfflineIndicator";
+import ProgressNotification from "./components/ProgressNotification/ProgressNotification";
+import { validateUser, validateLocalStorageData } from "./utils/validation";
 import { checkRefreshLoop } from "./utils/emergencyStop";
 import "./App.css";
 
@@ -65,8 +75,8 @@ export default function App() {
       const token = localStorage.getItem("token");
       
       if (storedUser && token) {
-        const userData = JSON.parse(storedUser);
-        if (userData && userData.id) {
+        const userData = validateLocalStorageData('user', 'object');
+        if (userData && validateUser(userData)) {
           setUser(userData);
           // console.log("User restored from localStorage:", userData);
           // console.log("User has courseDates:", !!userData.courseDates);
@@ -158,7 +168,13 @@ export default function App() {
   };
 
   return (
-    <div>
+    <ErrorBoundary>
+      <LoadingProvider>
+        <ProgressProvider>
+          <LoadingSpinner />
+          <OfflineIndicator />
+          <ProgressNotification />
+        <div>
       {/* Emergency Stop Button */}
       <button 
         onClick={handleEmergencyStop}
@@ -283,6 +299,10 @@ export default function App() {
               element={<AdvancedDashboard user={user} lang={lang} />} 
             />
             <Route 
+              path="/achievements" 
+              element={<Achievements user={user} lang={lang} />} 
+            />
+            <Route 
               path="/theory/questions" 
               element={<QuestionSelector user={user} course="theory" lang={lang} onChangeLang={setLang} />} 
             />
@@ -315,6 +335,16 @@ export default function App() {
               element={<CategoryPage user={user} lang={lang} />} 
             />
 
+            {/* Mock Exam Routes */}
+            <Route 
+              path="/mock-exam" 
+              element={<MockExam user={user} lang={lang} />} 
+            />
+            <Route 
+              path="/exam-results/:examId" 
+              element={<ExamResults user={user} lang={lang} />} 
+            />
+
             {/* Default redirect */}
             <Route 
               path="/" 
@@ -325,5 +355,8 @@ export default function App() {
         </main>
       </div>
     </div>
+        </ProgressProvider>
+      </LoadingProvider>
+    </ErrorBoundary>
   );
 }

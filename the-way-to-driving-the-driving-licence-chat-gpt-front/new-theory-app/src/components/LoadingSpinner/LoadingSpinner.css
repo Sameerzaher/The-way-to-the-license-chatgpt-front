@@ -1,0 +1,125 @@
+/* Loading Spinner Styles */
+.loading-spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.loading-spinner-container.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+}
+
+.loading-spinner-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.loading-spinner {
+  position: relative;
+  display: inline-block;
+}
+
+.loading-spinner.small {
+  width: 30px;
+  height: 30px;
+}
+
+.loading-spinner.medium {
+  width: 50px;
+  height: 50px;
+}
+
+.loading-spinner.large {
+  width: 70px;
+  height: 70px;
+}
+
+.spinner-ring {
+  position: absolute;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+}
+
+.loading-spinner.small .spinner-ring {
+  width: 30px;
+  height: 30px;
+  border-width: 2px;
+}
+
+.loading-spinner.medium .spinner-ring {
+  width: 50px;
+  height: 50px;
+  border-width: 3px;
+}
+
+.loading-spinner.large .spinner-ring {
+  width: 70px;
+  height: 70px;
+  border-width: 4px;
+}
+
+.spinner-ring:nth-child(1) {
+  border-top-color: #3498db;
+  animation-delay: 0s;
+}
+
+.spinner-ring:nth-child(2) {
+  border-right-color: #e74c3c;
+  animation-delay: 0.1s;
+}
+
+.spinner-ring:nth-child(3) {
+  border-bottom-color: #f39c12;
+  animation-delay: 0.2s;
+}
+
+.spinner-ring:nth-child(4) {
+  border-left-color: #27ae60;
+  animation-delay: 0.3s;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-message {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .loading-spinner-content {
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  .loading-message {
+    font-size: 0.9rem;
+  }
+}

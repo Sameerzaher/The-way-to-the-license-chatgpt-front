@@ -1,0 +1,100 @@
+/* Offline Indicator Styles */
+.offline-indicator {
+  position: fixed;
+  top: 60px; /* מתחת לניווט */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9998;
+  padding: 12px 20px;
+  border-radius: 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  animation: slideDown 0.3s ease-out;
+  max-width: 90%;
+  min-width: 300px;
+}
+
+.offline-indicator.offline {
+  background: rgba(231, 76, 60, 0.95);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.offline-indicator.reconnected {
+  background: rgba(39, 174, 96, 0.95);
+  border: 1px solid rgba(39, 174, 96, 0.3);
+}
+
+.offline-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+}
+
+.offline-icon,
+.online-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.offline-text,
+.online-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.offline-title,
+.online-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.offline-subtitle,
+.online-subtitle {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  line-height: 1.2;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .offline-indicator {
+    top: 50px;
+    left: 10px;
+    right: 10px;
+    transform: none;
+    min-width: auto;
+    max-width: none;
+  }
+  
+  .offline-content {
+    gap: 10px;
+  }
+  
+  .offline-icon,
+  .online-icon {
+    font-size: 1.3rem;
+  }
+  
+  .offline-title,
+  .online-title {
+    font-size: 0.9rem;
+  }
+  
+  .offline-subtitle,
+  .online-subtitle {
+    font-size: 0.75rem;
+  }
+}

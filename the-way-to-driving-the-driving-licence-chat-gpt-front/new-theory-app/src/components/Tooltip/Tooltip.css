@@ -1,0 +1,207 @@
+/* רכיב Tooltip מותאם אישית */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-content {
+  position: absolute;
+  z-index: 1000;
+  background: rgba(44, 62, 80, 0.95);
+  color: white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  animation: tooltipFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 220px;
+  max-width: 280px;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* מיקומים שונים */
+.tooltip-top {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+}
+
+.tooltip-bottom {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 8px;
+}
+
+.tooltip-left {
+  right: 100%;
+  top: 0;
+  transform: translateY(0);
+  margin-right: 8px;
+  /* הגנה מפני יציאה מהמסך */
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.tooltip-right {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 8px;
+  /* הגנה מפני יציאה מהמסך */
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* חצים */
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.tooltip-top .tooltip-arrow {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #2c3e50;
+}
+
+.tooltip-bottom .tooltip-arrow {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #2c3e50;
+}
+
+.tooltip-left .tooltip-arrow {
+  left: 100%;
+  top: 20px;
+  transform: translateY(0);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 6px solid #2c3e50;
+}
+
+.tooltip-right .tooltip-arrow {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid #2c3e50;
+}
+
+/* עיצוב תוכן הטולטיפ */
+.tooltip-text {
+  text-align: right;
+  direction: rtl;
+}
+
+.tooltip-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 6px 0;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tooltip-stat-row:last-child {
+  border-bottom: none;
+}
+
+.tooltip-stat-label {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.tooltip-stat-value {
+  color: #74b9ff;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.tooltip-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  margin: 12px 0;
+}
+
+.tooltip-trend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+}
+
+.tooltip-trend.positive {
+  color: #27ae60;
+}
+
+.tooltip-trend.negative {
+  color: #e74c3c;
+}
+
+.tooltip-trend.neutral {
+  color: #f39c12;
+}
+
+/* עיצוב scrollbar לטולטיפ */
+.tooltip-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.tooltip-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.tooltip-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.tooltip-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* רספונסיביות */
+@media (max-width: 768px) {
+  .tooltip-content {
+    font-size: 0.8rem;
+    padding: 10px 12px;
+    min-width: 180px;
+    max-width: 250px;
+  }
+  
+  .tooltip-stat-row {
+    margin: 3px 0;
+  }
+  
+  .tooltip-left,
+  .tooltip-right {
+    max-height: 70vh;
+  }
+}

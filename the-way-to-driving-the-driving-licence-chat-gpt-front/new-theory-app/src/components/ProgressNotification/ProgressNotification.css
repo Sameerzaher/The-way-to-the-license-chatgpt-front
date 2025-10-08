@@ -1,0 +1,116 @@
+/* הודעות התקדמות בזמן אמת */
+.progress-notifications {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.progress-notification {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(44, 62, 80, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  animation: slideInFromLeft 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 250px;
+  direction: rtl;
+}
+
+.progress-notification.success {
+  border-left: 4px solid #27ae60;
+  background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(44, 62, 80, 0.95));
+}
+
+.progress-notification.error {
+  border-left: 4px solid #e74c3c;
+  background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(44, 62, 80, 0.95));
+}
+
+.notification-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
+  color: white;
+}
+
+.notification-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+
+.notification-category {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.notification-progress {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #74b9ff;
+  background: rgba(116, 185, 255, 0.2);
+  padding: 4px 8px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+/* אנימציות */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+.progress-notification.fade-out {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+/* רספונסיביות */
+@media (max-width: 768px) {
+  .progress-notifications {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+  }
+  
+  .progress-notification {
+    min-width: auto;
+    padding: 10px 12px;
+  }
+  
+  .notification-title {
+    font-size: 0.85rem;
+  }
+  
+  .notification-category {
+    font-size: 0.75rem;
+  }
+}
