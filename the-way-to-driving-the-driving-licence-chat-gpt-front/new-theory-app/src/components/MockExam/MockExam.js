@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Icon from '../Icons/Icon';
 import './MockExam.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
@@ -340,7 +341,7 @@ function MockExam() {
             disabled={currentQuestionIndex === 0}
             className="nav-button"
           >
-            ⬅️ הקודם
+            <Icon name="previous" /> הקודם
           </button>
 
           <button
@@ -348,7 +349,15 @@ function MockExam() {
             disabled={selectedAnswer === null}
             className="submit-answer-button"
           >
-            {answeredQuestions.has(currentQuestionIndex) ? '✅ עדכן תשובה' : '💾 שמור תשובה'}
+            {answeredQuestions.has(currentQuestionIndex) ? (
+              <>
+                <Icon name="update" /> עדכן תשובה
+              </>
+            ) : (
+              <>
+                <Icon name="save" /> שמור תשובה
+              </>
+            )}
           </button>
 
           <button
@@ -356,7 +365,7 @@ function MockExam() {
             disabled={currentQuestionIndex === exam.questions.length - 1}
             className="nav-button"
           >
-            הבא ➡️
+            הבא <Icon name="next" />
           </button>
         </div>
       </div>
@@ -386,7 +395,15 @@ function MockExam() {
           disabled={isLoading}
           className="complete-exam-button"
         >
-          {isLoading ? '⏳ מסיים...' : '🏁 סיים בחינה וקבל תוצאות'}
+          {isLoading ? (
+            <>
+              <Icon name="loading" /> מסיים...
+            </>
+          ) : (
+            <>
+              <Icon name="finish" /> סיים בחינה וקבל תוצאות
+            </>
+          )}
         </button>
         <p className="footer-note">
           ענית על {answeredQuestions.size} מתוך {exam.questions.length} שאלות

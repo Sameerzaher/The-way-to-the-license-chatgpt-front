@@ -9,7 +9,10 @@ import AdvancedDashboard from "./components/AdvancedDashboard/AdvancedDashboard"
 import Achievements from "./components/Achievements/Achievements";
 import MockExam from "./components/MockExam/MockExam";
 import ExamResults from "./components/ExamResults/ExamResults";
+import ExamAchievements from "./components/ExamAchievements/ExamAchievements";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import ErrorPatternDashboard from "./components/ErrorPatternDashboard/ErrorPatternDashboard";
+import AdvancedChartsDashboard from "./components/AdvancedChartsDashboard/AdvancedChartsDashboard";
 import { LoadingProvider } from "./contexts/LoadingContext";
 import { ProgressProvider } from "./contexts/ProgressContext";
 import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
@@ -343,6 +346,22 @@ export default function App() {
             <Route 
               path="/exam-results/:examId" 
               element={<ExamResults user={user} lang={lang} />} 
+            />
+            <Route 
+              path="/exam-achievements" 
+              element={<ExamAchievements user={user} lang={lang} />} 
+            />
+
+            {/* Error Pattern Analysis Route */}
+            <Route 
+              path="/error-analysis" 
+              element={<ErrorPatternDashboard userId="demo_user_test_123" />} 
+            />
+            
+            {/* Advanced Charts Dashboard Route */}
+            <Route 
+              path="/charts-dashboard" 
+              element={<AdvancedChartsDashboard userId="demo_user_test_123" />} 
             />
 
             {/* Default redirect */}

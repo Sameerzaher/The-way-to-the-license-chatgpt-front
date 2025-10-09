@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import Icon from '../Icons/Icon';
+import PDFGenerator from '../PDFGenerator/PDFGenerator';
 import './ExamResults.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
@@ -12,11 +14,19 @@ function ExamResults() {
   const [isLoading, setIsLoading] = useState(!results);
   const [showReview, setShowReview] = useState(false);
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
+  const [showPDFGenerator, setShowPDFGenerator] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     // אם אין נתונים מה-state, נטען מהשרת
     if (!results && examId) {
       loadExamResults();
+    }
+    
+    // קבלת נתוני משתמש
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
     }
   }, [examId]);
 
@@ -239,7 +249,7 @@ function ExamResults() {
         {/* כותרת עם סטטוס */}
         <div className={`results-header ${results.passed ? 'passed' : 'failed'}`}>
           <div className="status-icon">
-            {results.passed ? '🎉' : '😔'}
+            <Icon name={results.passed ? 'celebration' : 'sad'} size="large" />
           </div>
           <h1>{results.passed ? 'עברת את הבחינה!' : 'לא עברת הפעם'}</h1>
           <p className="exam-type">{formatExamType(results.examType)}</p>
@@ -347,6 +357,9 @@ function ExamResults() {
             📝 סקור את השאלות
           </button>
           
+          <button onClick={() => setShowPDFGenerator(true)} className="pdf-button">
+            <Icon name="save" /> יצירת דוח PDF
+          </button>
           <button onClick={() => navigate('/mock-exam')} className="retry-button">
             🔄 נסה שוב
           </button>
@@ -359,7 +372,7 @@ function ExamResults() {
         {/* המלצות */}
         {!results.passed && (
           <div className="recommendations">
-            <h3>💡 המלצות לשיפור</h3>
+            <h3><Icon name="lightbulb" /> המלצות לשיפור</h3>
             <ul>
               <li>תרגל את הנושאים שבהם טעית</li>
               <li>קרא שוב את חומר הלימוד</li>
@@ -369,13 +382,49 @@ function ExamResults() {
           </div>
         )}
 
+        {/* הישגים חדשים */}
+        {results.newAchievements && results.newAchievements.length > 0 && (
+          <div className="new-achievements">
+            <h3><Icon name="trophy" /> הישגים חדשים!</h3>
+            <div className="achievements-list">
+              {results.newAchievements.map((achievement, index) => (
+                <div key={achievement.id} className="achievement-item">
+                  <span className="achievement-icon">
+                    <Icon name={achievement.iconName || 'achievements'} size="large" />
+                  </span>
+                  <div className="achievement-details">
+                    <h4>{achievement.name}</h4>
+                    <p>{achievement.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {results.passed && (
           <div className="congratulations">
-            <h3>🎊 כל הכבוד!</h3>
+            <h3><Icon name="party" /> כל הכבוד!</h3>
             <p>המשך לתרגל כדי לשמור על הרמה</p>
+            <button 
+              onClick={() => navigate('/exam-achievements')}
+              className="view-achievements-btn"
+            >
+              <Icon name="trophy" /> צפה בכל ההישגים
+            </button>
           </div>
         )}
       </div>
+
+      {/* PDF Generator Modal */}
+      {showPDFGenerator && user && (
+        <PDFGenerator
+          examId={examId}
+          userId={user.id}
+          examData={results}
+          onClose={() => setShowPDFGenerator(false)}
+        />
+      )}
     </div>
   );
 }

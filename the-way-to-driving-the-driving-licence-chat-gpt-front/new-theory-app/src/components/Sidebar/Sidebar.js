@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import Icon from '../Icons/Icon';
 import './Sidebar.css';
 import {
   fetchTopicProgress,
@@ -163,8 +164,11 @@ const Sidebar = ({ user, lang }) => {
     dashboard: lang === 'ar' ? 'لوحة التحكم' : 'דשבורד',
     achievements: lang === 'ar' ? 'الإنجازات' : 'הישגים',
     mockExam: lang === 'ar' ? 'امتحان محاكاة' : 'בחינה מדומה',
+    examAchievements: lang === 'ar' ? 'إنجازات الامتحانات' : 'הישגי בחינות',
     selectQuestion: lang === 'ar' ? 'اختيار سؤال' : 'בחירת שאלה',
     chatWithGpt: lang === 'ar' ? 'دردشة مع GPT' : "צ'אט עם GPT",
+    errorAnalysis: lang === 'ar' ? 'تحليل أنماط الأخطاء' : 'ניתוח דפוסי טעויות',
+    chartsDashboard: lang === 'ar' ? 'لوحة الرسوم البيانية' : 'דשבורד גרפים',
     "חוקי התנועה": lang === 'ar' ? 'قوانين المرور' : 'חוקי התנועה',
     "תמרורים": lang === 'ar' ? 'إشارات المرور' : 'תמרורים',
     "בטיחות": lang === 'ar' ? 'السلامة' : 'בטיחות',
@@ -532,24 +536,36 @@ const Sidebar = ({ user, lang }) => {
             ))}
           </div>
           <Link to="/theory/dashboard" className={`sidebar-link ${isActive('/theory/dashboard') ? 'active' : ''}`}>
-            <span className="link-icon">📊</span>
+            <Icon name="dashboard" />
             {labels.dashboard}
           </Link>
           <Link to="/achievements" className={`sidebar-link ${isActive('/achievements') ? 'active' : ''}`}>
-            <span className="link-icon">🏆</span>
+            <Icon name="achievements" />
             {labels.achievements}
           </Link>
           <Link to="/mock-exam" className={`sidebar-link ${isActive('/mock-exam') ? 'active' : ''}`}>
-            <span className="link-icon">🎓</span>
+            <Icon name="exam" />
             {labels.mockExam}
           </Link>
+          <Link to="/exam-achievements" className={`sidebar-link ${isActive('/exam-achievements') ? 'active' : ''}`}>
+            <Icon name="achievements" />
+            {labels.examAchievements}
+          </Link>
           <Link to="/theory/questions" className={`sidebar-link ${isActive('/theory/questions') ? 'active' : ''}`}>
-            <span className="link-icon">📝</span>
+            <Icon name="question" />
             {labels.selectQuestion}
           </Link>
           <Link to="/theory/chat" className={`sidebar-link ${isActive('/theory/chat') ? 'active' : ''}`}>
-            <span className="link-icon">💬</span>
+            <Icon name="chat" />
             {labels.chatWithGpt}
+          </Link>
+          <Link to="/error-analysis" className={`sidebar-link ${isActive('/error-analysis') ? 'active' : ''}`}>
+            <Icon name="analytics" />
+            {labels.errorAnalysis}
+          </Link>
+          <Link to="/charts-dashboard" className={`sidebar-link ${isActive('/charts-dashboard') ? 'active' : ''}`}>
+            <Icon name="dashboard" />
+            {labels.chartsDashboard}
           </Link>
         </div>
 

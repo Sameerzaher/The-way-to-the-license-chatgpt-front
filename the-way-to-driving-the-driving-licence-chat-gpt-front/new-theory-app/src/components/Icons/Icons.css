@@ -1,0 +1,344 @@
+/* Icon Font Fallbacks */
+@font-face {
+  font-family: 'IconFont';
+  src: url('data:font/woff2;base64,') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Base icon styles */
+.icon {
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  font-family: 'IconFont', sans-serif;
+  font-size: 1.2em;
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+/* Icon sizes */
+.icon-large {
+  font-size: 2em;
+}
+
+.icon-small {
+  font-size: 0.9em;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+}
+
+/* Fallback Unicode Icons */
+.icon-dashboard::before {
+  content: "📊";
+  font-family: Arial, sans-serif;
+}
+
+.icon-achievements::before {
+  content: "🏆";
+  font-family: Arial, sans-serif;
+}
+
+.icon-exam::before {
+  content: "🎓";
+  font-family: Arial, sans-serif;
+}
+
+.icon-theory::before {
+  content: "📚";
+  font-family: Arial, sans-serif;
+}
+
+.icon-psychology::before {
+  content: "🧠";
+  font-family: Arial, sans-serif;
+}
+
+.icon-chat::before {
+  content: "💬";
+  font-family: Arial, sans-serif;
+}
+
+.icon-question::before {
+  content: "❓";
+  font-family: Arial, sans-serif;
+}
+
+.icon-analytics::before {
+  content: "📈";
+  font-family: Arial, sans-serif;
+}
+
+.icon-menu::before {
+  content: "☰";
+  font-family: Arial, sans-serif;
+}
+
+.icon-close::before {
+  content: "✕";
+  font-family: Arial, sans-serif;
+}
+
+.icon-check::before {
+  content: "✓";
+  font-family: Arial, sans-serif;
+}
+
+.icon-star::before {
+  content: "⭐";
+  font-family: Arial, sans-serif;
+}
+
+.icon-fire::before {
+  content: "🔥";
+  font-family: Arial, sans-serif;
+}
+
+.icon-target::before {
+  content: "🎯";
+  font-family: Arial, sans-serif;
+}
+
+.icon-trophy::before {
+  content: "🏆";
+  font-family: Arial, sans-serif;
+}
+
+.icon-crown::before {
+  content: "👑";
+  font-family: Arial, sans-serif;
+}
+
+.icon-lock::before {
+  content: "🔒";
+  font-family: Arial, sans-serif;
+}
+
+.icon-unlock::before {
+  content: "🔓";
+  font-family: Arial, sans-serif;
+}
+
+.icon-time::before {
+  content: "⏰";
+  font-family: Arial, sans-serif;
+}
+
+.icon-speed::before {
+  content: "⚡";
+  font-family: Arial, sans-serif;
+}
+
+.icon-accuracy::before {
+  content: "🎯";
+  font-family: Arial, sans-serif;
+}
+
+.icon-improvement::before {
+  content: "📈";
+  font-family: Arial, sans-serif;
+}
+
+.icon-traffic::before {
+  content: "🚦";
+  font-family: Arial, sans-serif;
+}
+
+.icon-sign::before {
+  content: "🛑";
+  font-family: Arial, sans-serif;
+}
+
+.icon-safety::before {
+  content: "🛡️";
+  font-family: Arial, sans-serif;
+}
+
+.icon-weekend::before {
+  content: "🏃‍♂️";
+  font-family: Arial, sans-serif;
+}
+
+.icon-night::before {
+  content: "🦉";
+  font-family: Arial, sans-serif;
+}
+
+.icon-morning::before {
+  content: "🐦";
+  font-family: Arial, sans-serif;
+}
+
+.icon-perfect::before {
+  content: "💯";
+  font-family: Arial, sans-serif;
+}
+
+.icon-high-score::before {
+  content: "⭐";
+  font-family: Arial, sans-serif;
+}
+
+.icon-consistent::before {
+  content: "🔥";
+  font-family: Arial, sans-serif;
+}
+
+.icon-master::before {
+  content: "👑";
+  font-family: Arial, sans-serif;
+}
+
+.icon-veteran::before {
+  content: "🏆";
+  font-family: Arial, sans-serif;
+}
+
+.icon-first::before {
+  content: "🎯";
+  font-family: Arial, sans-serif;
+}
+
+.icon-celebration::before {
+  content: "🎉";
+  font-family: Arial, sans-serif;
+}
+
+.icon-sad::before {
+  content: "😔";
+  font-family: Arial, sans-serif;
+}
+
+.icon-lightbulb::before {
+  content: "💡";
+  font-family: Arial, sans-serif;
+}
+
+.icon-party::before {
+  content: "🎊";
+  font-family: Arial, sans-serif;
+}
+
+.icon-sparkles::before {
+  content: "✨";
+  font-family: Arial, sans-serif;
+}
+
+.icon-waiting::before {
+  content: "⏳";
+  font-family: Arial, sans-serif;
+}
+
+.icon-previous::before {
+  content: "⬅️";
+  font-family: Arial, sans-serif;
+}
+
+.icon-next::before {
+  content: "➡️";
+  font-family: Arial, sans-serif;
+}
+
+.icon-save::before {
+  content: "💾";
+  font-family: Arial, sans-serif;
+}
+
+.icon-finish::before {
+  content: "🏁";
+  font-family: Arial, sans-serif;
+}
+
+.icon-loading::before {
+  content: "⏳";
+  font-family: Arial, sans-serif;
+}
+
+.icon-update::before {
+  content: "✅";
+  font-family: Arial, sans-serif;
+}
+
+/* Status icons */
+.icon-passed::before {
+  content: "✅";
+  font-family: Arial, sans-serif;
+}
+
+.icon-failed::before {
+  content: "❌";
+  font-family: Arial, sans-serif;
+}
+
+.icon-correct::before {
+  content: "✅";
+  font-family: Arial, sans-serif;
+}
+
+.icon-incorrect::before {
+  content: "❌";
+  font-family: Arial, sans-serif;
+}
+
+.icon-unanswered::before {
+  content: "⭕";
+  font-family: Arial, sans-serif;
+}
+
+/* Grade emojis */
+.icon-grade-a::before {
+  content: "🥇";
+  font-family: Arial, sans-serif;
+}
+
+.icon-grade-b::before {
+  content: "🥈";
+  font-family: Arial, sans-serif;
+}
+
+.icon-grade-c::before {
+  content: "🥉";
+  font-family: Arial, sans-serif;
+}
+
+.icon-grade-f::before {
+  content: "📉";
+  font-family: Arial, sans-serif;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .icon {
+    font-size: 1.1em;
+    margin-left: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .icon {
+    font-size: 1em;
+    margin-left: 4px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .icon::before {
+    filter: contrast(1.5);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .icon {
+    transition: none;
+  }
+  
+  .icon:hover {
+    transform: none;
+  }
+}

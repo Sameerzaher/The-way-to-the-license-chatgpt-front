@@ -4,22 +4,56 @@
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   direction: rtl;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 /* מסך הגדרות בחינה */
 .exam-setup {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 20px;
-  padding: 40px;
+  border-radius: 25px;
+  padding: 50px;
   color: white;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.exam-setup::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
 .exam-setup h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 3rem;
+  margin-bottom: 15px;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .exam-description {
@@ -29,10 +63,15 @@
 }
 
 .exam-options {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  padding: 25px;
-  margin: 20px 0;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 30px;
+  margin: 30px 0;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 1s ease-out 0.3s both;
 }
 
 .option-group {
@@ -49,19 +88,28 @@
 
 .exam-select {
   width: 100%;
-  padding: 12px;
-  font-size: 1rem;
+  padding: 15px 20px;
+  font-size: 1.1rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 15px;
   background: white;
   color: #333;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
 }
 
 .exam-select:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  background: #f8f9fa;
+}
+
+.exam-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
 }
 
 .exam-info {
@@ -96,40 +144,70 @@
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   color: white;
   border: none;
-  padding: 15px 40px;
-  font-size: 1.3rem;
+  padding: 18px 50px;
+  font-size: 1.4rem;
   border-radius: 50px;
   cursor: pointer;
-  margin-top: 20px;
-  transition: all 0.3s;
-  box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+  margin-top: 30px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 30px rgba(245, 87, 108, 0.4);
+  position: relative;
+  z-index: 1;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: fadeInUp 1s ease-out 0.6s both;
 }
 
 .start-exam-button:hover:not(:disabled) {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(245, 87, 108, 0.6);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(245, 87, 108, 0.6);
+}
+
+.start-exam-button:active {
+  transform: translateY(-2px) scale(1.02);
 }
 
 .start-exam-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
 /* מסך הבחינה */
 .mock-exam-container.in-progress {
-  background: #f5f7fa;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   padding: 0;
+  position: relative;
+}
+
+.mock-exam-container.in-progress::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  opacity: 0.3;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .exam-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
   color: white;
-  padding: 20px;
+  padding: 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .exam-title h2 {
@@ -144,8 +222,17 @@
 
 .timer {
   background: rgba(255, 255, 255, 0.2);
-  padding: 10px 20px;
-  border-radius: 25px;
+  padding: 15px 25px;
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: pulse 2s infinite;
+  font-size: 1.8rem;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
 .timer.warning {
@@ -170,6 +257,8 @@
   border-radius: 25px;
   cursor: pointer;
   transition: all 0.3s;
+  position: relative;
+  z-index: 10;
 }
 
 .exit-button:hover {
@@ -178,16 +267,20 @@
 }
 
 .exam-progress-bar {
-  background: #e0e0e0;
-  height: 30px;
+  background: rgba(255, 255, 255, 0.2);
+  height: 8px;
   position: relative;
   overflow: hidden;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  margin: 20px 0;
 }
 
 .progress-fill {
   background: linear-gradient(90deg, #4CAF50, #8BC34A);
   height: 100%;
-  transition: width 0.3s;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 10px;
 }
 
 .progress-text {
@@ -236,11 +329,15 @@
   color: #333;
   line-height: 1.6;
   margin-bottom: 20px;
+  position: relative;
+  z-index: 5;
 }
 
 .question-image {
   text-align: center;
   margin: 20px 0;
+  position: relative;
+  z-index: 5;
 }
 
 .question-image img {
@@ -248,10 +345,14 @@
   max-height: 400px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 5;
 }
 
 .answers-container {
   margin: 30px 0;
+  position: relative;
+  z-index: 10;
 }
 
 .answer-option {
@@ -265,6 +366,8 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  position: relative;
+  z-index: 10;
 }
 
 .answer-option:hover {
@@ -309,6 +412,8 @@
   align-items: center;
   gap: 15px;
   margin-top: 30px;
+  position: relative;
+  z-index: 10;
 }
 
 .nav-button {
@@ -319,6 +424,8 @@
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.3s;
+  position: relative;
+  z-index: 10;
 }
 
 .nav-button:hover:not(:disabled) {
@@ -341,6 +448,8 @@
   font-size: 1.1rem;
   cursor: pointer;
   transition: all 0.3s;
+  position: relative;
+  z-index: 10;
 }
 
 .submit-answer-button:hover:not(:disabled) {
@@ -360,6 +469,8 @@
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 10;
 }
 
 .questions-map h4 {
@@ -382,6 +493,8 @@
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s;
+  position: relative;
+  z-index: 10;
 }
 
 .question-map-item:hover {
@@ -401,6 +514,11 @@
   box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
 }
 
+.question-map-item.current:hover {
+  transform: scale(1.1);
+  background: #5a6fd8;
+}
+
 /* כפתור סיום */
 .exam-footer {
   background: white;
@@ -409,6 +527,8 @@
   border-radius: 15px;
   text-align: center;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 10;
 }
 
 .complete-exam-button {
@@ -421,6 +541,8 @@
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+  position: relative;
+  z-index: 10;
 }
 
 .complete-exam-button:hover:not(:disabled) {
@@ -451,6 +573,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  backdrop-filter: blur(5px);
 }
 
 .modal-content {
@@ -460,6 +583,18 @@
   max-width: 400px;
   text-align: center;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modal-content h3 {
@@ -482,6 +617,8 @@
   border-radius: 25px;
   cursor: pointer;
   transition: all 0.3s;
+  position: relative;
+  z-index: 10;
 }
 
 .confirm-button:hover {
@@ -497,6 +634,8 @@
   border-radius: 25px;
   cursor: pointer;
   transition: all 0.3s;
+  position: relative;
+  z-index: 10;
 }
 
 .cancel-button:hover {
