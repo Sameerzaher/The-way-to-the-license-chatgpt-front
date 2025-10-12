@@ -629,4 +629,21 @@
     top: 8px;
     right: 8px;
   }
+}
+
+/* Dark Mode Support for Streak Components */
+[data-theme="dark"] .sidebar {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-left-color: #4dabf7;
+}
+
+[data-theme="dark"] .sidebar-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .streak-section {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 15px;
 } 

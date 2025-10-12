@@ -1,0 +1,305 @@
+/* Theme Toggle Component Styles */
+
+.theme-toggle-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* גדלים שונים */
+.theme-toggle-small {
+  font-size: 14px;
+}
+
+.theme-toggle-medium {
+  font-size: 16px;
+}
+
+.theme-toggle-large {
+  font-size: 20px;
+}
+
+/* כפתור Toggle ראשי */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-light);
+  border-radius: 25px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+  font-family: inherit;
+  font-size: inherit;
+  min-width: 60px;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-toggle.animating {
+  animation: theme-pulse 0.3s ease;
+}
+
+@keyframes theme-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.theme-icon {
+  font-size: 1.2em;
+  transition: transform var(--transition-normal);
+}
+
+.theme-toggle:hover .theme-icon {
+  transform: rotate(15deg);
+}
+
+.theme-label {
+  font-weight: 500;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+/* תפריט אפשרויות */
+.theme-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  min-width: 220px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all var(--transition-normal);
+  direction: rtl;
+}
+
+.theme-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.theme-menu-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.theme-menu-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.theme-options {
+  padding: 8px 0;
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  font-family: inherit;
+  font-size: 14px;
+  text-align: right;
+}
+
+.theme-option:hover {
+  background-color: var(--bg-hover);
+}
+
+.theme-option.active {
+  background-color: var(--bg-active);
+  color: var(--color-primary);
+}
+
+.option-icon {
+  font-size: 16px;
+  min-width: 20px;
+}
+
+.option-label {
+  flex: 1;
+  font-weight: 500;
+}
+
+.option-time {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: normal;
+}
+
+.theme-option.active .option-time {
+  color: var(--color-primary);
+}
+
+/* מידע נוסף */
+.theme-info {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-light);
+  background-color: var(--bg-secondary);
+}
+
+.theme-info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.theme-info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-label {
+  color: var(--text-secondary);
+}
+
+.info-value {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* אינדיקטור מצב אוטומטי */
+.auto-indicator {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  background-color: var(--color-primary);
+  border: 2px solid var(--bg-card);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: auto-pulse 2s infinite;
+}
+
+.auto-icon {
+  font-size: 8px;
+  color: white;
+}
+
+@keyframes auto-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* התאמות למצב לילה */
+[data-theme="dark"] .theme-toggle {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-medium);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--accent-blue);
+}
+
+[data-theme="dark"] .theme-menu {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .theme-option.active {
+  background-color: var(--bg-active);
+  color: var(--accent-blue);
+}
+
+[data-theme="dark"] .theme-info {
+  background-color: var(--bg-tertiary);
+}
+
+/* התאמות למובייל */
+@media (max-width: 768px) {
+  .theme-menu {
+    right: -50px;
+    min-width: 200px;
+  }
+  
+  .theme-toggle-large .theme-menu {
+    right: -80px;
+    min-width: 250px;
+  }
+}
+
+/* התאמות לגישה */
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle,
+  .theme-menu,
+  .theme-option {
+    transition: none;
+  }
+  
+  .theme-toggle.animating {
+    animation: none;
+  }
+  
+  .auto-indicator {
+    animation: none;
+  }
+}
+
+/* מצב מיקוד */
+.theme-toggle:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.theme-option:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+/* מצב נגישות */
+@media (prefers-contrast: high) {
+  .theme-toggle {
+    border-width: 3px;
+  }
+  
+  .theme-menu {
+    border-width: 2px;
+  }
+}
+
+/* מצב הדפסה */
+@media print {
+  .theme-toggle-container {
+    display: none;
+  }
+}

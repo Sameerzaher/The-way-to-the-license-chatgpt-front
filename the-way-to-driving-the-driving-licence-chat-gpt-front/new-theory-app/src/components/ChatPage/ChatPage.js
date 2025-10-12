@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ChatPage.css";
+import { useStreakTracker } from "../../hooks/useStreakTracker";
 
 const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:3000";
 
@@ -9,6 +10,7 @@ export default function ChatPage({ user, course, lang }) {
   const [sending, setSending] = useState(false);
   const [userId, setUserId] = useState("");
   const chatWindowRef = useRef(null);
+  const { trackQuestion } = useStreakTracker();
 
   const labels = {
     chatTitle: lang === 'ar' ? 'دردشة مع ChatGPT حول الأسئلة' : 'צʼאט עם ChatGPT לגבי השאלות',
@@ -58,6 +60,17 @@ export default function ChatPage({ user, course, lang }) {
       if (!res.ok) {
         console.error("Server error:", res.status, data);
         throw new Error(data.error || "שגיאה בשרת");
+      }
+
+      console.log('🔥 ChatPage received data:', data);
+
+      // עדכון רצף למידה אם יש מידע על התשובה
+      if (data.answerStatus && data.answerStatus.isCorrect !== undefined) {
+        console.log('🔥 About to call trackQuestion from ChatPage with:', data.answerStatus.isCorrect);
+        trackQuestion(data.answerStatus.isCorrect);
+        console.log('🔥 Streak updated from ChatPage:', data.answerStatus.isCorrect ? 'Correct answer' : 'Wrong answer');
+      } else {
+        console.log('🔥 No answerStatus in response, data keys:', Object.keys(data));
       }
 
       const botMsg = {

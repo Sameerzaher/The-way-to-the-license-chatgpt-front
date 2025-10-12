@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Icon from '../Icons/Icon';
+import ThemeToggle from '../ThemeToggle/ThemeToggle';
+import StreakBadge from '../StreakBadge/StreakBadge';
+import NotificationCenter from '../NotificationCenter/NotificationCenter';
 import './Sidebar.css';
 import {
   fetchTopicProgress,
@@ -169,6 +172,7 @@ const Sidebar = ({ user, lang }) => {
     chatWithGpt: lang === 'ar' ? 'دردشة مع GPT' : "צ'אט עם GPT",
     errorAnalysis: lang === 'ar' ? 'تحليل أنماط الأخطاء' : 'ניתוח דפוסי טעויות',
     chartsDashboard: lang === 'ar' ? 'لوحة الرسوم البيانية' : 'דשבורד גרפים',
+    streakDashboard: lang === 'ar' ? 'لوحة الرصيد' : 'רצף למידה',
     "חוקי התנועה": lang === 'ar' ? 'قوانين المرور' : 'חוקי התנועה',
     "תמרורים": lang === 'ar' ? 'إشارات المرور' : 'תמרורים',
     "בטיחות": lang === 'ar' ? 'السلامة' : 'בטיחות',
@@ -506,10 +510,17 @@ const Sidebar = ({ user, lang }) => {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <h2>{labels.menu}</h2>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <h2>{labels.menu}</h2>
+          <NotificationCenter />
+        </div>
       </div>
 
       <div className="sidebar-content">
+        {/* רצף למידה */}
+        <div className="sidebar-section streak-section">
+          <StreakBadge />
+        </div>
         <div className="sidebar-section">
           <h3>{labels.theory}</h3>
           <ProgressBar 
@@ -567,6 +578,10 @@ const Sidebar = ({ user, lang }) => {
             <Icon name="dashboard" />
             {labels.chartsDashboard}
           </Link>
+          <Link to="/streak-dashboard" className={`sidebar-link ${isActive('/streak-dashboard') ? 'active' : ''}`}>
+            <Icon name="fire" />
+            {labels.streakDashboard}
+          </Link>
         </div>
 
         <div className="sidebar-section">
@@ -596,6 +611,13 @@ const Sidebar = ({ user, lang }) => {
           </div>
           <Link to="/psychology/questions" className={`sidebar-link ${isActive('/psychology/questions') ? 'active' : ''}`}>{labels.selectQuestion}</Link>
           <Link to="/psychology/chat" className={`sidebar-link ${isActive('/psychology/chat') ? 'active' : ''}`}>{labels.chatWithGpt}</Link>
+        </div>
+        
+        {/* Theme Toggle */}
+        <div className="sidebar-theme-section">
+          <div className="theme-toggle-wrapper">
+            <ThemeToggle size="medium" showLabel={true} showAutoMode={true} />
+          </div>
         </div>
       </div>
     </div>

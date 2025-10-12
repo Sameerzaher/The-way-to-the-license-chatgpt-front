@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../Icons/Icon';
+import { ensureUser } from '../../utils/demoUser';
+import { useStreakTracker } from '../../hooks/useStreakTracker';
 import './MockExam.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
@@ -17,7 +19,8 @@ function MockExam() {
   const [isLoading, setIsLoading] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
 
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const user = ensureUser();
+  const { trackQuestion } = useStreakTracker();
 
   // טיימר
   useEffect(() => {
@@ -136,6 +139,14 @@ function MockExam() {
         throw new Error('Failed to submit answer');
       }
 
+      // בדיקה אם התשובה נכונה
+      const isCorrect = selectedAnswer === currentQuestion.correctAnswerIndex;
+      
+      // עדכון רצף למידה
+      console.log('🔥 About to call trackQuestion with:', isCorrect);
+      trackQuestion(isCorrect);
+      console.log('🔥 Streak updated:', isCorrect ? 'Correct answer' : 'Wrong answer');
+
       // סימון שהשאלה נענתה
       setAnsweredQuestions(new Set([...answeredQuestions, currentQuestionIndex]));
       
@@ -153,27 +164,54 @@ function MockExam() {
 
   // סיום בחינה
   const handleCompleteExam = async () => {
-    if (!exam) return;
+    if (!exam) {
+      console.error('❌ No exam to complete');
+      alert('שגיאה: אין בחינה לסיום');
+      return;
+    }
 
     setIsLoading(true);
     try {
+      console.log('🚀 Completing exam:', exam.examId);
+      
       const response = await fetch(`${API_URL}/exams/${exam.examId}/complete`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });
 
+      console.log('📡 Complete exam response status:', response.status);
+
       if (!response.ok) {
-        throw new Error('Failed to complete exam');
+        let errorMessage = 'Failed to complete exam';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorData.message || errorMessage;
+          console.error('❌ Server error:', errorData);
+        } catch (parseError) {
+          console.error('❌ Could not parse error response:', parseError);
+          const errorText = await response.text();
+          console.error('❌ Raw error response:', errorText);
+          errorMessage = `Server error (${response.status}): ${errorText.substring(0, 100)}`;
+        }
+        throw new Error(errorMessage);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const responseText = await response.text();
+        console.error('❌ Non-JSON response:', responseText);
+        throw new Error('Server returned non-JSON response');
       }
 
       const results = await response.json();
+      console.log('✅ Exam completed successfully:', results);
       
       // מעבר לעמוד תוצאות
       navigate(`/exam-results/${exam.examId}`, { state: { results } });
 
     } catch (error) {
-      console.error('Error completing exam:', error);
-      alert('שגיאה בסיום הבחינה');
+      console.error('❌ Error completing exam:', error);
+      alert(`שגיאה בסיום הבחינה: ${error.message}`);
     } finally {
       setIsLoading(false);
     }

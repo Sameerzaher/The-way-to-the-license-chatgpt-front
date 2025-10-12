@@ -73,6 +73,11 @@
   font-family: Arial, sans-serif;
 }
 
+.icon-fire::before {
+  content: "🔥";
+  font-family: Arial, sans-serif;
+}
+
 .icon-menu::before {
   content: "☰";
   font-family: Arial, sans-serif;

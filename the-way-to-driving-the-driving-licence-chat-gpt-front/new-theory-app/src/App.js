@@ -13,14 +13,18 @@ import ExamAchievements from "./components/ExamAchievements/ExamAchievements";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import ErrorPatternDashboard from "./components/ErrorPatternDashboard/ErrorPatternDashboard";
 import AdvancedChartsDashboard from "./components/AdvancedChartsDashboard/AdvancedChartsDashboard";
+import StreakDashboard from "./components/StreakDashboard/StreakDashboard";
 import { LoadingProvider } from "./contexts/LoadingContext";
 import { ProgressProvider } from "./contexts/ProgressContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import { StreakProvider } from "./contexts/StreakContext";
 import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
 import OfflineIndicator from "./components/OfflineIndicator/OfflineIndicator";
 import ProgressNotification from "./components/ProgressNotification/ProgressNotification";
 import { validateUser, validateLocalStorageData } from "./utils/validation";
 import { checkRefreshLoop } from "./utils/emergencyStop";
 import "./App.css";
+import "./styles/themes.css";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -172,12 +176,14 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <LoadingProvider>
-        <ProgressProvider>
-          <LoadingSpinner />
-          <OfflineIndicator />
-          <ProgressNotification />
-        <div>
+      <ThemeProvider>
+        <StreakProvider>
+          <LoadingProvider>
+            <ProgressProvider>
+              <LoadingSpinner />
+              <OfflineIndicator />
+              <ProgressNotification />
+              <div>
       {/* Emergency Stop Button */}
       <button 
         onClick={handleEmergencyStop}
@@ -359,9 +365,13 @@ export default function App() {
             />
             
             {/* Advanced Charts Dashboard Route */}
-            <Route 
-              path="/charts-dashboard" 
-              element={<AdvancedChartsDashboard userId="demo_user_test_123" />} 
+            <Route
+              path="/charts-dashboard"
+              element={<AdvancedChartsDashboard userId="demo_user_test_123" />}
+            />
+            <Route
+              path="/streak-dashboard"
+              element={<StreakDashboard />}
             />
 
             {/* Default redirect */}
@@ -374,8 +384,10 @@ export default function App() {
         </main>
       </div>
     </div>
-        </ProgressProvider>
-      </LoadingProvider>
+            </ProgressProvider>
+          </LoadingProvider>
+        </StreakProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

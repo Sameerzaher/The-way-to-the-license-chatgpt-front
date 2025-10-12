@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import TheoryQuiz from "../TheoryQuiz/TheoryQuiz";
+import { useStreakTracker } from "../../hooks/useStreakTracker";
 import "./QuestionSelector.css";
 
 // Import new components
@@ -17,6 +18,7 @@ import SingleQuestionView from "../SingleQuestionView/SingleQuestionView";
 
 export default function QuestionSelector({ user, course, lang, onChangeLang }) {
   const location = useLocation();
+  const { trackQuestion } = useStreakTracker();
   const [inputId, setInputId] = useState("");
   const [chosenId, setChosenId] = useState(null);
   const [feedback, setFeedback] = useState("");
@@ -186,6 +188,11 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
     if (currentQuestion.correctAnswer && currentQuestion.correctAnswer.trim()) {
       isCorrect = normalize(selectedAnswer) === normalize(currentQuestion.correctAnswer);
       hasCorrectAnswer = true;
+      
+      // עדכון רצף למידה
+      console.log('🔥 About to call trackQuestion in QuestionSelector with:', isCorrect);
+      trackQuestion(isCorrect);
+      console.log('🔥 Streak updated in QuestionSelector:', isCorrect ? 'Correct answer' : 'Wrong answer');
     } else {
       // אם אין תשובה נכונה מוגדרת, נשתמש ב-AI לבדיקה
       isCorrect = false; // נגדיר כ-false עד שנקבל פידבק מה-AI
@@ -332,8 +339,18 @@ export default function QuestionSelector({ user, course, lang, onChangeLang }) {
                 }
                 return updatedResults;
               });
+              
+              // עדכון רצף למידה
+              console.log('🔥 About to call trackQuestion from GPT analysis with:', true);
+              trackQuestion(true);
+              console.log('🔥 Streak updated from GPT analysis: Correct answer');
             } else if (hasNegativeKeywords) {
               console.log('AI determined answer is incorrect');
+              
+              // עדכון רצף למידה
+              console.log('🔥 About to call trackQuestion from GPT analysis with:', false);
+              trackQuestion(false);
+              console.log('🔥 Streak updated from GPT analysis: Wrong answer');
             } else {
               console.log('AI response is ambiguous');
             }

@@ -663,3 +663,81 @@
     color: #bdc3c7;
   }
 }
+
+/* Dark Mode Support */
+[data-theme="dark"] .advanced-charts-dashboard {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .dashboard-header {
+  background: linear-gradient(135deg, #4dabf7 0%, #9b59b6 100%);
+  box-shadow: 0 10px 30px rgba(77, 171, 247, 0.3);
+}
+
+[data-theme="dark"] .chart-controls,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .chart-container,
+[data-theme="dark"] .analysis-insights {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .control-group label,
+[data-theme="dark"] .chart-container h3,
+[data-theme="dark"] .analysis-insights h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .chart-select,
+[data-theme="dark"] .timeframe-select {
+  background: #1a1a1a;
+  color: #ffffff;
+  border-color: #4dabf7;
+}
+
+[data-theme="dark"] .stat-value {
+  color: #4dabf7;
+}
+
+[data-theme="dark"] .stat-label,
+[data-theme="dark"] .today-stat-label {
+  color: #b3b3b3;
+}
+
+[data-theme="dark"] .progress-item,
+[data-theme="dark"] .today-stat {
+  background: #3a3a3a;
+  border: 1px solid #404040;
+}
+
+[data-theme="dark"] .category-name {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .progress-percentage {
+  color: #4dabf7;
+}
+
+[data-theme="dark"] .progress-details {
+  color: #b3b3b3;
+}
+
+[data-theme="dark"] .insight-card {
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+  border-right-color: #4dabf7;
+  border: 1px solid #404040;
+}
+
+[data-theme="dark"] .insight-card h4 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .insight-card p {
+  color: #4dabf7;
+}
+
+[data-theme="dark"] .insight-card small {
+  color: #b3b3b3;
+}
