@@ -191,6 +191,37 @@
   z-index: 1;
 }
 
+.stat-icon-wrapper {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  padding: 12px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-card:hover .stat-icon-wrapper {
+  transform: scale(1.15) rotate(5deg);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.stat-icon-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover .stat-icon-svg {
+  filter: drop-shadow(0 6px 20px rgba(255, 255, 255, 0.4));
+}
+
 .stat-content {
   position: relative;
   z-index: 1;

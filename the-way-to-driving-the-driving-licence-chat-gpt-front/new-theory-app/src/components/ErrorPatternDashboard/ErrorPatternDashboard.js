@@ -63,21 +63,59 @@ const ErrorPatternDashboard = ({ userId }) => {
       {/* סטטיסטיקות מהירות */}
       <div className="quick-stats">
         <div className="stat-card">
-          <div className="stat-icon">📝</div>
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="url(#gradient-questions)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M14 2v6h6" stroke="url(#gradient-questions)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M9 13h6M9 17h6" stroke="url(#gradient-questions)" strokeWidth="2" strokeLinecap="round"/>
+              <defs>
+                <linearGradient id="gradient-questions" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#667eea" />
+                  <stop offset="100%" stopColor="#764ba2" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           <div className="stat-content">
             <div className="stat-value">{summary.totalQuestions}</div>
             <div className="stat-label">שאלות</div>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">❌</div>
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="url(#gradient-errors)" strokeWidth="2"/>
+              <path d="M15 9l-6 6M9 9l6 6" stroke="url(#gradient-errors)" strokeWidth="2" strokeLinecap="round"/>
+              <defs>
+                <linearGradient id="gradient-errors" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#ef4444" />
+                  <stop offset="100%" stopColor="#dc2626" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           <div className="stat-content">
             <div className="stat-value">{summary.totalErrors}</div>
             <div className="stat-label">טעויות</div>
           </div>
         </div>
         <div className="stat-card error-rate">
-          <div className="stat-icon">📊</div>
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 3v18h18" stroke="url(#gradient-error-rate)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M18 17l-5-5-3 3-5-5" stroke="url(#gradient-error-rate)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="5" cy="10" r="1.5" fill="url(#gradient-error-rate)"/>
+              <circle cx="10" cy="15" r="1.5" fill="url(#gradient-error-rate)"/>
+              <circle cx="13" cy="12" r="1.5" fill="url(#gradient-error-rate)"/>
+              <circle cx="18" cy="7" r="1.5" fill="url(#gradient-error-rate)"/>
+              <defs>
+                <linearGradient id="gradient-error-rate" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#f59e0b" />
+                  <stop offset="100%" stopColor="#d97706" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           <div className="stat-content">
             <div className="stat-value">{summary.errorRate}%</div>
             <div className="stat-label">אחוז טעויות</div>

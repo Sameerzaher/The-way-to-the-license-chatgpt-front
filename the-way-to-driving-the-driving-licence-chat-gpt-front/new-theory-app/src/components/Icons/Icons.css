@@ -103,6 +103,11 @@
   font-family: Arial, sans-serif;
 }
 
+.icon-teacher::before {
+  content: "🤖";
+  font-family: Arial, sans-serif;
+}
+
 .icon-target::before {
   content: "🎯";
   font-family: Arial, sans-serif;

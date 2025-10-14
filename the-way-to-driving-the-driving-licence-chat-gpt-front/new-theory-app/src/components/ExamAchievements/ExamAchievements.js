@@ -67,8 +67,16 @@ function ExamAchievements({ user }) {
       {/* סטטיסטיקות */}
       <div className="achievements-stats">
         <div className="stat-card">
-          <div className="stat-icon">
-            <Icon name="target" size="large" />
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#gradient-unlocked)" stroke="url(#gradient-unlocked)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <defs>
+                <linearGradient id="gradient-unlocked" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#10b981" />
+                  <stop offset="100%" stopColor="#059669" />
+                </linearGradient>
+              </defs>
+            </svg>
           </div>
           <div className="stat-info">
             <div className="stat-number">{unlockedCount}</div>
@@ -77,8 +85,17 @@ function ExamAchievements({ user }) {
         </div>
         
         <div className="stat-card">
-          <div className="stat-icon">
-            <Icon name="dashboard" size="large" />
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" fill="url(#gradient-completion)" stroke="url(#gradient-completion)" strokeWidth="2"/>
+              <path d="M8 12L11 15L16 9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <defs>
+                <linearGradient id="gradient-completion" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#3b82f6" />
+                  <stop offset="100%" stopColor="#2563eb" />
+                </linearGradient>
+              </defs>
+            </svg>
           </div>
           <div className="stat-info">
             <div className="stat-number">{completionPercentage}%</div>
@@ -87,8 +104,16 @@ function ExamAchievements({ user }) {
         </div>
         
         <div className="stat-card">
-          <div className="stat-icon">
-            <Icon name="achievements" size="large" />
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L13.09 5.09L16 2.82L15.27 6.27L19 6.64L16.18 8.91L18.36 12L15.27 12.36L16 16L13.09 13.73L12 17L10.91 13.73L8 16L8.73 12.36L5.64 12L7.82 8.91L5 6.64L8.73 6.27L8 2.82L10.91 5.09L12 2Z" fill="url(#gradient-total)" stroke="url(#gradient-total)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <defs>
+                <linearGradient id="gradient-total" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#f59e0b" />
+                  <stop offset="100%" stopColor="#d97706" />
+                </linearGradient>
+              </defs>
+            </svg>
           </div>
           <div className="stat-info">
             <div className="stat-number">{totalCount}</div>

@@ -83,22 +83,71 @@ const StreakDashboard = () => {
       {/* סטטיסטיקות ראשיות */}
       <div className="main-stats">
         <div className="stat-card">
-          <div className="stat-icon">🔥</div>
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C12 2 7 7 7 12c0 2.8 2.2 5 5 5s5-2.2 5-5c0-5-5-10-5-10z" fill="url(#gradient-current-streak)" stroke="url(#gradient-current-streak)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 17c-1.1 0-2-.9-2-2 0-1.7 2-3.5 2-3.5s2 1.8 2 3.5c0 1.1-.9 2-2 2z" fill="white" opacity="0.5"/>
+              <defs>
+                <linearGradient id="gradient-current-streak" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#f97316" />
+                  <stop offset="100%" stopColor="#ea580c" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           <div className="stat-value">{streakData.currentStreak}</div>
           <div className="stat-label">רצף נוכחי</div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">🏆</div>
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#gradient-longest)" stroke="url(#gradient-longest)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <defs>
+                <linearGradient id="gradient-longest" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FFD700" />
+                  <stop offset="100%" stopColor="#FFA500" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           <div className="stat-value">{streakData.longestStreak}</div>
           <div className="stat-label">רצף הכי ארוך</div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">📅</div>
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="4" width="18" height="18" rx="2" stroke="url(#gradient-total-days)" strokeWidth="2"/>
+              <path d="M16 2v4M8 2v4M3 10h18" stroke="url(#gradient-total-days)" strokeWidth="2" strokeLinecap="round"/>
+              <circle cx="8" cy="14" r="1" fill="url(#gradient-total-days)"/>
+              <circle cx="12" cy="14" r="1" fill="url(#gradient-total-days)"/>
+              <circle cx="16" cy="14" r="1" fill="url(#gradient-total-days)"/>
+              <circle cx="8" cy="18" r="1" fill="url(#gradient-total-days)"/>
+              <circle cx="12" cy="18" r="1" fill="url(#gradient-total-days)"/>
+              <defs>
+                <linearGradient id="gradient-total-days" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#667eea" />
+                  <stop offset="100%" stopColor="#764ba2" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           <div className="stat-value">{streakData.totalDays}</div>
           <div className="stat-label">סה"כ ימי למידה</div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">🎯</div>
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="url(#gradient-daily-goal)" strokeWidth="2"/>
+              <circle cx="12" cy="12" r="6" stroke="url(#gradient-daily-goal)" strokeWidth="2"/>
+              <circle cx="12" cy="12" r="2" fill="url(#gradient-daily-goal)"/>
+              <defs>
+                <linearGradient id="gradient-daily-goal" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#10b981" />
+                  <stop offset="100%" stopColor="#059669" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           <div className="stat-value">
             {streakData.todayActivity.questionsAnswered}/{streakData.todayActivity.goal}
           </div>
@@ -176,17 +225,52 @@ const StreakDashboard = () => {
         <h3>📈 סטטיסטיקות היום</h3>
         <div className="today-stats-grid">
           <div className="today-stat">
-            <div className="today-stat-icon">📝</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="url(#gradient-questions-answered)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M14 2v6h6" stroke="url(#gradient-questions-answered)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M9 13h6M9 17h6" stroke="url(#gradient-questions-answered)" strokeWidth="2" strokeLinecap="round"/>
+                <defs>
+                  <linearGradient id="gradient-questions-answered" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#3b82f6" />
+                    <stop offset="100%" stopColor="#2563eb" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="today-stat-value">{streakData.todayActivity.questionsAnswered}</div>
             <div className="today-stat-label">שאלות נענו</div>
           </div>
           <div className="today-stat">
-            <div className="today-stat-icon">✅</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="url(#gradient-correct-today)" strokeWidth="2"/>
+                <path d="M8 12l3 3 5-6" stroke="url(#gradient-correct-today)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <defs>
+                  <linearGradient id="gradient-correct-today" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#10b981" />
+                    <stop offset="100%" stopColor="#059669" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="today-stat-value">{streakData.todayActivity.correctAnswers}</div>
             <div className="today-stat-label">תשובות נכונות</div>
           </div>
           <div className="today-stat">
-            <div className="today-stat-icon">🎯</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="url(#gradient-success-rate)" strokeWidth="2"/>
+                <circle cx="12" cy="12" r="6" stroke="url(#gradient-success-rate)" strokeWidth="2"/>
+                <circle cx="12" cy="12" r="2" fill="url(#gradient-success-rate)"/>
+                <defs>
+                  <linearGradient id="gradient-success-rate" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#f59e0b" />
+                    <stop offset="100%" stopColor="#d97706" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="today-stat-value">
               {streakData.todayActivity.questionsAnswered > 0 
                 ? Math.round((streakData.todayActivity.correctAnswers / streakData.todayActivity.questionsAnswered) * 100)
@@ -195,7 +279,18 @@ const StreakDashboard = () => {
             <div className="today-stat-label">אחוז הצלחה</div>
           </div>
           <div className="today-stat">
-            <div className="today-stat-icon">⏱️</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="url(#gradient-time-spent)" strokeWidth="2"/>
+                <path d="M12 6v6l4 2" stroke="url(#gradient-time-spent)" strokeWidth="2" strokeLinecap="round"/>
+                <defs>
+                  <linearGradient id="gradient-time-spent" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#8b5cf6" />
+                    <stop offset="100%" stopColor="#7c3aed" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="today-stat-value">{streakData.todayActivity.timeSpent}</div>
             <div className="today-stat-label">דקות למידה</div>
           </div>

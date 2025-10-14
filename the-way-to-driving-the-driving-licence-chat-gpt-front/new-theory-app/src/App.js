@@ -14,10 +14,12 @@ import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import ErrorPatternDashboard from "./components/ErrorPatternDashboard/ErrorPatternDashboard";
 import AdvancedChartsDashboard from "./components/AdvancedChartsDashboard/AdvancedChartsDashboard";
 import StreakDashboard from "./components/StreakDashboard/StreakDashboard";
+import VirtualTeacher from "./components/VirtualTeacher/VirtualTeacher";
 import { LoadingProvider } from "./contexts/LoadingContext";
 import { ProgressProvider } from "./contexts/ProgressContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { StreakProvider } from "./contexts/StreakContext";
+import { VirtualTeacherProvider } from "./contexts/VirtualTeacherContext";
 import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
 import OfflineIndicator from "./components/OfflineIndicator/OfflineIndicator";
 import ProgressNotification from "./components/ProgressNotification/ProgressNotification";
@@ -178,8 +180,9 @@ export default function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <StreakProvider>
-          <LoadingProvider>
-            <ProgressProvider>
+          <VirtualTeacherProvider>
+            <LoadingProvider>
+              <ProgressProvider>
               <LoadingSpinner />
               <OfflineIndicator />
               <ProgressNotification />
@@ -374,6 +377,12 @@ export default function App() {
               element={<StreakDashboard />}
             />
 
+            {/* Virtual Teacher Route */}
+            <Route
+              path="/virtual-teacher"
+              element={<VirtualTeacher userId="demo_user_test_123" />}
+            />
+
             {/* Default redirect */}
             <Route 
               path="/" 
@@ -384,8 +393,9 @@ export default function App() {
         </main>
       </div>
     </div>
-            </ProgressProvider>
-          </LoadingProvider>
+              </ProgressProvider>
+            </LoadingProvider>
+          </VirtualTeacherProvider>
         </StreakProvider>
       </ThemeProvider>
     </ErrorBoundary>

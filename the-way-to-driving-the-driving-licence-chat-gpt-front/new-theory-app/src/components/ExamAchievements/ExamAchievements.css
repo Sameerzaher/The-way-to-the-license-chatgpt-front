@@ -116,6 +116,35 @@
   color: white;
 }
 
+.stat-icon-wrapper {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-radius: 18px;
+  padding: 12px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.stat-card:hover .stat-icon-wrapper {
+  transform: scale(1.15) rotate(5deg);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+}
+
+.stat-icon-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover .stat-icon-svg {
+  filter: drop-shadow(0 6px 20px rgba(102, 126, 234, 0.4));
+}
+
 .stat-info {
   flex: 1;
 }
@@ -496,4 +525,200 @@
 .achievement-card.unlocked:hover {
   animation: none;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 0 25px rgba(76, 175, 80, 0.8);
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .exam-achievements-container {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+[data-theme="dark"] .achievements-header {
+  background: linear-gradient(135deg, #4dabf7 0%, #9b59b6 100%);
+  box-shadow: 0 20px 60px rgba(77, 171, 247, 0.3);
+}
+
+[data-theme="dark"] .stat-card {
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+  border-color: #4a5568;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .stat-card:hover {
+  box-shadow: 0 15px 40px rgba(77, 171, 247, 0.3);
+}
+
+[data-theme="dark"] .stat-icon-wrapper {
+  background: linear-gradient(135deg, rgba(77, 171, 247, 0.15) 0%, rgba(155, 89, 182, 0.15) 100%);
+}
+
+[data-theme="dark"] .stat-card:hover .stat-icon-wrapper {
+  background: linear-gradient(135deg, rgba(77, 171, 247, 0.25) 0%, rgba(155, 89, 182, 0.25) 100%);
+}
+
+[data-theme="dark"] .stat-icon-svg {
+  filter: drop-shadow(0 4px 12px rgba(77, 171, 247, 0.3));
+}
+
+[data-theme="dark"] .stat-card:hover .stat-icon-svg {
+  filter: drop-shadow(0 6px 20px rgba(77, 171, 247, 0.5));
+}
+
+[data-theme="dark"] .stat-number {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .stat-label {
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .progress-section {
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+}
+
+[data-theme="dark"] .progress-section h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .progress-bar {
+  background: #1a1a1a;
+}
+
+[data-theme="dark"] .progress-text {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .filter-btn {
+  background: #3a3a3a;
+  color: #ffffff;
+  border: 1px solid #4a5568;
+}
+
+[data-theme="dark"] .filter-btn:hover {
+  background: #4a5568;
+}
+
+[data-theme="dark"] .filter-btn.active {
+  background: linear-gradient(135deg, #4dabf7 0%, #9b59b6 100%);
+  border-color: #4dabf7;
+}
+
+[data-theme="dark"] .achievement-card {
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+  border-color: #4a5568;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .achievement-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .achievement-card.unlocked {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #2d2d2d 0%, #2d3a2f 100%);
+}
+
+[data-theme="dark"] .achievement-card.locked {
+  background: #1a1a1a;
+  border-color: #3a3a3a;
+}
+
+[data-theme="dark"] .achievement-name {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .achievement-description {
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .achievement-unlocked {
+  border-top-color: rgba(16, 185, 129, 0.3);
+}
+
+[data-theme="dark"] .unlocked-date {
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .achievement-locked {
+  border-top-color: #4a5568;
+}
+
+[data-theme="dark"] .locked-badge {
+  background: #3a3a3a;
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .unlocked-status {
+  background: rgba(16, 185, 129, 0.15);
+}
+
+[data-theme="dark"] .locked-status {
+  background: rgba(74, 85, 104, 0.3);
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .no-achievements {
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+}
+
+[data-theme="dark"] .no-achievements h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .no-achievements p {
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .recent-achievements {
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+}
+
+[data-theme="dark"] .recent-achievements h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .recent-item {
+  background: #1a1a1a;
+}
+
+[data-theme="dark"] .recent-item:hover {
+  background: #3a3a3a;
+}
+
+[data-theme="dark"] .recent-name {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .recent-date {
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .loading {
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .spinner {
+  border-color: #4a5568;
+  border-top-color: #4dabf7;
+}
+
+[data-theme="dark"] .achievement-card.unlocked::before {
+  background: linear-gradient(45deg, transparent, rgba(16, 185, 129, 0.15), transparent);
+}
+
+[data-theme="dark"] .achievement-card.unlocked {
+  animation: glow-dark 3s ease-in-out infinite alternate;
+}
+
+@keyframes glow-dark {
+  from {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(16, 185, 129, 0.4);
+  }
+  to {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4), 0 0 30px rgba(16, 185, 129, 0.8);
+  }
+}
+
+[data-theme="dark"] .achievement-card.unlocked:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(16, 185, 129, 0.8);
 }

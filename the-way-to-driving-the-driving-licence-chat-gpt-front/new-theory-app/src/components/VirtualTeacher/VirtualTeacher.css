@@ -1,0 +1,517 @@
+.virtual-teacher {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  direction: rtl;
+}
+
+/* כותרת */
+.teacher-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  color: white;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.teacher-avatar {
+  font-size: 64px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.teacher-info h1 {
+  margin: 0 0 5px 0;
+  font-size: 28px;
+}
+
+.teacher-info p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 16px;
+}
+
+.teacher-stats-summary {
+  display: flex;
+  gap: 30px;
+  margin-right: auto;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.stat-label {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* ניתוח מהיר */
+.quick-analysis {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.quick-analysis h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+.analysis-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.analysis-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 10px;
+  transition: transform 0.2s;
+}
+
+.analysis-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-icon {
+  font-size: 36px;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-label {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.card-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* טאבים */
+.teacher-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  flex: 1;
+  padding: 15px 20px;
+  border: none;
+  background: white;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tab:hover {
+  background: #f5f7fa;
+  transform: translateY(-2px);
+}
+
+.tab.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* תוכן */
+.teacher-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  min-height: 500px;
+}
+
+/* עצות */
+.advice-tab, .plan-tab, .analysis-tab {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.advice-section, .ai-advice-section, .plan-section, .ai-plan-section,
+.analysis-section, .prediction-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.advice-section h3, .ai-advice-section h3, .plan-section h3,
+.analysis-section h3, .prediction-section h3 {
+  margin: 0;
+  color: #333;
+}
+
+.advice-card {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(252, 182, 159, 0.3);
+}
+
+.advice-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.advice-type {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.advice-priority {
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.priority-high {
+  background: #ff6b6b;
+  color: white;
+}
+
+.priority-medium {
+  background: #ffd93d;
+  color: #333;
+}
+
+.priority-low {
+  background: #6bcf7f;
+  color: white;
+}
+
+.advice-message {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 15px 0;
+  white-space: pre-line;
+}
+
+.action-items h4 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.action-items ul {
+  margin: 0;
+  padding-right: 20px;
+}
+
+.action-items li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+/* כפתורים */
+.btn-primary, .btn-secondary {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
+}
+
+.btn-primary:disabled, .btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* תגובת AI */
+.ai-response {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  border-right: 4px solid #667eea;
+}
+
+.ai-response p {
+  margin: 0;
+  line-height: 1.7;
+  color: #333;
+  white-space: pre-line;
+}
+
+.ai-response pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: inherit;
+  line-height: 1.7;
+}
+
+/* תוכנית למידה */
+.learning-plan {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.plan-header {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.learning-plan .plan-section {
+  margin-bottom: 20px;
+}
+
+.learning-plan h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.learning-plan ul {
+  margin: 0;
+  padding-right: 20px;
+}
+
+.learning-plan li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.milestone {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 15px;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.milestone-week {
+  font-weight: bold;
+  color: #667eea;
+}
+
+.milestone-reward {
+  font-size: 20px;
+}
+
+/* צ'אט */
+.chat-tab {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+}
+
+.chat-history {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.empty-chat {
+  text-align: center;
+  padding: 50px 20px;
+  color: #666;
+}
+
+.empty-chat p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.chat-message {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.chat-message.user {
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.message-content {
+  max-width: 70%;
+  padding: 15px 20px;
+  border-radius: 15px;
+  line-height: 1.6;
+}
+
+.chat-message.user .message-content {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-bottom-left-radius: 5px;
+}
+
+.chat-message.teacher .message-content {
+  background: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-bottom-right-radius: 5px;
+}
+
+.message-content p {
+  margin: 0;
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 15px 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 25px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.chat-input input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.chat-input button {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.chat-input button:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+.chat-input button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* חיזוי */
+.prediction-result {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.probability {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.probability-label {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.probability-value {
+  font-size: 36px;
+  font-weight: bold;
+  color: #333;
+}
+
+.prediction-text p {
+  margin: 0;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .teacher-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .teacher-stats-summary {
+    margin-right: 0;
+  }
+
+  .analysis-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .teacher-tabs {
+    flex-direction: column;
+  }
+
+  .advice-tab, .plan-tab, .analysis-tab {
+    grid-template-columns: 1fr;
+  }
+
+  .message-content {
+    max-width: 85%;
+  }
+}
+

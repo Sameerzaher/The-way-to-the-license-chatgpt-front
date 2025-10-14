@@ -173,6 +173,7 @@ const Sidebar = ({ user, lang }) => {
     errorAnalysis: lang === 'ar' ? 'تحليل أنماط الأخطاء' : 'ניתוח דפוסי טעויות',
     chartsDashboard: lang === 'ar' ? 'لوحة الرسوم البيانية' : 'דשבורד גרפים',
     streakDashboard: lang === 'ar' ? 'لوحة الرصيد' : 'רצף למידה',
+    virtualTeacher: lang === 'ar' ? 'المعلم الافتراضي' : 'המורה הוירטואלי',
     "חוקי התנועה": lang === 'ar' ? 'قوانين المرور' : 'חוקי התנועה',
     "תמרורים": lang === 'ar' ? 'إشارات المرور' : 'תמרורים',
     "בטיחות": lang === 'ar' ? 'السلامة' : 'בטיחות',
@@ -581,6 +582,10 @@ const Sidebar = ({ user, lang }) => {
           <Link to="/streak-dashboard" className={`sidebar-link ${isActive('/streak-dashboard') ? 'active' : ''}`}>
             <Icon name="fire" />
             {labels.streakDashboard}
+          </Link>
+          <Link to="/virtual-teacher" className={`sidebar-link ${isActive('/virtual-teacher') ? 'active' : ''}`}>
+            <Icon name="teacher" />
+            {labels.virtualTeacher}
           </Link>
         </div>
 

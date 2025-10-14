@@ -256,7 +256,17 @@ const Achievements = ({ user, lang = 'he' }) => {
         {/* סטטיסטיקות כלליות */}
         <div className="achievements-stats">
           <div className="stat-card level-card">
-            <div className="stat-icon">🏆</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#gradient1)" stroke="url(#gradient1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <defs>
+                  <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#FFD700" />
+                    <stop offset="100%" stopColor="#FFA500" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="stat-content">
               <div className="stat-label">{labels.level}</div>
               <div className="stat-value">{stats.userLevel.level}</div>
@@ -281,7 +291,17 @@ const Achievements = ({ user, lang = 'he' }) => {
           </div>
 
           <div className="stat-card points-card">
-            <div className="stat-icon">⭐</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#gradient2)" stroke="url(#gradient2)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <defs>
+                  <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#667eea" />
+                    <stop offset="100%" stopColor="#764ba2" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="stat-content">
               <div className="stat-label">{labels.totalPoints}</div>
               <div className="stat-value">{stats.totalPoints}</div>
@@ -289,7 +309,17 @@ const Achievements = ({ user, lang = 'he' }) => {
           </div>
 
           <div className="stat-card unlocked-card">
-            <div className="stat-icon">🎖️</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L13.09 5.09L16 2.82L15.27 6.27L19 6.64L16.18 8.91L18.36 12L15.27 12.36L16 16L13.09 13.73L12 17L10.91 13.73L8 16L8.73 12.36L5.64 12L7.82 8.91L5 6.64L8.73 6.27L8 2.82L10.91 5.09L12 2Z" fill="url(#gradient3)" stroke="url(#gradient3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <defs>
+                  <linearGradient id="gradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#f093fb" />
+                    <stop offset="100%" stopColor="#f5576c" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="stat-content">
               <div className="stat-label">{labels.unlockedAchievements}</div>
               <div className="stat-value">

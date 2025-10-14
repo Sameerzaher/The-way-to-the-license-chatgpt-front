@@ -204,7 +204,22 @@ const AdvancedChartsDashboard = ({ userId }) => {
     return (
       <div className="quick-stats-grid">
         <div className="stat-card">
-          <div className="stat-icon">📊</div>
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 3v18h18" stroke="url(#gradient-avg-progress)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M18 17l-5-5-3 3-5-5" stroke="url(#gradient-avg-progress)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="5" cy="10" r="1.5" fill="url(#gradient-avg-progress)"/>
+              <circle cx="10" cy="15" r="1.5" fill="url(#gradient-avg-progress)"/>
+              <circle cx="13" cy="12" r="1.5" fill="url(#gradient-avg-progress)"/>
+              <circle cx="18" cy="7" r="1.5" fill="url(#gradient-avg-progress)"/>
+              <defs>
+                <linearGradient id="gradient-avg-progress" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#667eea" />
+                  <stop offset="100%" stopColor="#764ba2" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           <div className="stat-content">
             <div className="stat-value">{averageProgress}%</div>
             <div className="stat-label">התקדמות ממוצעת</div>
@@ -212,7 +227,18 @@ const AdvancedChartsDashboard = ({ userId }) => {
         </div>
         
         <div className="stat-card">
-          <div className="stat-icon">✅</div>
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="url(#gradient-completed)" strokeWidth="2"/>
+              <path d="M8 12l3 3 5-6" stroke="url(#gradient-completed)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <defs>
+                <linearGradient id="gradient-completed" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#10b981" />
+                  <stop offset="100%" stopColor="#059669" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           <div className="stat-content">
             <div className="stat-value">{totalCompleted}</div>
             <div className="stat-label">שאלות נענו</div>
@@ -220,7 +246,17 @@ const AdvancedChartsDashboard = ({ userId }) => {
         </div>
         
         <div className="stat-card">
-          <div className="stat-icon">📈</div>
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#gradient-readiness)" stroke="url(#gradient-readiness)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <defs>
+                <linearGradient id="gradient-readiness" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#f59e0b" />
+                  <stop offset="100%" stopColor="#d97706" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           <div className="stat-content">
             <div className="stat-value">{readinessScore}/100</div>
             <div className="stat-label">ציון מוכנות</div>
@@ -228,7 +264,19 @@ const AdvancedChartsDashboard = ({ userId }) => {
         </div>
         
         <div className="stat-card">
-          <div className="stat-icon">🎯</div>
+          <div className="stat-icon-wrapper">
+            <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="url(#gradient-error-rate-chart)" strokeWidth="2"/>
+              <circle cx="12" cy="12" r="6" stroke="url(#gradient-error-rate-chart)" strokeWidth="2"/>
+              <circle cx="12" cy="12" r="2" fill="url(#gradient-error-rate-chart)"/>
+              <defs>
+                <linearGradient id="gradient-error-rate-chart" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#ef4444" />
+                  <stop offset="100%" stopColor="#dc2626" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           <div className="stat-content">
             <div className="stat-value">{errorRate}%</div>
             <div className="stat-label">אחוז טעויות</div>

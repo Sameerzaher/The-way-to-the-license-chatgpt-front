@@ -312,7 +312,22 @@ const AdvancedDashboard = ({ user, lang }) => {
             {/* Statistics Cards */}
             <div className="stats-grid">
           <div className="stat-card total">
-            <div className="stat-icon">📊</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 3v18h18" stroke="url(#gradient-total-q)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M18 17l-5-5-3 3-5-5" stroke="url(#gradient-total-q)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="5" cy="10" r="1.5" fill="url(#gradient-total-q)"/>
+                <circle cx="10" cy="15" r="1.5" fill="url(#gradient-total-q)"/>
+                <circle cx="13" cy="12" r="1.5" fill="url(#gradient-total-q)"/>
+                <circle cx="18" cy="7" r="1.5" fill="url(#gradient-total-q)"/>
+                <defs>
+                  <linearGradient id="gradient-total-q" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#667eea" />
+                    <stop offset="100%" stopColor="#764ba2" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="stat-content">
               <div className="stat-value">{dashboardData?.statistics?.totalQuestions || 0}</div>
               <div className="stat-label">{labels.totalQuestions}</div>
@@ -320,7 +335,18 @@ const AdvancedDashboard = ({ user, lang }) => {
           </div>
           
           <div className="stat-card correct">
-            <div className="stat-icon">✅</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="url(#gradient-correct)" strokeWidth="2"/>
+                <path d="M8 12l3 3 5-6" stroke="url(#gradient-correct)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <defs>
+                  <linearGradient id="gradient-correct" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#10b981" />
+                    <stop offset="100%" stopColor="#059669" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="stat-content">
               <div className="stat-value">{dashboardData?.statistics?.correctAnswers || 0}</div>
               <div className="stat-label">{labels.correctAnswers}</div>
@@ -328,7 +354,18 @@ const AdvancedDashboard = ({ user, lang }) => {
           </div>
           
           <div className="stat-card wrong">
-            <div className="stat-icon">❌</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="url(#gradient-wrong)" strokeWidth="2"/>
+                <path d="M15 9l-6 6M9 9l6 6" stroke="url(#gradient-wrong)" strokeWidth="2" strokeLinecap="round"/>
+                <defs>
+                  <linearGradient id="gradient-wrong" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ef4444" />
+                    <stop offset="100%" stopColor="#dc2626" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="stat-content">
               <div className="stat-value">{dashboardData?.statistics?.wrongAnswers || 0}</div>
               <div className="stat-label">{labels.wrongAnswers}</div>
@@ -336,7 +373,19 @@ const AdvancedDashboard = ({ user, lang }) => {
           </div>
           
           <div className="stat-card accuracy">
-            <div className="stat-icon">🎯</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="url(#gradient-accuracy)" strokeWidth="2"/>
+                <circle cx="12" cy="12" r="6" stroke="url(#gradient-accuracy)" strokeWidth="2"/>
+                <circle cx="12" cy="12" r="2" fill="url(#gradient-accuracy)"/>
+                <defs>
+                  <linearGradient id="gradient-accuracy" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#3b82f6" />
+                    <stop offset="100%" stopColor="#2563eb" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="stat-content">
               <div className="stat-value">{dashboardData?.statistics?.accuracy || 0}%</div>
               <div className="stat-label">{labels.accuracy}</div>
@@ -344,7 +393,18 @@ const AdvancedDashboard = ({ user, lang }) => {
           </div>
           
           <div className="stat-card time">
-            <div className="stat-icon">⏱️</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="url(#gradient-time)" strokeWidth="2"/>
+                <path d="M12 6v6l4 2" stroke="url(#gradient-time)" strokeWidth="2" strokeLinecap="round"/>
+                <defs>
+                  <linearGradient id="gradient-time" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#f59e0b" />
+                    <stop offset="100%" stopColor="#d97706" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="stat-content">
               <div className="stat-value">{dashboardData?.statistics?.averageTime || 0}s</div>
               <div className="stat-label">{labels.averageTime}</div>
@@ -352,7 +412,18 @@ const AdvancedDashboard = ({ user, lang }) => {
           </div>
           
           <div className="stat-card streak">
-            <div className="stat-icon">🔥</div>
+            <div className="stat-icon-wrapper">
+              <svg className="stat-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C12 2 7 7 7 12c0 2.8 2.2 5 5 5s5-2.2 5-5c0-5-5-10-5-10z" fill="url(#gradient-streak)" stroke="url(#gradient-streak)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 17c-1.1 0-2-.9-2-2 0-1.7 2-3.5 2-3.5s2 1.8 2 3.5c0 1.1-.9 2-2 2z" fill="white" opacity="0.5"/>
+                <defs>
+                  <linearGradient id="gradient-streak" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#f97316" />
+                    <stop offset="100%" stopColor="#ea580c" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div className="stat-content">
               <div className="stat-value">{dashboardData?.statistics?.streak || 0}</div>
               <div className="stat-label">{labels.streak}</div>
