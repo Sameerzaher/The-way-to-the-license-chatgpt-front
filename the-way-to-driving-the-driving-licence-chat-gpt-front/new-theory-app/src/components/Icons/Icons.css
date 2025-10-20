@@ -108,6 +108,16 @@
   font-family: Arial, sans-serif;
 }
 
+.icon-errors::before {
+  content: "📝";
+  font-family: Arial, sans-serif;
+}
+
+.icon-cards::before {
+  content: "🃏";
+  font-family: Arial, sans-serif;
+}
+
 .icon-target::before {
   content: "🎯";
   font-family: Arial, sans-serif;

@@ -15,6 +15,10 @@ import ErrorPatternDashboard from "./components/ErrorPatternDashboard/ErrorPatte
 import AdvancedChartsDashboard from "./components/AdvancedChartsDashboard/AdvancedChartsDashboard";
 import StreakDashboard from "./components/StreakDashboard/StreakDashboard";
 import VirtualTeacher from "./components/VirtualTeacher/VirtualTeacher";
+import CommonErrors from "./components/CommonErrors/CommonErrors";
+import StudyCards from "./components/StudyCards/StudyCards";
+import PWAInstaller from "./components/PWAInstaller/PWAInstaller";
+import ConnectionStatus from "./components/ConnectionStatus/ConnectionStatus";
 import { LoadingProvider } from "./contexts/LoadingContext";
 import { ProgressProvider } from "./contexts/ProgressContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -25,6 +29,7 @@ import OfflineIndicator from "./components/OfflineIndicator/OfflineIndicator";
 import ProgressNotification from "./components/ProgressNotification/ProgressNotification";
 import { validateUser, validateLocalStorageData } from "./utils/validation";
 import { checkRefreshLoop } from "./utils/emergencyStop";
+import { registerServiceWorker, requestNotificationPermission } from "./utils/pwaUtils";
 import "./App.css";
 import "./styles/themes.css";
 
@@ -77,6 +82,10 @@ export default function App() {
     if (checkRefreshLoop()) {
       return; // עצירת הטעינה אם זוהה לולאה
     }
+
+    // Initialize PWA functionality
+    registerServiceWorker();
+    requestNotificationPermission();
     
     // בדיקה מקיפה יותר של המשתמש ב-localStorage
     try {
@@ -383,6 +392,18 @@ export default function App() {
               element={<VirtualTeacher userId="demo_user_test_123" />}
             />
 
+            {/* Common Errors Route */}
+            <Route
+              path="/common-errors"
+              element={<CommonErrors userId="demo_user_test_123" lang={lang} />}
+            />
+
+            {/* Study Cards Route */}
+            <Route
+              path="/study-cards"
+              element={<StudyCards userId="demo_user_test_123" lang={lang} />}
+            />
+
             {/* Default redirect */}
             <Route 
               path="/" 
@@ -391,6 +412,10 @@ export default function App() {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
+        
+        {/* PWA Components */}
+        <PWAInstaller />
+        <ConnectionStatus />
       </div>
     </div>
               </ProgressProvider>

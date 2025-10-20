@@ -32,6 +32,8 @@ const getIconLabel = (name) => {
     star: 'כוכב',
     fire: 'אש',
     teacher: 'מורה',
+    errors: 'טעויות',
+    cards: 'כרטיסיות',
     target: 'מטרה',
     trophy: 'גביע',
     crown: 'כתר',

@@ -10,13 +10,24 @@
 
 /* Header */
 .dashboard-header {
-  text-align: center;
   margin-bottom: 30px;
   padding: 30px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 20px;
   color: white;
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-text {
+  text-align: center;
+  flex: 1;
 }
 
 .dashboard-header h1 {
@@ -29,6 +40,29 @@
   margin: 0;
   opacity: 0.9;
   font-size: 16px;
+}
+
+.refresh-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.refresh-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
 }
 
 /* Chart Controls */
@@ -702,6 +736,16 @@
 [data-theme="dark"] .dashboard-header {
   background: linear-gradient(135deg, #4dabf7 0%, #9b59b6 100%);
   box-shadow: 0 10px 30px rgba(77, 171, 247, 0.3);
+}
+
+[data-theme="dark"] .refresh-btn {
+  background: rgba(77, 171, 247, 0.2);
+  border: 1px solid rgba(77, 171, 247, 0.3);
+}
+
+[data-theme="dark"] .refresh-btn:hover {
+  background: rgba(77, 171, 247, 0.3);
+  box-shadow: 0 5px 15px rgba(77, 171, 247, 0.2);
 }
 
 [data-theme="dark"] .chart-controls,

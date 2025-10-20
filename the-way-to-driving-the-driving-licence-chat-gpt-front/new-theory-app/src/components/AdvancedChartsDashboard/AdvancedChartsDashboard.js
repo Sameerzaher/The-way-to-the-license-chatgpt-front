@@ -9,14 +9,63 @@ const AdvancedChartsDashboard = ({ userId }) => {
   const [selectedTimeframe, setSelectedTimeframe] = useState('week');
   const [chartType, setChartType] = useState('progress');
 
-  // נתוני דמו לגרפים
-  const [chartData, setChartData] = useState({
-    progress: {
-      categories: ['חוקי התנועה', 'תמרורים', 'בטיחות', 'הכרת הרכב'],
-      completed: [45, 28, 12, 16],
-      total: [950, 382, 370, 100],
+  // לוג ראשוני
+  console.log('🎯 AdvancedChartsDashboard: Component rendered with:', {
+    theoryProgress,
+    theorySubProgress,
+    userId
+  });
+
+  // חישוב נתונים אמיתיים מההתקדמות
+  const calculateRealData = () => {
+    const categories = ['חוקי התנועה', 'תמרורים', 'בטיחות', 'הכרת הרכב'];
+    const completed = [];
+    const total = [];
+    
+    console.log('🔄 calculateRealData: theorySubProgress =', theorySubProgress);
+    
+    // חישוב לפי נתוני ההתקדמות האמיתיים
+    categories.forEach(category => {
+      const categoryProgress = theorySubProgress[category] || {};
+      
+      // אם יש נתונים במבנה החדש (מה-Sidebar)
+      let completedCount = 0;
+      let totalCount = 0;
+      
+      if (categoryProgress.completed !== undefined && categoryProgress.total !== undefined) {
+        // מבנה חדש: {completed: X, total: Y, percent: Z}
+        completedCount = categoryProgress.completed || 0;
+        totalCount = categoryProgress.total || 0;
+      } else {
+        // מבנה ישן: {questionId: {...}, questionId2: {...}}
+        completedCount = Object.keys(categoryProgress).length;
+        // הערכת סה"כ שאלות לפי קטגוריה
+        const totalEstimate = {
+          'חוקי התנועה': 950,
+          'תמרורים': 382, 
+          'בטיחות': 370,
+          'הכרת הרכב': 100
+        };
+        totalCount = totalEstimate[category] || 100;
+      }
+      
+      completed.push(completedCount);
+      total.push(totalCount);
+      
+      console.log(`📊 ${category}: ${completedCount}/${totalCount}`);
+    });
+
+    return {
+      categories,
+      completed,
+      total,
       colors: ['#3498db', '#e74c3c', '#f39c12', '#2ecc71']
-    },
+    };
+  };
+
+  // נתוני גרפים מעודכנים
+  const [chartData, setChartData] = useState({
+    progress: calculateRealData(),
     timeline: {
       labels: ['שבוע 1', 'שבוע 2', 'שבוע 3', 'שבוע 4'],
       progress: [15, 28, 35, 42],
@@ -40,6 +89,37 @@ const AdvancedChartsDashboard = ({ userId }) => {
       }
     }
   });
+
+  // עדכון נתונים כשההתקדמות משתנה
+  useEffect(() => {
+    console.log('🔄 AdvancedChartsDashboard: Progress updated', { theoryProgress, theorySubProgress });
+    
+    const updatedProgressData = calculateRealData();
+    setChartData(prevData => ({
+      ...prevData,
+      progress: updatedProgressData
+    }));
+  }, [theoryProgress, theorySubProgress]);
+
+  // מאזין לעדכוני התקדמות מהקומפוננטים האחרים
+  useEffect(() => {
+    const handleProgressUpdate = () => {
+      console.log('🔄 AdvancedChartsDashboard: Received progressUpdated event');
+      setTimeout(() => {
+        const updatedProgressData = calculateRealData();
+        setChartData(prevData => ({
+          ...prevData,
+          progress: updatedProgressData
+        }));
+      }, 500); // קצת עיכוב כדי לתת לנתונים להתעדכן
+    };
+
+    window.addEventListener('progressUpdated', handleProgressUpdate);
+    
+    return () => {
+      window.removeEventListener('progressUpdated', handleProgressUpdate);
+    };
+  }, [theorySubProgress]);
 
   // פונקציות עזר לגרפים
   const getProgressPercentage = (completed, total) => {
@@ -324,8 +404,26 @@ const AdvancedChartsDashboard = ({ userId }) => {
   return (
     <div className="advanced-charts-dashboard">
       <div className="dashboard-header">
-        <h1>📊 דשבורד גרפים מתקדם</h1>
-        <p>ניתוח ויזואלי מפורט של ההתקדמות והביצועים</p>
+        <div className="header-content">
+          <div className="header-text">
+            <h1>📊 דשבורד גרפים מתקדם</h1>
+            <p>ניתוח ויזואלי מפורט של ההתקדמות והביצועים</p>
+          </div>
+          <button 
+            className="refresh-btn"
+            onClick={() => {
+              console.log('🔄 Manual refresh triggered');
+              const updatedProgressData = calculateRealData();
+              setChartData(prevData => ({
+                ...prevData,
+                progress: updatedProgressData
+              }));
+            }}
+            title="רענן נתונים"
+          >
+            🔄 רענן
+          </button>
+        </div>
       </div>
 
       <ChartControls />

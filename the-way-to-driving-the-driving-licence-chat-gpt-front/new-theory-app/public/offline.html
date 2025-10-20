@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#3498db" />
+    <title>אין חיבור לאינטרנט - מערכת לימוד תיאוריה</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #2980b9 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            direction: rtl;
+            color: white;
+        }
+
+        .offline-container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            margin: 20px;
+        }
+
+        .offline-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .offline-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .offline-message {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .offline-features {
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .offline-features h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #f39c12;
+        }
+
+        .offline-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .offline-features li {
+            padding: 8px 0;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .offline-features li::before {
+            content: "✅ ";
+            margin-left: 10px;
+        }
+
+        .retry-button {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .retry-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .status-indicator {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .status-offline {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            color: #e74c3c;
+        }
+
+        .status-online {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            color: #2ecc71;
+        }
+
+        .app-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">📡</div>
+        <h1 class="offline-title">אין חיבור לאינטרנט</h1>
+        <p class="offline-message">
+            אל תדאג! האפליקציה עדיין עובדת במצב אופליין.<br>
+            אתה יכול להמשיך ללמוד עם התכנים השמורים.
+        </p>
+
+        <div class="offline-features">
+            <h3>מה אתה יכול לעשות עכשיו:</h3>
+            <ul>
+                <li>תרגול שאלות שמורות</li>
+                <li>צפייה בהתקדמות שלך</li>
+                <li>סקירת חומר לימוד</li>
+                <li>המשך מבחנים שהתחלת</li>
+                <li>צפייה בהישגים שלך</li>
+            </ul>
+        </div>
+
+        <button class="retry-button" onclick="checkConnection()">
+            🔄 בדוק חיבור שוב
+        </button>
+
+        <div id="status" class="status-indicator status-offline">
+            🔴 אין חיבור לאינטרנט
+        </div>
+
+        <div class="app-info">
+            <strong>מערכת לימוד תיאוריה לנהיגה</strong><br>
+            Progressive Web App - עובד גם בלי אינטרנט!
+        </div>
+    </div>
+
+    <script>
+        // Check connection status
+        function checkConnection() {
+            const statusEl = document.getElementById('status');
+            
+            if (navigator.onLine) {
+                statusEl.className = 'status-indicator status-online';
+                statusEl.innerHTML = '🟢 חיבור לאינטרנט זמין';
+                
+                // Try to reload the main app
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            } else {
+                statusEl.className = 'status-indicator status-offline';
+                statusEl.innerHTML = '🔴 אין חיבור לאינטרנט';
+            }
+        }
+
+        // Auto-check connection every 5 seconds
+        setInterval(checkConnection, 5000);
+
+        // Listen for online/offline events
+        window.addEventListener('online', () => {
+            checkConnection();
+        });
+
+        window.addEventListener('offline', () => {
+            checkConnection();
+        });
+
+        // Initial check
+        checkConnection();
+
+        // Try to go back to main app if online
+        if (navigator.onLine) {
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

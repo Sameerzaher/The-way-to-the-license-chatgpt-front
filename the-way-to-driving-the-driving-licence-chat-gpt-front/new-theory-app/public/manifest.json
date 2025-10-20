@@ -1,25 +1,90 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "name": "מערכת לימוד תיאוריה לנהיגה",
+  "short_name": "תיאוריה נהיגה",
+  "description": "מערכת לימוד מתקדמת לבחינת התיאוריה לנהיגה עם AI חכם",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2c3e50",
+  "theme_color": "#3498db",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "he",
+  "dir": "rtl",
+  "categories": ["education", "productivity"],
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "/logo192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/logo512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "shortcuts": [
+    {
+      "name": "תרגול שאלות",
+      "short_name": "תרגול",
+      "description": "התחל תרגול שאלות מיידי",
+      "url": "/practice",
+      "icons": [
+        {
+          "src": "/logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "מבחן מדומה",
+      "short_name": "מבחן",
+      "description": "בצע מבחן מדומה מלא",
+      "url": "/mock-exam",
+      "icons": [
+        {
+          "src": "/logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "צ'אט עם AI",
+      "short_name": "צ'אט",
+      "description": "שאל את המורה הוירטואלי",
+      "url": "/chat",
+      "icons": [
+        {
+          "src": "/logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot2.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
 }

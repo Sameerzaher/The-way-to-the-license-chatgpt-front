@@ -174,6 +174,8 @@ const Sidebar = ({ user, lang }) => {
     chartsDashboard: lang === 'ar' ? 'لوحة الرسوم البيانية' : 'דשבורד גרפים',
     streakDashboard: lang === 'ar' ? 'لوحة الرصيد' : 'רצף למידה',
     virtualTeacher: lang === 'ar' ? 'المعلم الافتراضي' : 'המורה הוירטואלי',
+    commonErrors: lang === 'ar' ? 'الأخطاء الشائعة' : 'טעויות נפוצות',
+    studyCards: lang === 'ar' ? 'بطاقات الدراسة' : 'כרטיסיות לימוד',
     "חוקי התנועה": lang === 'ar' ? 'قوانين المرور' : 'חוקי התנועה',
     "תמרורים": lang === 'ar' ? 'إشارات المرور' : 'תמרורים',
     "בטיחות": lang === 'ar' ? 'السلامة' : 'בטיחות',
@@ -570,6 +572,14 @@ const Sidebar = ({ user, lang }) => {
           <Link to="/theory/chat" className={`sidebar-link ${isActive('/theory/chat') ? 'active' : ''}`}>
             <Icon name="chat" />
             {labels.chatWithGpt}
+          </Link>
+          <Link to="/common-errors" className={`sidebar-link ${isActive('/common-errors') ? 'active' : ''}`}>
+            <Icon name="errors" />
+            {labels.commonErrors}
+          </Link>
+          <Link to="/study-cards" className={`sidebar-link ${isActive('/study-cards') ? 'active' : ''}`}>
+            <Icon name="cards" />
+            {labels.studyCards}
           </Link>
           <Link to="/error-analysis" className={`sidebar-link ${isActive('/error-analysis') ? 'active' : ''}`}>
             <Icon name="analytics" />
